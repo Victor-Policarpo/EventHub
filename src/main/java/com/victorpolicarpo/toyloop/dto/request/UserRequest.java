@@ -2,9 +2,9 @@ package com.victorpolicarpo.toyloop.dto.request;
 
 import jakarta.validation.constraints.*;
 
-public record LoginRequest(
+public record UserRequest(
         @NotBlank(message = "This field is required and cannot be left blank.")
-        @Size(min = 3, max = 50, message = "This field must contain 3 to 100 characters.")
+        @Size(min = 3, max = 100, message = "This field must contain 3 to 100 characters.")
         String fullName,
         @NotBlank(message = "This field is required and cannot be left blank.")
         @Size(min = 3, max = 50, message = "This field must contain 3 to 50 characters.")
