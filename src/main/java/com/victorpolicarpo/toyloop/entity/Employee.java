@@ -15,5 +15,7 @@ public class Employee {
     @Column(name = "employee_id")
     private Long employeeId;
     @Column(nullable = false)
-    private String nome;
+    private String name;
+    @Column(nullable = false)
+    private String telephone;
 }

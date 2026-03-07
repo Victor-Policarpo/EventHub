@@ -7,7 +7,8 @@ target/
 */mvnw.cmd
 /docker/.env
 */.env
-
+*/app.pub
+*/app.key
 ### STS ###
 .apt_generated
 .classpath
@@ -35,3 +36,5 @@ build/
 
 ### VS Code ###
 .vscode/
+src/main/resources/app.key
+src/main/resources/app.pub
