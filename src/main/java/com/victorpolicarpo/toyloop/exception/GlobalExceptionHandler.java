@@ -8,6 +8,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -44,17 +46,17 @@ public class GlobalExceptionHandler {
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.CONFLICT.value());
         err.setError("Database integrity violation");
-        err.setMessage("A database integrity error occurred. Please check your data.");
+        err.setMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<StandardError> userAlreadyExistsException(UserAlreadyExistsException e, HttpServletRequest http){
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<StandardError> userAlreadyExistsException(ResourceAlreadyExistsException e, HttpServletRequest http){
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.BAD_REQUEST.value());
-        err.setError("User Conflict");
         err.setMessage(e.getMessage());
+        err.setError("Conflict");
         err.setPath(http.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
