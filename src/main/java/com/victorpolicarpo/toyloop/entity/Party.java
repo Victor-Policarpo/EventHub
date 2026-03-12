@@ -1,15 +1,15 @@
 package com.victorpolicarpo.toyloop.entity;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "db_party")
@@ -34,8 +34,11 @@ public class Party {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal value;
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private PartyStatus partyStatus = PartyStatus.SCHEDULED;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status = Status.SCHEDULED;
+    private AssemblyStatus assemblyStatus = AssemblyStatus.TO_ASSEMBLE;
 
     @ManyToMany
     @JoinTable(
@@ -43,32 +46,31 @@ public class Party {
             joinColumns = @JoinColumn(name = "party_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private Set<Employee> staff = new HashSet<>();
+    private Set<Employee> employees = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "create_by_id", nullable = false)
+    @JoinColumn(name = "create_by", nullable = false)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+    @JsonIdentityReference(alwaysAsId = true)
     private User createBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "db_parties_toys",
-            joinColumns = @JoinColumn(name = "party_id"),
-            inverseJoinColumns = @JoinColumn(name = "toy_id")
-    )
-    private Set<Toy> toys = new HashSet<>();
+    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    private Set<PartyToy> partyToys = new HashSet<>();
 
 
     @Getter
-    public enum Status{
-        SCHEDULED(1L),
-        IN_PROGRESS(2L),
-        FINISHED(3L),
-        CANCELED(4L);
+    public enum PartyStatus{
+        SCHEDULED,
+        IN_PROGRESS,
+        FINISHED,
+        CANCELED;
+    }
 
-        final long code;
-
-        Status(long code) {
-            this.code = code;
-        }
+    @Getter
+    public enum AssemblyStatus{
+        TO_ASSEMBLE,
+        ASSEMBLED,
+        TO_DISASSEMBLE,
+        DISASSEMBLED;
     }
 }

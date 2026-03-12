@@ -5,12 +5,13 @@ import com.victorpolicarpo.toyloop.dto.request.UserRequest;
 import com.victorpolicarpo.toyloop.dto.response.LoginResponse;
 import com.victorpolicarpo.toyloop.entity.Role;
 import com.victorpolicarpo.toyloop.entity.User;
-import com.victorpolicarpo.toyloop.exception.UserAlreadyExistsException;
+import com.victorpolicarpo.toyloop.exception.ResourceAlreadyExistsException;
 import com.victorpolicarpo.toyloop.mapper.UserMapper;
 import com.victorpolicarpo.toyloop.repository.RoleRepository;
 import com.victorpolicarpo.toyloop.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -23,24 +24,15 @@ import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
-
-    public LoginService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtEncoder jwtEncoder, RoleRepository roleRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtEncoder = jwtEncoder;
-        this.roleRepository = roleRepository;
-        this.userMapper = userMapper;
-    }
-
-    public LoginResponse login(@Valid LoginRequest dto) {
+    public LoginResponse login(LoginRequest dto) {
         var user = userRepository.findByUsername(dto.username());
-
         if (user.isEmpty() || !user.get().isLoginCorrect(dto, passwordEncoder)){
             throw new BadCredentialsException("User or Password is invalid!");
         }
@@ -69,7 +61,7 @@ public class LoginService {
        var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
        var userFromDb = userRepository.findByUsername(dto.username());
        if (userFromDb.isPresent()){
-           throw new UserAlreadyExistsException("A user with this username already exists.");
+           throw new ResourceAlreadyExistsException("A user with this username already exists.");
        }
        User user = userMapper.toEntity(dto, passwordEncoder, basicRole);
        userRepository.save(user);
