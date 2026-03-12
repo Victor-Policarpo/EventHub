@@ -13,9 +13,7 @@ import com.victorpolicarpo.toyloop.repository.PartyToyRepository;
 import com.victorpolicarpo.toyloop.repository.ToyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -89,5 +87,15 @@ public class PartyService {
         party.setPartyToys(partyToys);
         party.setEmployees(employee);
         return partyMapper.toResponse(partyRepository.save(party));
+    }
+
+    public PartyResponse findPartyById(Long id) {
+        return partyMapper.toResponse(findById(id));
+    }
+
+    public Party findById(Long id) {
+        return partyRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Party not found or not exist")
+        );
     }
 }

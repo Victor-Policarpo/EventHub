@@ -4,21 +4,20 @@ import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
 import com.victorpolicarpo.toyloop.service.PartyService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth/parties")
+@RequiredArgsConstructor
 public class PartyController {
-
     private final PartyService partyService;
 
-    public PartyController(PartyService partyService) {
-        this.partyService = partyService;
+    @GetMapping("/{id}")
+    public ResponseEntity<PartyResponse> findById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(partyService.findPartyById(id));
     }
 
     @PostMapping
