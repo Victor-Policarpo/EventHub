@@ -2,6 +2,7 @@ package com.victorpolicarpo.toyloop.mapper;
 
 import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
 import com.victorpolicarpo.toyloop.dto.response.EmployeePartyResponse;
+import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyToyResponse;
 import com.victorpolicarpo.toyloop.entity.Employee;
@@ -12,6 +13,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.List;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -25,6 +27,8 @@ public interface PartyMapper {
     @Mapping(target = "quantity", source = "quantity")
     PartyToyResponse toPartyToyResponse(PartyToy partyToy);
     EmployeePartyResponse toEmployeeResponse(Employee employee);
+    ListPartyResponse toListPartyResponse(Party entity);
+
 
     default User map(UUID value) {
         if (value == null) return null;

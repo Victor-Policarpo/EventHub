@@ -9,7 +9,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "db_parties_toys")
-@EqualsAndHashCode(of = {"party", "toy"})
 @Setter
 @Getter
 public class PartyToy {

@@ -2,6 +2,7 @@ package com.victorpolicarpo.toyloop.service;
 
 import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
 import com.victorpolicarpo.toyloop.dto.request.PartyToyRequest;
+import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
 import com.victorpolicarpo.toyloop.entity.*;
 import com.victorpolicarpo.toyloop.exception.ResourceAlreadyExistsException;
@@ -13,8 +14,11 @@ import com.victorpolicarpo.toyloop.repository.PartyToyRepository;
 import com.victorpolicarpo.toyloop.repository.ToyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -93,9 +97,18 @@ public class PartyService {
         return partyMapper.toResponse(findById(id));
     }
 
+    public Page<ListPartyResponse> getByFilter(Party.PartyStatus partyStatus,
+                                               Party.AssemblyStatus assemblyStatus,
+                                               LocalDate date, Pageable pageable) {
+        Page<Party> partyPage = partyRepository.findByFilters(partyStatus, assemblyStatus, date, pageable);
+        return partyPage.map(partyMapper::toListPartyResponse);
+    }
+
+
     public Party findById(Long id) {
         return partyRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Party not found or not exist")
         );
     }
+
 }
