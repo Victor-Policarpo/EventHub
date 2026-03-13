@@ -4,17 +4,18 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "db_party")
 @Setter
 @Getter
+@SQLRestriction("active = true")
 public class Party {
 
     @Id
@@ -57,13 +58,14 @@ public class Party {
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
     private Set<PartyToy> partyToys = new HashSet<>();
 
+    private boolean active = true;
 
     @Getter
     public enum PartyStatus{
         SCHEDULED,
         IN_PROGRESS,
         FINISHED,
-        CANCELED;
+        CANCELED
     }
 
     @Getter
@@ -71,6 +73,7 @@ public class Party {
         TO_ASSEMBLE,
         ASSEMBLED,
         TO_DISASSEMBLE,
-        DISASSEMBLED;
+        DISASSEMBLED,
+        NOT_APPLICABLE
     }
 }

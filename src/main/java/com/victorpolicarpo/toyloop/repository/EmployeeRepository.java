@@ -15,7 +15,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         SELECT COUNT(e) FROM Party p
         JOIN p.employees e
         WHERE e.employeeId = :employeeId
-        AND p.partyStatus != 'CANCELED'
+        AND p.partyStatus IN ('SCHEDULED', 'IN_PROGRESS')
         AND (p.startDateHours < :end AND p.endDateHours > :start)
 """)
     Long countOccupiedEmployee(
