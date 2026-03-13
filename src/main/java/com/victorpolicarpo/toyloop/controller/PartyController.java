@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("auth/parties")
@@ -44,4 +44,37 @@ public class PartyController {
     public ResponseEntity<PartyResponse> createParty(@Valid @RequestBody PartyRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(partyService.createParty(dto));
     }
+
+    @PatchMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteParty(@PathVariable Long id){
+        partyService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @PatchMapping("/{id}/start-party")
+    public ResponseEntity<Void> startParty(@PathVariable Long id){
+        partyService.startParty(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{id}/end-party")
+    public ResponseEntity<Void> endParty(@PathVariable Long id){
+        partyService.endParty(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{id}/collect-party")
+    public ResponseEntity<Void> collectParty(@PathVariable Long id){
+        partyService.collectParty(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{id}/cancel-party")
+    public ResponseEntity<Void> cancelParty(@PathVariable Long id){
+        partyService.cancelParty(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
 }

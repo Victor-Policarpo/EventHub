@@ -14,7 +14,7 @@ public interface PartyToyRepository extends JpaRepository<PartyToy, Long> {
             SELECT SUM(pt.quantity)
             FROM PartyToy pt
             WHERE pt.toy.toyId = :toyId
-            AND pt.party.partyStatus != 'CANCELED'
+            AND pt.party.partyStatus IN ('SCHEDULED', 'IN_PROGRESS')
             AND (pt.party.startDateHours < :end AND pt.party.endDateHours > :start)
     """)
     Integer getQuantityBusy(

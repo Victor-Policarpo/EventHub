@@ -73,4 +73,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
     }
 
+    @ExceptionHandler(BusinessRuleException.class)
+    public ResponseEntity<StandardError> businessRuleException(BusinessRuleException e, HttpServletRequest http){
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.UNPROCESSABLE_CONTENT.value());
+        err.setError("Unprocessable content");
+        err.setMessage(e.getMessage());
+        err.setPath(http.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(err);
+    }
+
 }
