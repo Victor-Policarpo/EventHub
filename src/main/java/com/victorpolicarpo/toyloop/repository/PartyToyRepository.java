@@ -23,4 +23,14 @@ public interface PartyToyRepository extends JpaRepository<PartyToy, Long> {
             @Param("end") LocalDateTime end
             );
 
+    @Query("""
+    SELECT SUM(pt.quantity)
+    FROM PartyToy pt
+    JOIN pt.party p
+    WHERE pt.toy.toyId = :toyId
+    AND p.partyId <> :excludePartyId
+    AND p.partyStatus <> 'CANCELED'
+    AND (:start < p.endDateHours AND :end > p.startDateHours)
+""")
+    Integer getQuantityBusyExcludingParty(Long toyId, LocalDateTime start, LocalDateTime end, Long excludePartyId);
 }

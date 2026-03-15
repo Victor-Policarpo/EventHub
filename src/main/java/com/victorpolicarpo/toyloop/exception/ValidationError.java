@@ -7,8 +7,8 @@ import java.util.List;
 
 @Getter
 public class ValidationError extends StandardError {
-    private final List<FieldMessage> errors = new ArrayList<>();
+    private final List<ErrorMessage> errors = new ArrayList<>();
     public void addError(String fieldName, String message){
-        errors.add(new FieldMessage(fieldName, message));
+        errors.add(new ErrorMessage(fieldName, message));
     }
 }

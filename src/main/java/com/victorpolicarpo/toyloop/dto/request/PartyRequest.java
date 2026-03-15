@@ -21,9 +21,9 @@ public record PartyRequest(
         LocalDateTime startDateHours,
         @Future(message = "End date must be in the future")
         LocalDateTime endDateHours,
-        @NotNull(message = "Value for four hours cannot be null")
         @PositiveOrZero(message = "Value for four hours must be zero or positive")
         BigDecimal value,
+        @NotEmpty(message = "At least one toy is required")
         Set<PartyToyRequest> toys,
         Set<Long> employeeId
 ) {

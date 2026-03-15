@@ -12,16 +12,18 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 
     @Query("""
-        SELECT COUNT(e) FROM Party p
-        JOIN p.employees e
-        WHERE e.employeeId = :employeeId
-        AND p.partyStatus IN ('SCHEDULED', 'IN_PROGRESS')
-        AND (p.startDateHours < :end AND p.endDateHours > :start)
+    SELECT COUNT(e) FROM Party p
+    JOIN p.employees e
+    WHERE e.employeeId = :employeeId
+    AND p.partyId <> :excludePartyId
+    AND p.partyStatus <> 'CANCELED'
+    AND (p.startDateHours < :end AND p.endDateHours > :start)
 """)
-    Long countOccupiedEmployee(
+    Long countOccupiedEmployeeExcludingParty(
             @Param("employeeId") Long employeeId,
             @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end
-            );
+            @Param("end") LocalDateTime end,
+            @Param("excludePartyId") Long excludePartyId
+    );
 
 }
