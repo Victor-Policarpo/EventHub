@@ -38,7 +38,7 @@ public class LoginService {
         }
 
         Instant now = Instant.now();
-        long expiresIn = 300L;
+        long expiresIn = 600L;
         var scopes = user.get().getRoles()
                 .stream()
                 .map(Role::getName)

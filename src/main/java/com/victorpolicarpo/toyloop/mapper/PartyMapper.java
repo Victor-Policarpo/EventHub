@@ -5,12 +5,14 @@ import com.victorpolicarpo.toyloop.dto.response.EmployeePartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyToyResponse;
+import com.victorpolicarpo.toyloop.dto.update.PartyUpdate;
 import com.victorpolicarpo.toyloop.entity.Employee;
 import com.victorpolicarpo.toyloop.entity.Party;
 import com.victorpolicarpo.toyloop.entity.PartyToy;
 import com.victorpolicarpo.toyloop.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public interface PartyMapper {
     PartyToyResponse toPartyToyResponse(PartyToy partyToy);
     EmployeePartyResponse toEmployeeResponse(Employee employee);
     ListPartyResponse toListPartyResponse(Party entity);
-
+    void updateEntityFromDto(PartyUpdate dto, @MappingTarget Party entity);
 
     default User map(UUID value) {
         if (value == null) return null;

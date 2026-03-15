@@ -3,6 +3,7 @@ package com.victorpolicarpo.toyloop.controller;
 import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
 import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
+import com.victorpolicarpo.toyloop.dto.update.PartyUpdate;
 import com.victorpolicarpo.toyloop.entity.Party;
 import com.victorpolicarpo.toyloop.service.PartyService;
 import jakarta.validation.Valid;
@@ -45,12 +46,17 @@ public class PartyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(partyService.createParty(dto));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<PartyResponse> updateParty(@Valid @RequestBody PartyUpdate dto, @PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(partyService.updateParty(dto, id));
+    }
+
+
     @PatchMapping("/{id}/delete")
     public ResponseEntity<Void> deleteParty(@PathVariable Long id){
         partyService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 
     @PatchMapping("/{id}/start-party")
     public ResponseEntity<Void> startParty(@PathVariable Long id){
@@ -75,6 +81,5 @@ public class PartyController {
         partyService.cancelParty(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 
 }

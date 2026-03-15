@@ -3,12 +3,10 @@ package com.victorpolicarpo.toyloop.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 
@@ -47,6 +45,7 @@ public class GlobalExceptionHandler {
         err.setStatus(HttpStatus.CONFLICT.value());
         err.setError("Database integrity violation");
         err.setMessage(e.getMessage());
+        err.setPath(http.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
@@ -73,12 +72,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
     }
 
+    @ExceptionHandler(ResourceBusyException.class)
+    public ResponseEntity<ResourceConflictError> resourceBusyException(ResourceBusyException e, HttpServletRequest http) {
+        ResourceConflictError err = new ResourceConflictError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.UNPROCESSABLE_CONTENT.value());
+        err.setError("Unprocessable Content");
+        err.setMessage(e.getMessage());
+        err.setPath(http.getRequestURI());
+        for (ResourceConflict f: e.getErrors()) {
+            err.addConflict(f);
+        }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(err);
+    }
+
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<StandardError> businessRuleException(BusinessRuleException e, HttpServletRequest http){
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.UNPROCESSABLE_CONTENT.value());
-        err.setError("Unprocessable content");
+        err.setError("Unprocessable Content");
         err.setMessage(e.getMessage());
         err.setPath(http.getRequestURI());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(err);

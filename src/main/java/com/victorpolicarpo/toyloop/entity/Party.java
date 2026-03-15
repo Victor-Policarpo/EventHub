@@ -55,7 +55,7 @@ public class Party {
     @JsonIdentityReference(alwaysAsId = true)
     private User createBy;
 
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PartyToy> partyToys = new HashSet<>();
 
     private boolean active = true;
