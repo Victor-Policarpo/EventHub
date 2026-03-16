@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,5 +40,18 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
            AND p.active = true
 """)
     List<Party> findPartiesToAutoFinish(@Param("threshold") LocalDateTime threshold);
+    long countByPartyStatusAndStartDateHoursBetween(Party.PartyStatus status, LocalDateTime start, LocalDateTime end);
+    @Query("""
+            SELECT SUM(p.value)
+            FROM Party p
+            WHERE p.partyStatus = :status
+            AND p.startDateHours BETWEEN :start AND :end
+    """)
+    BigDecimal sumRevenueByStatusAndRange(
+            @Param("status") Party.PartyStatus status,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+
 
 }

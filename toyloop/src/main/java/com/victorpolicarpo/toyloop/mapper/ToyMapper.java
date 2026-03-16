@@ -5,6 +5,7 @@ import com.victorpolicarpo.toyloop.dto.response.ToyResponse;
 import com.victorpolicarpo.toyloop.dto.update.ToyUpdate;
 import com.victorpolicarpo.toyloop.entity.Toy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ToyMapper {
     Toy toEntity(ToyRequest dto);
+    @Mapping(target = "availableQuantity", source = "dynamicQuantity")
+    ToyResponse toResponseWithAvailability(Toy entity, Integer dynamicQuantity);
     ToyResponse toResponse(Toy entity);
     void updateEntityFromDto(ToyUpdate dto, @MappingTarget Toy entity);
     List<ToyResponse> toResponseList(List<Toy> listEntity);

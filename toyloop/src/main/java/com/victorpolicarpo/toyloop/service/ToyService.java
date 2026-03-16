@@ -7,18 +7,23 @@ import com.victorpolicarpo.toyloop.entity.Toy;
 import com.victorpolicarpo.toyloop.exception.ResourceNotFoundException;
 import com.victorpolicarpo.toyloop.exception.ResourceAlreadyExistsException;
 import com.victorpolicarpo.toyloop.mapper.ToyMapper;
+import com.victorpolicarpo.toyloop.repository.PartyToyRepository;
 import com.victorpolicarpo.toyloop.repository.ToyRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ToyService {
     private final ToyRepository toyRepository;
     private final ToyMapper toyMapper;
+    private final PartyToyRepository partyToyRepository;
 
     public void createToy(@Valid ToyRequest dto) {
         if (toyRepository.existsByName(dto.name())){
@@ -28,9 +33,28 @@ public class ToyService {
         toyRepository.save(toy);
     }
 
-    public List<ToyResponse> listAll() {
-        List<Toy> toyList = toyRepository.findAll();
-        return toyMapper.toResponseList(toyList);
+    public List<ToyResponse> listAllToys(LocalDateTime start, LocalDateTime end) {
+        List<Toy> allToys = toyRepository.findAll();
+
+        if (start == null || end == null) {
+            return toyMapper.toResponseList(allToys);
+        }
+
+        Map<Long, Integer> busyMap = partyToyRepository.findAllOccupiedQuantities(start, end)
+                .stream()
+                .collect(Collectors.toMap(
+                        PartyToyRepository.ToyOccupationProjection::getToyId,
+                        PartyToyRepository.ToyOccupationProjection::getOccupiedQty
+                ));
+
+        return allToys.stream()
+                .map(toy -> {
+                    Integer occupied = busyMap.getOrDefault(toy.getToyId(), 0);
+                    int available = Math.max(0, toy.getAvailableQuantity() - occupied);
+
+                    return toyMapper.toResponseWithAvailability(toy, available);
+                })
+                .toList();
     }
 
 

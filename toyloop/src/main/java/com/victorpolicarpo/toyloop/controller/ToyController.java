@@ -5,11 +5,15 @@ import com.victorpolicarpo.toyloop.dto.response.ToyResponse;
 import com.victorpolicarpo.toyloop.dto.update.ToyUpdate;
 import com.victorpolicarpo.toyloop.service.ToyService;
 import jakarta.validation.Valid;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,8 +33,10 @@ public class ToyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ToyResponse>> listAllToy(){
-        return ResponseEntity.ok(toyService.listAll());
+    public ResponseEntity<List<ToyResponse>> listAllToy(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        return ResponseEntity.ok(toyService.listAllToys(start, end));
     }
 
     @PatchMapping("/{id}")
@@ -40,7 +46,7 @@ public class ToyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> updateToy(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         toyService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
