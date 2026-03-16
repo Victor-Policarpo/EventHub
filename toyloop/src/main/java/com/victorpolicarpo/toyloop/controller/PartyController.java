@@ -15,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("auth/parties")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 public class PartyController {
     private final PartyService partyService;
 
@@ -36,7 +38,7 @@ public class PartyController {
             @RequestParam(required = false) Party.PartyStatus partyStatus,
             @RequestParam(required = false) Party.AssemblyStatus assemblyStatus,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @PageableDefault(size = 10, sort = "startDateHours", direction = Sort.Direction.ASC) Pageable pageable
+            @PageableDefault(sort = "startDateHours", direction = Sort.Direction.ASC) Pageable pageable
     ){
         return ResponseEntity.status(HttpStatus.OK).body(partyService.getByFilter(partyStatus, assemblyStatus, date, pageable));
     }

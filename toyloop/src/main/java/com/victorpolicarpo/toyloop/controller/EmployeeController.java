@@ -5,11 +5,13 @@ import com.victorpolicarpo.toyloop.dto.response.EmployeeResponse;
 import com.victorpolicarpo.toyloop.dto.update.EmployeeUpdate;
 import com.victorpolicarpo.toyloop.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,8 +31,11 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeResponse>> listAllEmployee() {
-        return ResponseEntity.ok(employeeService.listAllEmployee());
+    public ResponseEntity<List<EmployeeResponse>> listAllEmployee(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
+    ) {
+        return ResponseEntity.ok(employeeService.listAllEmployee(start, end));
     }
 
     @PatchMapping("/{id}")

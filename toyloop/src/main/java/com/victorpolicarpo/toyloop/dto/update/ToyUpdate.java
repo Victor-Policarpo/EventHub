@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 public record ToyUpdate(
         String name,
         BigDecimal valueForFourHours,
-        Integer availableQuantity,
-        Toy.Status active
+        Integer availableQuantity
 ) {
 }

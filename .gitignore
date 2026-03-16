@@ -1,14 +1,14 @@
 HELP.md
-target/
+toyloop/target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 */mvnw
 */mvnw.cmd
-/docker/.env
+toyloop/docker/.env
 */.env
-*/app.pub
-*/app.key
+toyloop/src/main/resources/app.key
+toyloop/src/main/resources/app.pub
 ### STS ###
 .apt_generated
 .classpath
@@ -36,5 +36,3 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/app.key
-src/main/resources/app.pub

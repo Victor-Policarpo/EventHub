@@ -12,7 +12,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +32,21 @@ public class EmployeeService {
     }
 
 
-    public List<EmployeeResponse> listAllEmployee() {
-        List<Employee> employeeList = employeeRepository.findAll();
-        return employeeMapper.toResponseList(employeeList);
+    public List<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end) {
+        List<Employee> allEmployees = employeeRepository.findAll();
+        if (start == null || end == null) {
+            return allEmployees.stream()
+                    .map(e -> employeeMapper.toResponseWithAvailability(e, true))
+                    .toList();
+        }
+        Set<Long> busyIds = new HashSet<>(employeeRepository.findOccupiedEmployeeIds(start, end));
+
+        return allEmployees.stream()
+                .map(e -> {
+                    boolean available = !busyIds.contains(e.getEmployeeId());
+                    return employeeMapper.toResponseWithAvailability(e, available);
+                })
+                .toList();
     }
 
 

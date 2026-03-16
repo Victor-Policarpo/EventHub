@@ -22,18 +22,4 @@ public class Toy {
     private BigDecimal valueForFourHours;
     @Column(nullable = false)
     private Integer availableQuantity;
-    @Enumerated(EnumType.STRING)
-    private Status active = Status.AVAILABLE;
-
-    @Getter
-    public enum Status{
-        AVAILABLE(1L),
-        USING(2L),
-        MAINTENANCE(3L);
-        final long code;
-
-        Status(long code) {
-            this.code = code;
-        }
-    }
 }
