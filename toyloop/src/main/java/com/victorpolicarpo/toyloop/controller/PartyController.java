@@ -54,7 +54,7 @@ public class PartyController {
     }
 
 
-    @PatchMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteParty(@PathVariable Long id){
         partyService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

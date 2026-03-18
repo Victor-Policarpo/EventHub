@@ -1,0 +1,23 @@
+package com.victorpolicarpo.toyloop.dto.update;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+public record PasswordUpdate(
+        @NotBlank
+        @Pattern(
+                regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).*$",
+                message = "Your password must contain at least one special character, one number, and one letter."
+        )
+        @Size(min = 8, max = 16, message = "This field must contain 8 to 16 characters.")
+        String oldPassword,
+        @NotBlank
+        @Pattern(
+                regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).*$",
+                message = "Your password must contain at least one special character, one number, and one letter."
+        )
+        @Size(min = 8, max = 16, message = "This field must contain 8 to 16 characters.")
+        String newPassword
+) {
+}

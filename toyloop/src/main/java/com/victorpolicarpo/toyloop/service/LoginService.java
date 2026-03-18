@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -35,6 +36,10 @@ public class LoginService {
         var user = userRepository.findByUsername(dto.username());
         if (user.isEmpty() || !user.get().isLoginCorrect(dto, passwordEncoder)){
             throw new BadCredentialsException("User or Password is invalid!");
+        }
+
+        if (!user.get().getActive()){
+            throw new DisabledException("This account is disabled. Please contact the administrator.");
         }
 
         Instant now = Instant.now();

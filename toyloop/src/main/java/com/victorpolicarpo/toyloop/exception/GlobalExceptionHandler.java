@@ -97,4 +97,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(err);
     }
 
+    @ExceptionHandler(MessagingServiceException.class)
+    public ResponseEntity<StandardError> messagingException(MessagingServiceException e, HttpServletRequest http) {
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+        err.setMessage(e.getMessage());
+        err.setError("Email Service Unavailable");
+        err.setPath(http.getRequestURI());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(err);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<StandardError> disabledException(DisabledException e, HttpServletRequest http){
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.UNAUTHORIZED.value());
+        err.setMessage(e.getMessage());
+        err.setError("Account Disabled");
+        err.setPath(http.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
+    }
+
 }

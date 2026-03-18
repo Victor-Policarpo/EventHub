@@ -2,7 +2,6 @@ package com.victorpolicarpo.toyloop.entity;
 
 import com.victorpolicarpo.toyloop.dto.request.LoginRequest;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
