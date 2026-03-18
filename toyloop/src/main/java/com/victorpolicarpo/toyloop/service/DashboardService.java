@@ -7,16 +7,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
     private final PartyRepository partyRepository;
 
-    public DashboardResponse getSummary(LocalDateTime start, LocalDateTime end) {
-        LocalDateTime startDate = (start != null) ? start : LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0);
-        LocalDateTime endDate = (end != null) ? end : LocalDateTime.now().withHour(23).withMinute(59);
+    public DashboardResponse getSummary(LocalDate start, LocalDate end) {
+        LocalDateTime startDate = (start != null)
+                ? start.atStartOfDay()
+                : LocalDate.now().withDayOfMonth(1).atStartOfDay();
+
+        LocalDateTime endDate = (end != null)
+                ? end.atTime(LocalTime.MAX)
+                : LocalDate.now().atTime(LocalTime.MAX);
 
         long totalInPeriod = partyRepository.countByPartyStatusAndStartDateHoursBetween(Party.PartyStatus.SCHEDULED, startDate, endDate)
                 + partyRepository.countByPartyStatusAndStartDateHoursBetween(Party.PartyStatus.FINISHED, startDate, endDate);
