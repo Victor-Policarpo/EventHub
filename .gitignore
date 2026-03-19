@@ -1,3 +1,5 @@
+### Backend ###
+
 HELP.md
 toyloop/target/
 .mvn/wrapper/maven-wrapper.jar
@@ -9,6 +11,16 @@ toyloop/docker/.env
 */.env
 toyloop/src/main/resources/app.key
 toyloop/src/main/resources/app.pub
+
+### Frontend ###
+frontend/EventHub/node_modules/
+frontend/EventHub/dist/
+frontend/EventHub/dist-ssr/
+frontend/EventHub/*.local
+frontend/EventHub/.env*.local
+frontend/EventHub/npm-debug.log*
+frontend/EventHub/.eslintcache
+frontend/EventHub/src/assets/
 ### STS ###
 .apt_generated
 .classpath
@@ -36,4 +48,3 @@ build/
 
 ### VS Code ###
 .vscode/
-frontend/*
