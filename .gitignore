@@ -21,6 +21,7 @@ frontend/EventHub/.env*.local
 frontend/EventHub/npm-debug.log*
 frontend/EventHub/.eslintcache
 frontend/EventHub/src/assets/
+
 ### STS ###
 .apt_generated
 .classpath
