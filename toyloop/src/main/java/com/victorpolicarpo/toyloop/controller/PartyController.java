@@ -38,6 +38,7 @@ public class PartyController {
             @RequestParam(required = false) Party.PartyStatus partyStatus,
             @RequestParam(required = false) Party.AssemblyStatus assemblyStatus,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @org.springdoc.core.annotations.ParameterObject
             @PageableDefault(sort = "startDateHours", direction = Sort.Direction.ASC) Pageable pageable
     ){
         return ResponseEntity.status(HttpStatus.OK).body(partyService.getByFilter(partyStatus, assemblyStatus, date, pageable));

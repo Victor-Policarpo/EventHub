@@ -61,7 +61,7 @@ Built with Java and Spring Boot using RESTful API principles.
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white) 
-
+![Swagger](https://img.shields.io/badge/-Swagger-%23C1E81C?style=for-the-badge&logo=swagger&logoColor=black)
 ## Endpoints
 
 ### Users
@@ -222,6 +222,18 @@ mvn spring-boot:run
 The application will be available at:
 
 ```http://localhost:8080```
+
+### 4. API Documentation (Swagger)
+- After running the application, you can explore and test the endpoints through the Swagger UI:
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+#### To test protected endpoints:
+- Use the `/users` endpoint to register a new user.
+- Authenticate via `/users/login` to receive your JWT Token.
+- Click the `Authorize` button in Swagger.
+- Enter your token in the format: Bearer `your_token_here`
 
 ##  Author
 
