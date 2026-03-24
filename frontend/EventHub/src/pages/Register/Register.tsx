@@ -1,11 +1,8 @@
+import CreateUser from "../../components/Form/CreateUser"
 function Register(){
     return (
-        <div>
-            <h1>
-                Register Page
-            </h1>
-        </div>
-    )
+        <CreateUser/>
+);
+    
 }
-
 export default Register;

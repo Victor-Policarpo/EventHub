@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import Login from './pages/Login/Index'
+import { AppRouter} from './routes/index';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Login />
+    <AppRouter />
   </StrictMode>,
 )

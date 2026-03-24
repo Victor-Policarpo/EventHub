@@ -53,11 +53,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<StandardError> userAlreadyExistsException(ResourceAlreadyExistsException e, HttpServletRequest http){
         StandardError err = new StandardError();
         err.setTimestamp(Instant.now());
-        err.setStatus(HttpStatus.BAD_REQUEST.value());
+        err.setStatus(HttpStatus.CONFLICT.value());
         err.setMessage(e.getMessage());
         err.setError("Conflict");
         err.setPath(http.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
 

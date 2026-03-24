@@ -38,7 +38,14 @@ public class UserService {
                 if (exists) {
                     throw new ResourceAlreadyExistsException("There is already a user with this username");
                 }
-                user.setUsername(dto.username());
+            }
+        }
+        if (dto.email() != null && !dto.email().isBlank()){
+            if (!user.getEmail().equalsIgnoreCase(dto.email())){
+                boolean exists = userRepository.existsByEmailIgnoreCase(dto.email());
+                if (exists) {
+                    throw new ResourceAlreadyExistsException("There is already a user with this E-mail");
+                }
             }
         }
         userMapper.updateEntityFromDto(dto, user);

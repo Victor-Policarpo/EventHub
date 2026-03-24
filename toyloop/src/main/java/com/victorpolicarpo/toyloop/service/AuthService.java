@@ -28,7 +28,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-    @Value("${app.frontend.url}")
+    @Value("${app.frontend.url.resetpassword}")
     private String urlRecoverPassword;
 
     public User getAuthenticatedUser() {
