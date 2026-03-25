@@ -12,6 +12,7 @@ import com.victorpolicarpo.toyloop.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,9 +30,14 @@ import java.util.stream.Collectors;
 public class LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtEncoder jwtEncoder;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
+
+    @Value("${app.tokenJwtExpirationMs}")
+    private long jwtExpiresIn;
+
     public LoginResponse login(LoginRequest dto) {
         var user = userRepository.findByUsername(dto.username());
         if (user.isEmpty() || !user.get().isLoginCorrect(dto, passwordEncoder)){
@@ -42,33 +48,28 @@ public class LoginService {
             throw new DisabledException("This account is disabled. Please contact the administrator.");
         }
 
-        Instant now = Instant.now();
-        long expiresIn = 600L;
-        var scopes = user.get().getRoles()
-                .stream()
-                .map(Role::getName)
-                .collect(Collectors.joining(" "));
-
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("http://my-backend-app")
-                .subject(user.get().getUserId().toString())
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(expiresIn))
-                .claim("scope", scopes)
-                .build();
-
-        var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        return new LoginResponse(jwtValue, expiresIn);
+        String jwt = jwtService.generateAccessToken(user.get());
+        var refreshToken = refreshTokenService.createRefreshToken(user.get().getUserId());
+        return new LoginResponse(jwt, refreshToken.getToken(), jwtExpiresIn);
     }
 
     @Transactional
-    public void createUser(@Valid UserRequest dto) {
+    public void createUser(UserRequest dto) {
        var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
-       var userFromDb = userRepository.findByUsername(dto.username());
-       if (userFromDb.isPresent()){
+       boolean userExists = userRepository.existsByUsernameIgnoreCase(dto.username());
+       boolean emailExists = userRepository.existsByEmailIgnoreCase(dto.email());
+       if (userExists){
            throw new ResourceAlreadyExistsException("A user with this username already exists.");
        }
+        if (emailExists) {
+            throw new ResourceAlreadyExistsException("A user with this email already exists.");
+        }
        User user = userMapper.toEntity(dto, passwordEncoder, basicRole);
        userRepository.save(user);
     }
+
+    public void logout(String refreshToken){
+        refreshTokenService.deleteByToken(refreshToken);
+    }
+
 }

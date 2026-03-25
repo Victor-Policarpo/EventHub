@@ -119,4 +119,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
     }
 
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<StandardError> refreshTokenException(RefreshTokenException e, HttpServletRequest http){
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.FORBIDDEN.value());
+        err.setError("Invalid Refresh Token");
+        err.setMessage(e.getMessage());
+        err.setPath(http.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+    }
+
 }

@@ -1,0 +1,20 @@
+package com.victorpolicarpo.toyloop.repository;
+
+import com.victorpolicarpo.toyloop.entity.RefreshToken;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+
+    Optional<RefreshToken> findByToken(String token);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM RefreshToken r WHERE r.user.userId = :userId")
+    void deleteByUserId(UUID userId);
+}

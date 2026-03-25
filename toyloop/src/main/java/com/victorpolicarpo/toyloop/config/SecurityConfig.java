@@ -53,15 +53,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                        auth -> auth
+                                .requestMatchers(HttpMethod.POST, "/access/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/access/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/access/refresh").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/access/forgot-password").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/access/reset-password").permitAll()
                                 .requestMatchers(
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.POST ,"/auth/forgot-password").permitAll()
-                                .requestMatchers(HttpMethod.POST ,"/auth/reset-password").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/access/logout").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
