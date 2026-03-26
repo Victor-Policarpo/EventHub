@@ -1,8 +1,11 @@
-import LoginUser from "../../components/Form/LoginUser";
+import LoginUser from "../../components/Forms/LoginUserForm";
 
 function Login(){
     return (
-        <LoginUser/>
+        <div className="h-full">
+            <LoginUser/>
+        </div>
+        
     )
 }
 export default Login;

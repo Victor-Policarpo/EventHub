@@ -2,6 +2,7 @@ package com.victorpolicarpo.toyloop.service;
 
 import com.victorpolicarpo.toyloop.entity.RefreshToken;
 import com.victorpolicarpo.toyloop.entity.User;
+import com.victorpolicarpo.toyloop.exception.RefreshTokenException;
 import com.victorpolicarpo.toyloop.exception.ResourceNotFoundException;
 import com.victorpolicarpo.toyloop.repository.RefreshTokenRepository;
 import com.victorpolicarpo.toyloop.repository.UserRepository;
@@ -42,7 +43,7 @@ public class RefreshTokenService {
     public RefreshToken verifyExpiration(RefreshToken token){
         if (token.getExpiresAt().compareTo(Instant.now()) < 0){
             refreshTokenRepository.delete(token);
-            throw new RuntimeException("Refresh token was expired. Please make a new signin request");
+            throw new RefreshTokenException("Refresh token was expired. Please make a new signin request");
         }
         return token;
     }
