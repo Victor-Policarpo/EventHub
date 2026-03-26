@@ -1,15 +1,35 @@
 import { useForm } from "react-hook-form";
 import { loginSchema, type LoginFormData } from "../../schemas/loginSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginUser } from "../../services/authService";
+import axios from "axios";
+import type { SpringError } from "../../services/springError";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 function LoginUser(){
-    const {register, handleSubmit , formState: { errors }} = useForm<LoginFormData>({
+    const navigate = useNavigate();
+    const {register, handleSubmit , setError , formState: { errors }} = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         mode: "onBlur"
     });
 
+    const { login } = useAuth();
+
     const onSubmit = async (data: LoginFormData) => {  
-        console.log(data);
+        try {
+            const response = await loginUser(data);
+            login(response.data);
+            navigate("/feed");
+        } catch (error) {
+    if (axios.isAxiosError<SpringError>(error)) {
+        const status = error.response?.status;
+        if (status === 401 || status === 400) {
+            setError("username", { message: "Credenciais inválidas ou dados incorretos" });
+            setError("password", { message: "Credenciais inválidas ou dados incorretos" });
+        }
+    }
+}
     };
     
     return (

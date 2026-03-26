@@ -24,5 +24,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/pages/Register/Register.tsx"]
+  "include": ["src", "src/pages/Public/Register.tsx"]
 }

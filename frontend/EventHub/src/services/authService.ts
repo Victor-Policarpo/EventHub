@@ -1,5 +1,7 @@
 import { type RegisterFormData  } from "../schemas/registerSchema";
 import { api } from "../lib/axios";
+import type { LoginFormData } from "../schemas/loginSchemas";
+import type { LoginResponse } from "../utils/types";
 
 export const createUser = async (userData: RegisterFormData) => {
     const { name, username, email, password } = userData;
@@ -8,5 +10,12 @@ export const createUser = async (userData: RegisterFormData) => {
         username: username,
         email: email,
         password: password
+    });
+}
+
+export const loginUser = async (data: LoginFormData) => {
+    const { username, password } = data;
+    return await api.post<LoginResponse>("/access/login", {
+        username, password 
     });
 }
