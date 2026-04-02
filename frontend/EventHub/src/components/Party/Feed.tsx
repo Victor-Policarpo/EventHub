@@ -7,7 +7,6 @@ import Loading from "../Ui/Loading";
 import PartyCard from "./PartyCard";
 
 function FeedParty() {
-    // 1. Estado que dispara a busca no React Query
     const [filters, setFilters] = useState<PartyFilters>({ 
         page: 0, 
         size: 10,
@@ -15,29 +14,25 @@ function FeedParty() {
         assemblyStatus: 'TO_ASSEMBLE'
     });
 
-    // 2. Estado temporário para o Popover (não dispara request ao clicar)
     const [tempFilters, setTempFilters] = useState({
         partyStatus: filters.partyStatus,
         assemblyStatus: filters.assemblyStatus
     });
     
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    
-    // Hook do React Query
+
     const { data, isLoading, isError, error, refetch, isPlaceholderData } = usePartyData(filters);
 
-    // 3. Mapeamento seguro dos dados baseados no seu console.log
     const content = data?.content ?? [];
     const currentPage = data?.page?.number ?? 0;
     const totalPages = data?.page?.totalPages ?? 1;
 
-    // Função para aplicar os filtros de uma vez
     const handleApplyFilters = () => {
         setFilters(prev => ({
             ...prev,
             partyStatus: tempFilters.partyStatus,
             assemblyStatus: tempFilters.assemblyStatus,
-            page: 0 // Sempre volta para a primeira página ao filtrar
+            page: 0
         }));
         setIsFilterOpen(false);
     };
@@ -61,7 +56,6 @@ function FeedParty() {
     return (
         <div className="max-w-4xl mx-auto p-6 space-y-6">
             
-            {/* --- CABEÇALHO E FILTROS --- */}
             <div className="flex items-center flex-wrap gap-3">
                 <div className="relative">
                     <button 
@@ -79,7 +73,6 @@ function FeedParty() {
                         <ChevronDown size={16} className={`transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
                     </button>
 
-                    {/* Popover de Filtros */}
                     {isFilterOpen && (
                         <div className="absolute top-full left-0 mt-2 w-72 bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-4 animate-in fade-in zoom-in-95 duration-150">
                             <div className="mb-4">
@@ -130,7 +123,6 @@ function FeedParty() {
                     )}
                 </div>
 
-                {/* Badges Ativos (Refletem o estado 'filters' real da API) */}
                 <div className="flex flex-wrap gap-2">
                     <span className="bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1 rounded-full text-xs font-bold">
                         Festa: {filters.partyStatus}
@@ -141,7 +133,6 @@ function FeedParty() {
                 </div>
             </div>
 
-            {/* --- LISTAGEM DE CARDS --- */}
             <div className={`space-y-4 transition-opacity ${isPlaceholderData ? 'opacity-50' : 'opacity-100'}`}>
                 {content.length > 0 ? (
                     content.map((party: PartyData) => (
@@ -154,7 +145,6 @@ function FeedParty() {
                 )}
             </div>
 
-            {/* --- PAGINAÇÃO (CONECTADA AO OBJETO 'PAGE') --- */}
             <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                 <div className="flex flex-col">
                     <span className="text-sm text-gray-500">

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public record UserResponse(
         UUID userId,
         String username,
+        String fullName,
         String email,
         Boolean active,
         Set<String> roles
@@ -18,6 +19,7 @@ public record UserResponse(
         this(
                 user.getUserId(),
                 user.getUsername(),
+                user.getFullName(),
                 user.getEmail(),
                 user.getActive(),
                 user.getRoles().stream().map(
