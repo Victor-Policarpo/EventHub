@@ -1,7 +1,7 @@
 import { type RegisterFormData  } from "../schemas/registerSchema";
 import { api } from "../lib/axios";
 import type { LoginFormData } from "../schemas/loginSchemas";
-import type { LoginResponse } from "../utils/types";
+import type { LoginResponse } from "../types/types";
 
 export const createUser = async (userData: RegisterFormData) => {
     const { name, username, email, password } = userData;
@@ -19,3 +19,5 @@ export const loginUser = async (data: LoginFormData) => {
         username, password 
     });
 }
+
+

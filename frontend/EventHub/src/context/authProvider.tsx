@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AuthContext } from './authContext';
-import { type LoginResponse } from '../utils/types';
+import { type LoginResponse } from '../types/types';
 import { api } from '../lib/axios';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

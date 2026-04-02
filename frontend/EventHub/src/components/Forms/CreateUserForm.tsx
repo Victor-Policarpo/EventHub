@@ -5,7 +5,7 @@ import { usePasswordValidation } from "../../hooks/usePasswordValidation";
 import { createUser } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { type SpringError } from "../../services/springError";
+import { type SpringError } from "../../types/types";
 
 function CreateUser(){
     const navigate = useNavigate();
@@ -49,11 +49,6 @@ function CreateUser(){
     return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <img 
-          src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" 
-          alt="Your Company" 
-          className="mx-auto h-10 w-auto" 
-        />
         <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-white">
           Create your account
         </h2>
@@ -118,7 +113,6 @@ function CreateUser(){
                 }`}
               />
             </div>
-            {/* Checklist de Validação */}
             <div className="mt-3 space-y-1 text-xs">
               <p className={hasMinMax ? "text-green-400" : "text-gray-500"}>
                 {hasMinMax ? "✓" : "○"} Entre 6 e 16 caracteres

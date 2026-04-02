@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { type LoginResponse } from '../utils/types';
+import { type LoginResponse } from '../types/types';
 export interface AuthContextData {
   accessToken: string | null;
   authenticated: boolean;

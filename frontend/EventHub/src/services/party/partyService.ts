@@ -1,0 +1,1 @@
+export { getParty } from "./getParty";

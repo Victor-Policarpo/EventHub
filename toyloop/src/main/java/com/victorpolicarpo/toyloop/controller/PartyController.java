@@ -15,7 +15,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -24,7 +23,6 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("auth/parties")
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 public class PartyController {
     private final PartyService partyService;
 
