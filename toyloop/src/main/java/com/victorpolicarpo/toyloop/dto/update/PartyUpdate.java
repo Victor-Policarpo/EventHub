@@ -2,7 +2,10 @@ package com.victorpolicarpo.toyloop.dto.update;
 
 import com.victorpolicarpo.toyloop.dto.response.EmployeePartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyToyResponse;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,9 +18,9 @@ public record PartyUpdate(
         String address,
         @Pattern(regexp = "\\d{10,11}", message = "number format telephone is invalid")
         String telephone,
-        @FutureOrPresent(message = "Start date must be in the present or future")
+        @NotNull(message = "Start date is required")
         LocalDateTime startDateHours,
-        @Future(message = "End date must be in the future")
+        @NotNull(message = "Start date is required")
         LocalDateTime endDateHours,
         @PositiveOrZero(message = "Value for four hours must be zero or positive")
         BigDecimal value,

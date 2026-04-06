@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ChevronDown, SlidersHorizontal} from "lucide
 import ErrorState from "../Ui/ErrorState";
 import Loading from "../Ui/Loading";
 import PartyCard from "./PartyCard";
+import { Link } from "react-router-dom";
 
 function FeedParty() {
     const [filters, setFilters] = useState<PartyFilters>({ 
@@ -136,8 +137,11 @@ function FeedParty() {
             <div className={`space-y-4 transition-opacity ${isPlaceholderData ? 'opacity-50' : 'opacity-100'}`}>
                 {content.length > 0 ? (
                     content.map((party: PartyData) => (
-                        <PartyCard key={party.partyId} party={party}/>
+                        <Link to={`/parties/${party.partyId}`} className="block" key={party.partyId}>
+                            <PartyCard party={party}/>
+                        </Link>
                     ))
+                    
                 ) : (
                     <div className="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
                         <p className="text-gray-500 italic">Nenhuma festa encontrada para estes filtros.</p>

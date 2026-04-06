@@ -4,6 +4,8 @@ import Login from '../pages/Public/Index';
 import Register from '../pages/Public/Register';
 import Feed from '../pages/Private/Feed';
 import Profile from '../pages/Private/Profile';
+import Party from '../components/Ui/Party';
+import PartyEdit from '../pages/Private/PartyEdit';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();
@@ -23,6 +25,8 @@ export const AppRoutes = () => {
       <Route element={<PrivateRoute />}>
         <Route path="/feed" element={<Feed />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/parties/:partyId" element={<Party />} />
+        <Route path="/parties/:partyId/edit" element={<PartyEdit />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/login" />} />

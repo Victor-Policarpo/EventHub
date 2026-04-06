@@ -1,5 +1,5 @@
 import Header from "../../components/Ui/Header";
-import FeedParty from "../../components/Party/Feed";
+import FeedParty from "../../components/Feed/Feed";
 
 function Feed() {
   return (
