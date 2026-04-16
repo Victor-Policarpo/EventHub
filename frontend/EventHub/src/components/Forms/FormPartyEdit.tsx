@@ -27,37 +27,35 @@ function FormPartyEdit(){
         resolver: zodResolver(updatePartySchema),
         mode: "onBlur"
     });
+
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState message="Erro ao carregar dados do perfil 😢" />;
 
 
     function onSubmit(values: UpdatePartyForm) {
-    const payload = {
-        name: values.name,
-        address: values.address,
-        telephone: values.telephone.replace(/\D/g, ""),
-        value: Number(values.value),
-        startDateHours: new Date(values.startDateHours).toISOString().slice(0, 19),
-        endDateHours: new Date(values.endDateHours).toISOString().slice(0, 19)
-    };
-    console.log("Payload para atualização:", payload);
-    console.log("ID da festa:", id);
-    if (!id || isNaN(id)) {
-        alert("Erro: ID da festa não encontrado na URL!");
-        return;
-    }
-    mutate({ 
-        id: id,
-        data: payload 
-    }, {
-        onSuccess: () => {
-            toast.success("Festa atualizada com sucesso!");
-        },
-        onError: (err) => {
-            toast.error("Erro ao atualizar: " + err.message || "Ocorreu um erro inesperado.");
+        const payload = {
+            name: values.name,
+            address: values.address,
+            telephone: values.telephone.replace(/\D/g, ""),
+            value: Number(values.value),
+            startDateHours: values.startDateHours, 
+            endDateHours: values.endDateHours
+        };
+
+        console.log("Payload: ", payload);
+        if (!id || isNaN(id)) {
+            toast.error("ID da festa inválido!");
+            return;
         }
-    });
-}
+
+        mutate({ 
+            id: id,
+            data: payload 
+        }, {
+            onSuccess: () => toast.success("Festa atualizada com sucesso!"),
+            onError: (err) => toast.error("Erro: " + err.message)
+        });
+    }
 
     return (
         <div>
@@ -77,20 +75,20 @@ function FormPartyEdit(){
                 <div>
                 <label htmlFor="telephone" className="font-bold text-sm text-gray-600">Telefone</label>
                 <Controller
-  control={control} // pegue o 'control' do useForm
-  name="telephone"
-  render={({ field: { onChange, onBlur, value, ref } }) => (
-    <PatternFormat
-      format="(##) #####-####"
-      mask="_"
-      getInputRef={ref}
-      value={value}
-      onValueChange={(vals) => onChange(vals.formattedValue)}
-      onBlur={onBlur}
-      className={`w-full p-3 border rounded-xl ${errors.telephone ? 'border-red-500' : 'border-gray-200'}`}
-    />
-  )}
-/>
+                control={control}
+                name="telephone"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                    <PatternFormat
+                    format="(##) #####-####"
+                    mask="_"
+                    getInputRef={ref}
+                    value={value}
+                    onValueChange={(vals) => onChange(vals.formattedValue)}
+                    onBlur={onBlur}
+                    className={`w-full p-3 border rounded-xl ${errors.telephone ? 'border-red-500' : 'border-gray-200'}`}
+                    />
+            )}
+                    />
                 </div>
 
                 <div className="flex flex-col">

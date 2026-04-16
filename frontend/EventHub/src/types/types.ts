@@ -93,3 +93,22 @@ export interface UpdatePartyData {
   endDateHours: string;
   value: number;
 }
+
+export interface Toy {
+  toyId: number;
+  name: string;
+  valueForFourHours: number;
+  availableQuantity: number;
+}
+
+export interface GetParams {
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface Employee {
+    employeeId: number;
+    name: string;
+    telephone: string;
+    isAvailable: boolean;
+}

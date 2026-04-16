@@ -11,5 +11,5 @@ export const formatDateHours = (dataIso: string) => {
 
 export const formatToDateTimeLocal = (dateString: string | undefined) => {
     if (!dateString) return "";
-    return new Date(dateString).toISOString().slice(0, 16);
+    return dateString.replace(" ", "T").slice(0, 16);
 };

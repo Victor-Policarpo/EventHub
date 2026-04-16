@@ -2,9 +2,9 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Login from '../pages/Public/Index';
 import Register from '../pages/Public/Register';
-import Feed from '../pages/Private/Feed';
+import Feed from '../pages/Private/FeedParties';
 import Profile from '../pages/Private/Profile';
-import Party from '../components/Ui/Party';
+import Party from '../components/Parties/Party';
 import PartyEdit from '../pages/Private/PartyEdit';
 
 const PrivateRoute = () => {

@@ -1,16 +1,16 @@
 import { Link, useParams } from "react-router-dom";
 import { useGetParty } from "../../hooks/useGetParty";
 import type { EmployeeParty, ToyParty } from "../../types/types";
-import ErrorState from "./ErrorState";
-import Loading from "./Loading";
+import ErrorState from "../Ui/ErrorState";
+import Loading from "../Ui/Loading";
 import { formatDateHours } from "../../utils/formatDateHours";
+import { useDeleteParty } from "../../hooks/useDeleteParty";
 
 function Party() {
     const { partyId } = useParams();
-    
     const id = partyId ? Number(partyId) : NaN;
     const { data, isLoading, error, refetch } = useGetParty(id);
-
+    const { mutate, isPending } = useDeleteParty();
     if (!partyId || isNaN(id)) {
         return <ErrorState message="ID da festa inválido ou não fornecido" />;
     }
@@ -18,7 +18,6 @@ function Party() {
     if (isLoading) return <Loading />;
 
     if (error) {
-        console.log(data);
         return (
             <ErrorState
                 message="Erro ao carregar a festa 😢"
@@ -29,8 +28,11 @@ function Party() {
     }
 
     if (!data) {
-        console.log(data);
         return <ErrorState message="Festa não encontrada" onRetry={() => refetch()} />;
+    }
+
+    function handleDelete() {
+        mutate(partyId!);
     }
 
     return (
@@ -93,8 +95,8 @@ function Party() {
                 <Link to={`/parties/${id}/edit`} className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow-md">
                 Editar Festa
                 </Link>
-                <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold shadow-md active:scale-95 transition-all">
-                    Apagar Festa
+                <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold shadow-md active:scale-95 transition-all" onClick={handleDelete}>
+                    {isPending ? "Excluindo..." : "Apagar Party"}
                 </button>
             </div>
             

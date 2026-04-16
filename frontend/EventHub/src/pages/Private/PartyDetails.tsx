@@ -1,4 +1,4 @@
-import Party from "../../components/Ui/Party";
+import Party from "../../components/Parties/Party";
 
 function PartyDetails(){
     return (

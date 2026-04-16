@@ -19,7 +19,6 @@ function Profile() {
                 
                 <div className="flex flex-col items-start gap-4">
                     <SecurityModal />
-
                     <Logout />
                 </div>
             </section>

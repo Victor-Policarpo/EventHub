@@ -1,5 +1,5 @@
+import FeedParty from "../../components/Parties/FeedParty";
 import Header from "../../components/Ui/Header";
-import FeedParty from "../../components/Feed/Feed";
 
 function Feed() {
   return (
@@ -14,7 +14,7 @@ function Feed() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
-          <FeedParty />
+          <FeedParty/>
         </div>
 
       </main>
