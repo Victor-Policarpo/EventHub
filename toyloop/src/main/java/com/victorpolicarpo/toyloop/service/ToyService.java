@@ -11,9 +11,13 @@ import com.victorpolicarpo.toyloop.repository.PartyToyRepository;
 import com.victorpolicarpo.toyloop.repository.ToyRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,30 +37,37 @@ public class ToyService {
         toyRepository.save(toy);
     }
 
-    public List<ToyResponse> listAllToys(LocalDateTime start, LocalDateTime end) {
+    public Page<ToyResponse> listAllToys(LocalDateTime start, LocalDateTime end, Pageable pageable) {
         List<Toy> allToys = toyRepository.findAll();
 
-        if (start == null || end == null) {
-            return toyMapper.toResponseList(allToys);
-        }
-
-        Map<Long, Integer> busyMap = partyToyRepository.findAllOccupiedQuantities(start, end)
+        Map<Long, Integer> busyMap = (start == null || end == null)
+                ? Collections.emptyMap()
+                : partyToyRepository.findAllOccupiedQuantities(start, end)
                 .stream()
                 .collect(Collectors.toMap(
                         PartyToyRepository.ToyOccupationProjection::getToyId,
                         PartyToyRepository.ToyOccupationProjection::getOccupiedQty
                 ));
 
-        return allToys.stream()
+        List<ToyResponse> allResponses = allToys.stream()
                 .map(toy -> {
                     Integer occupied = busyMap.getOrDefault(toy.getToyId(), 0);
                     int available = Math.max(0, toy.getAvailableQuantity() - occupied);
-
                     return toyMapper.toResponseWithAvailability(toy, available);
                 })
                 .toList();
-    }
 
+        int startIdx = (int) pageable.getOffset();
+        int endIdx = Math.min((startIdx + pageable.getPageSize()), allResponses.size());
+
+        if (startIdx > allResponses.size()) {
+            return new PageImpl<>(Collections.emptyList(), pageable, allResponses.size());
+        }
+
+        List<ToyResponse> pageContent = allResponses.subList(startIdx, endIdx);
+
+        return new PageImpl<>(pageContent, pageable, allResponses.size());
+    }
 
     public void updateToy(@Valid ToyUpdate dto, Long id) {
         Toy toy = findById(id);

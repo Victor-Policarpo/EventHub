@@ -5,16 +5,15 @@ import com.victorpolicarpo.toyloop.dto.response.ToyResponse;
 import com.victorpolicarpo.toyloop.dto.update.ToyUpdate;
 import com.victorpolicarpo.toyloop.service.ToyService;
 import jakarta.validation.Valid;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth/toys")
@@ -33,10 +32,13 @@ public class ToyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ToyResponse>> listAllToy(
+    public ResponseEntity<Page<ToyResponse>> listAllToy(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
-        return ResponseEntity.ok(toyService.listAllToys(start, end));
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            Pageable pageable
+    ){
+        Page<ToyResponse> page = toyService.listAllToys(start, end, pageable);
+        return ResponseEntity.ok(page);
     }
 
     @PatchMapping("/{id}")

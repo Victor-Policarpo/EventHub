@@ -10,9 +10,13 @@ import com.victorpolicarpo.toyloop.mapper.EmployeeMapper;
 import com.victorpolicarpo.toyloop.repository.EmployeeRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,21 +36,30 @@ public class EmployeeService {
     }
 
 
-    public List<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end) {
+    public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, Pageable pageable) {
         List<Employee> allEmployees = employeeRepository.findAll();
-        if (start == null || end == null) {
-            return allEmployees.stream()
-                    .map(e -> employeeMapper.toResponseWithAvailability(e, true))
-                    .toList();
-        }
-        Set<Long> busyIds = new HashSet<>(employeeRepository.findOccupiedEmployeeIds(start, end));
 
-        return allEmployees.stream()
+        Set<Long> busyIds = (start == null || end == null)
+                ? Collections.emptySet()
+                : new HashSet<>(employeeRepository.findOccupiedEmployeeIds(start, end));
+
+        List<EmployeeResponse> responses = allEmployees.stream()
                 .map(e -> {
-                    boolean available = !busyIds.contains(e.getEmployeeId());
+                    boolean available = (start == null || end == null) || !busyIds.contains(e.getEmployeeId());
                     return employeeMapper.toResponseWithAvailability(e, available);
                 })
                 .toList();
+
+        int startIdx = (int) pageable.getOffset();
+        int endIdx = Math.min((startIdx + pageable.getPageSize()), responses.size());
+
+        if (startIdx > responses.size()) {
+            return new PageImpl<>(Collections.emptyList(), pageable, responses.size());
+        }
+
+        List<EmployeeResponse> pageContent = responses.subList(startIdx, endIdx);
+
+        return new PageImpl<>(pageContent, pageable, responses.size());
     }
 
 
