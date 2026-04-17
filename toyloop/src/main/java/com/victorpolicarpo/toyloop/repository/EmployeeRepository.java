@@ -1,12 +1,15 @@
 package com.victorpolicarpo.toyloop.repository;
 
+import com.victorpolicarpo.toyloop.dto.response.EmployeeResponse;
 import com.victorpolicarpo.toyloop.entity.Employee;
+import org.jspecify.annotations.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     boolean existsByName(String name);
@@ -27,13 +30,30 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             @Param("excludePartyId") Long excludePartyId
     );
 
+    @Override
+    @NonNull
+    Page<Employee> findAll(@NonNull Pageable pageable);
+
     @Query("""
-            SELECT e.employeeId
+    SELECT new com.victorpolicarpo.toyloop.dto.response.EmployeeResponse(
+        e.employeeId,
+        e.name,
+        e.telephone,
+        CASE WHEN (
+            SELECT COUNT(p)
             FROM Party p
-            JOIN p.employees e
-            WHERE p.partyStatus IN ('SCHEDULED', 'IN_PROGRESS')
-            AND p.startDateHours < :end
-            AND p.endDateHours > :start
-""")
-    List<Long> findOccupiedEmployeeIds(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+            JOIN p.employees emp
+            WHERE emp.employeeId = e.employeeId
+            AND p.partyStatus != 'CANCELED'
+            AND p.startDateHours < :endDate
+            AND p.endDateHours > :startDate
+        ) > 0 THEN false ELSE true END
+    )
+    FROM Employee e
+    """)
+    Page<EmployeeResponse> findAvailableEmployees(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
+            Pageable pageable
+    );
 }
