@@ -6,10 +6,7 @@ import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyToyResponse;
 import com.victorpolicarpo.toyloop.dto.update.PartyUpdate;
-import com.victorpolicarpo.toyloop.entity.Employee;
-import com.victorpolicarpo.toyloop.entity.Party;
-import com.victorpolicarpo.toyloop.entity.PartyToy;
-import com.victorpolicarpo.toyloop.entity.User;
+import com.victorpolicarpo.toyloop.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -24,10 +21,19 @@ public interface PartyMapper {
     Party toEntity(PartyRequest dto);
     PartyToy toPartyToy(Party entity);
     PartyResponse toResponse(Party party);
-    @Mapping(target = "toyId", source = "toy.toyId")
-    @Mapping(target = "name", source = "toy.name")
+    @Mapping(target = "toyId", source = "toy")
+    @Mapping(target = "name", source = "toy")
     @Mapping(target = "quantity", source = "quantity")
     PartyToyResponse toPartyToyResponse(PartyToy partyToy);
+
+    default Long mapToyId(Toy toy) {
+        return (toy != null) ? toy.getToyId() : null;
+    }
+
+    default String mapToyName(Toy toy){
+        return (toy != null) ? toy.getName() : "Toy Unavailable";
+    }
+
     EmployeePartyResponse toEmployeeResponse(Employee employee);
     ListPartyResponse toListPartyResponse(Party entity);
     void updateEntityFromDto(PartyUpdate dto, @MappingTarget Party entity);

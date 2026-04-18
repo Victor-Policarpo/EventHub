@@ -3,6 +3,7 @@ package com.victorpolicarpo.toyloop.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "db_employee")
@@ -18,4 +19,6 @@ public class Employee {
     private String name;
     @Column(nullable = false)
     private String telephone;
+    @Column(nullable = false)
+    private boolean active = true;
 }

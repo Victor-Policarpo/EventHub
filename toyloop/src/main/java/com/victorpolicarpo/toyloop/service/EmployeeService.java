@@ -8,6 +8,7 @@ import com.victorpolicarpo.toyloop.exception.ResourceAlreadyExistsException;
 import com.victorpolicarpo.toyloop.exception.ResourceNotFoundException;
 import com.victorpolicarpo.toyloop.mapper.EmployeeMapper;
 import com.victorpolicarpo.toyloop.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
 
+    @Transactional
     public void createEmployee(@Valid EmployeeRequest dto) {
         if (employeeRepository.existsByName(dto.name())){
             throw new ResourceAlreadyExistsException("An employee with this name already exists.");
@@ -33,29 +35,24 @@ public class EmployeeService {
 
     public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, Pageable pageable) {
         if (start == null || end == null){
-            return employeeRepository.findAll(pageable)
-                    .map(employee -> {
-                        EmployeeResponse dto = employeeMapper.toResponse(employee);
-                        return new EmployeeResponse(
-                                dto.employeeId(),
-                                dto.name(),
-                                dto.telephone(),
-                                true
-                        );
-                    });
+            return employeeRepository.findByActiveTrue(pageable)
+                    .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
         }
+
         return employeeRepository.findAvailableEmployees(start, end, pageable);
     }
 
+    @Transactional
     public void update(@Valid EmployeeUpdate dto, Long id) {
         Employee employee = findById(id);
         employeeMapper.updateEntityFromDto(dto, employee);
         employeeRepository.save(employee);
     }
 
-
+    @Transactional
     public void deleteEmployee(Long id) {
-        employeeRepository.delete(findById(id));
+        Employee employee = findById(id);
+        employee.setActive(false);
     }
 
 

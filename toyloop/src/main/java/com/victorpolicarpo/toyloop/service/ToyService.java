@@ -8,6 +8,7 @@ import com.victorpolicarpo.toyloop.exception.ResourceAlreadyExistsException;
 import com.victorpolicarpo.toyloop.exception.ResourceNotFoundException;
 import com.victorpolicarpo.toyloop.mapper.ToyMapper;
 import com.victorpolicarpo.toyloop.repository.ToyRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,9 +49,10 @@ public class ToyService {
         toyRepository.save(toy);
     }
 
+    @Transactional
     public void delete(Long id) {
         Toy toy = findById(id);
-        toyRepository.delete(toy);
+        toy.setActive(false);
     }
 
     public Toy findById(Long id){

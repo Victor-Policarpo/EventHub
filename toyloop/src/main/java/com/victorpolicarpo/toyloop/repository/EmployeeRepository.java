@@ -12,13 +12,15 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    boolean existsByName(String name);
 
+    Page<Employee> findByActiveTrue(Pageable pageable);
+    boolean existsByName(String name);
 
     @Query("""
             SELECT COUNT(e) FROM Party p
             JOIN p.employees e
             WHERE e.employeeId = :employeeId
+            AND e.active = true
             AND p.partyId <> :excludePartyId
             AND p.partyStatus <> 'CANCELED'
             AND (p.startDateHours < :end AND p.endDateHours > :start)
@@ -50,6 +52,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         ) > 0 THEN false ELSE true END
     )
     FROM Employee e
+    WHERE e.active = true
     """)
     Page<EmployeeResponse> findAvailableEmployees(
             @Param("startDate") LocalDateTime startDate,

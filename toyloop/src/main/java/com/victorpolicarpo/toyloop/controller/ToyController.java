@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/auth/toys")
-@PreAuthorize("hasAuthority('SCOPE_ADMIN')")
 public class ToyController {
     private final ToyService toyService;
 
@@ -48,6 +47,7 @@ public class ToyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         toyService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

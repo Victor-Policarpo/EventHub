@@ -3,6 +3,7 @@ package com.victorpolicarpo.toyloop.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @Table(name = "db_toys")
 @Setter
 @Getter
+@SQLRestriction("active = true")
 public class Toy {
 
     @Id
@@ -22,4 +24,6 @@ public class Toy {
     private BigDecimal valueForFourHours;
     @Column(nullable = false)
     private Integer availableQuantity;
+    @Column(nullable = false)
+    private boolean active = true;
 }

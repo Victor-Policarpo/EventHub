@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
@@ -41,7 +43,7 @@ public class Party {
     @Column(nullable = false)
     private AssemblyStatus assemblyStatus = AssemblyStatus.TO_ASSEMBLE;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "db_party_staff",
             joinColumns = @JoinColumn(name = "party_id"),
@@ -58,6 +60,7 @@ public class Party {
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PartyToy> partyToys = new HashSet<>();
 
+    @Column(nullable = false)
     private boolean active = true;
 
     @Getter

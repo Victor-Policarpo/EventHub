@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.util.Objects;
 
@@ -19,10 +21,12 @@ public class PartyToy {
 
     @ManyToOne
     @JoinColumn(name = "party_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Party party;
 
     @ManyToOne
     @JoinColumn(name = "toy_id", nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Toy toy;
 
     private Integer quantity;

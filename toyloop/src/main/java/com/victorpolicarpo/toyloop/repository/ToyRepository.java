@@ -36,6 +36,7 @@ public interface ToyRepository extends JpaRepository<Toy, Long> {
                     ) AS int)
             )
             FROM Toy t
+            WHERE t.active = true
     """)
     Page<ToyResponse> findAvailableToys(
             @Param("startDate") LocalDateTime startDate,

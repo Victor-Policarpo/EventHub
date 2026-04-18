@@ -45,7 +45,8 @@ public class PartyService {
 
         User user = authService.getAuthenticatedUser();
         LocalDateTime endHours = dto.endDateHours() != null ? dto.endDateHours() : dto.startDateHours().plusHours(4);
-        checkEmployeeAvailability(dto.employeeId(), dto.startDateHours(), endHours, -1L);
+
+        checkEmployeeAvailability(dto.employeeId() != null ? new HashSet<>(dto.employeeId()) : new HashSet<>(), dto.startDateHours(), endHours, -1L);
         validateAllStocks(dto.toys(), dto.startDateHours(), endHours, -1L);
 
         Party party = partyMapper.toEntity(dto);
@@ -53,13 +54,10 @@ public class PartyService {
         party.setCreateBy(user);
 
         Set<Employee> employees = new HashSet<>();
-        if (dto.employeeId() != null){
-            for (Long id : dto.employeeId()) {
-                Employee emp = employeeRepository.findById(id).orElseThrow(
-                        () -> new ResourceNotFoundException("Employee not found"));
-                employees.add(emp);
-            }
+        if (dto.employeeId() != null && !dto.employeeId().isEmpty()){
+            validateEmployeesActive(new HashSet<>(dto.employeeId()), employees);
         }
+        party.setEmployees(employees);
 
         Set<PartyToy> partyToys = new HashSet<>();
         for (PartyToyRequest f : dto.toys()) {
@@ -72,14 +70,12 @@ public class PartyService {
             pt.setQuantity(f.quantity());
             partyToys.add(pt);
         }
-
         party.setPartyToys(partyToys);
-        party.setEmployees(employees);
 
         if (party.getValue() == null || party.getValue().compareTo(BigDecimal.ZERO) == 0 ) {
             party.setValue(calculateTotalValue(party));
         }
-
+        System.out.println("Tamanho da lista de funcionários antes de salvar: " + party.getEmployees().size());
         return partyMapper.toResponse(partyRepository.save(party));
     }
 
@@ -99,20 +95,15 @@ public class PartyService {
         Party party = findById(id);
         validatePartyDates(party, dto);
         partyMapper.updateEntityFromDto(dto, party);
-
         if (party.getPartyStatus() != Party.PartyStatus.FINISHED) {
             if (dto.employees() != null && !dto.employees().isEmpty()) {
                 Set<Long> employeeIds = dto.employees().stream()
                         .map(EmployeePartyResponse::employeeId)
                         .collect(Collectors.toSet());
-
                 checkEmployeeAvailability(employeeIds, party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
+
                 Set<Employee> newEmployees = new HashSet<>();
-                for (Long empId : employeeIds) {
-                    var emp = employeeRepository.findById(empId).orElseThrow(
-                            () -> new ResourceNotFoundException("Employee not found"));
-                    newEmployees.add(emp);
-                }
+                validateEmployeesActive(employeeIds, newEmployees);
                 party.setEmployees(newEmployees);
             }
             else if (dto.startDateHours() != null || dto.endDateHours() != null) {
@@ -126,20 +117,14 @@ public class PartyService {
 
         if (dto.partyToys() != null) {
             validateAllStocks(dto.partyToys(), party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
-
             updatePartyToys(party, dto.partyToys());
 
             if (dto.value() == null) {
                 party.setValue(calculateTotalValue(party));
             }
         }
-        return partyMapper.toResponse(partyRepository.save(party));
-    }
 
-    public Party findById(Long id) {
-        return partyRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Party not found or not exist")
-        );
+        return partyMapper.toResponse(partyRepository.save(party));
     }
 
     @Transactional
@@ -218,21 +203,6 @@ public class PartyService {
         }
     }
 
-    private void updatePartyToys(Party party, Set<PartyToyResponse> toyDto){
-        party.getPartyToys().clear();
-        for (PartyToyResponse f: toyDto){
-            Toy toy = toyRepository.findById(f.toyId()).orElseThrow(
-                    () -> new ResourceNotFoundException("Toy not found")
-            );
-            PartyToy pt = new PartyToy();
-            pt.setToy(toy);
-            pt.setParty(party);
-            pt.setQuantity(f.quantity());
-
-            party.getPartyToys().add(pt);
-        }
-    }
-
     private void validateAllStocks(Collection<?> toyItems, LocalDateTime start, LocalDateTime end, Long excludePartyId) {
         List<ResourceConflict> errors = new ArrayList<>();
 
@@ -288,4 +258,51 @@ public class PartyService {
         }
 
     }
+
+    private void validateEmployeesActive(Set<Long> employeeIds, Set<Employee> targetList) {
+        List<ResourceConflict> conflicts = new ArrayList<>();
+
+        for (Long id : employeeIds) {
+            Employee emp = employeeRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
+
+            if (!emp.isActive()) {
+                conflicts.add(new ResourceConflict(
+                        "Inactive Employee",
+                        "This employee cannot be assigned because they are inactive.",
+                        emp.getEmployeeId(),
+                        emp.getName()
+                ));
+            } else {
+                targetList.add(emp);
+            }
+        }
+
+        if (!conflicts.isEmpty()) {
+            throw new ResourceBusyException(conflicts);
+        }
+    }
+
+    public Party findById(Long id) {
+        return partyRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Party not found or not exist")
+        );
+    }
+
+    private void updatePartyToys(Party party, Set<PartyToyResponse> toyDto) {
+        party.getPartyToys().clear();
+        for (PartyToyResponse dto : toyDto) {
+            Toy toy = toyRepository.findById(dto.toyId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Toy not found")
+            );
+
+            PartyToy pt = new PartyToy();
+            pt.setToy(toy);
+            pt.setParty(party);
+            pt.setQuantity(dto.quantity());
+
+            party.getPartyToys().add(pt);
+        }
+    }
+
 }
