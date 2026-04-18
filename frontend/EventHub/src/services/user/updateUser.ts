@@ -1,4 +1,4 @@
-import type { UserUpdateData } from "../../types/types";
+import type { UserUpdateData } from "../../types";
 import api from "../../lib/axios";
 
 export default function updateUser(data: UserUpdateData){

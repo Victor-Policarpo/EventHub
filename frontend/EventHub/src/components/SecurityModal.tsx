@@ -3,7 +3,7 @@ import { useState } from "react";
 import { newPasswordSchema, type NewPasswordFormData } from "../schemas/newPasswordSchema";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { PasswordUpdateData, SpringError } from "../types/types";
+import type { PasswordUpdateData, SpringError } from "../types";
 import { usePasswordValidation } from "../hooks/usePasswordValidation";
 import { useNewPassword } from "../hooks/useNewPassword";
 import { toast } from "react-hot-toast";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthContext } from './authContext';
-import { type LoginResponse } from '../types/types';
 import { api } from '../lib/axios';
+import type { LoginResponse } from '../types/auth';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);

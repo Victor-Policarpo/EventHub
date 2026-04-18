@@ -1,4 +1,4 @@
-import type { PartyData } from "../../types/types";
+import type { PartyData } from "../../types";
 import { Card } from "../Common/Card";
 
 export default function PartyCard({ party }: { party: PartyData }) {

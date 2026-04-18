@@ -1,10 +1,10 @@
+import Toys from "../../components/Toys/ToyFeed";
+import Header from "../../components/Ui/Header";
 function FeedToys(){
     return (
         <div>
-            <h1>
-                Brinquedos
-            </h1>
-            {/* <Toys/> */}
+            <Header/>
+            <Toys/>
         </div>
     );
 

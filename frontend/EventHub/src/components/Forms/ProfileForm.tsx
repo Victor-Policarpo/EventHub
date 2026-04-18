@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import useCurrentUser from "../../hooks/useCurrentUser";
-import type { UserUpdateData } from "../../types/types";
+import type { UserUpdateData } from "../../types";
 import ErrorState from "../Ui/ErrorState";
 import Loading from "../Ui/Loading";
 import { useUpdateUser } from "../../hooks/useUpdateUser";

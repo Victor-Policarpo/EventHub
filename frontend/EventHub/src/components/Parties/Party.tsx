@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useGetParty } from "../../hooks/useGetParty";
-import type { EmployeeParty, ToyParty } from "../../types/types";
+import type { EmployeeParty, ToyParty } from "../../types";
 import ErrorState from "../Ui/ErrorState";
 import Loading from "../Ui/Loading";
 import { formatDateHours } from "../../utils/formatDateHours";

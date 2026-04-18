@@ -5,7 +5,7 @@ import { usePasswordValidation } from "../../hooks/usePasswordValidation";
 import { createUser } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { type SpringError } from "../../types/types";
+import { type SpringError } from "../../types";
 
 function CreateUser(){
     const navigate = useNavigate();

@@ -4,7 +4,7 @@ import PartyCard from "./PartyCard";
 import Loading from "../Ui/Loading";
 import ErrorState from "../Ui/ErrorState";
 import { Link } from "react-router-dom";
-import type { PartyFilters } from "../../types/types";
+import type { PartyFilters } from "../../types";
 import Feed from "../Common/Feed";
 import PartyFiltersComponent from "./PartyFilters";
 

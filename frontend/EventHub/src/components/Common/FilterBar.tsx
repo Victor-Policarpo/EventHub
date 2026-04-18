@@ -1,4 +1,3 @@
-// FilterBar.tsx
 import { useState, type ReactNode } from "react";
 import { SlidersHorizontal, ChevronDown } from "lucide-react";
 

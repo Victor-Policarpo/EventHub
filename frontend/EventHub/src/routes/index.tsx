@@ -6,6 +6,7 @@ import Feed from '../pages/Private/FeedParties';
 import Profile from '../pages/Private/Profile';
 import Party from '../components/Parties/Party';
 import PartyEdit from '../pages/Private/PartyEdit';
+import FeedToys from '../pages/Private/FeedToys';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/parties/:partyId" element={<Party />} />
         <Route path="/parties/:partyId/edit" element={<PartyEdit />} />
+        <Route path='/feed/toys' element={<FeedToys/>}/>
       </Route>
 
       <Route path="*" element={<Navigate to="/login" />} />

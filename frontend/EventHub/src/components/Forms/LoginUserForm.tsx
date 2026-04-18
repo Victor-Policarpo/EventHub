@@ -3,7 +3,7 @@ import { loginSchema, type LoginFormData } from "../../schemas/loginSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginUser } from "../../services/authService";
 import axios from "axios";
-import type { SpringError } from "../../types/types";
+import type { SpringError } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Label from "../Ui/Label";

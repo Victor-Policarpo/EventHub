@@ -1,5 +1,5 @@
 import api from "../../lib/axios";
-import type { EmployeeParty, PartyDetails, ToyParty } from "../../types/types";
+import type { EmployeeParty, PartyDetails, ToyParty } from "../../types";
 
 export async function getPartyById(partyId: number):Promise<PartyDetails> {
     const response = await api.get(`auth/parties/${partyId}`);
