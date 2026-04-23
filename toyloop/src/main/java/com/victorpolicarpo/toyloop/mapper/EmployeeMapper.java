@@ -14,6 +14,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface EmployeeMapper {
     Employee toEntity(EmployeeRequest dto);
+    @Mapping(target = "isAvailable", source = "active")
     EmployeeResponse toResponse(Employee entity);
     @Mapping(target = "isAvailable", source = "available")
     EmployeeResponse toResponseWithAvailability(Employee entity, Boolean available);

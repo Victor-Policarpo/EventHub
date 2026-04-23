@@ -55,6 +55,10 @@ public class ToyService {
         toy.setActive(false);
     }
 
+    public ToyResponse findToyById(Long id) {
+        return toyMapper.toResponse(findById(id));
+    }
+
     public Toy findById(Long id){
         return toyRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("A toy Id not found or not exist.")

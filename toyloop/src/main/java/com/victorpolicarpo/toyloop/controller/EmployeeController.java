@@ -39,6 +39,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.listAllEmployee(start, end, pageable));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeResponse> findEmployeeById(@PathVariable Long id){
+        return ResponseEntity.ok(employeeService.findEmployeeById(id));
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeUpdate dto) {
         employeeService.update(dto, id);

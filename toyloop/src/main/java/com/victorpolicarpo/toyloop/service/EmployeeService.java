@@ -55,12 +55,14 @@ public class EmployeeService {
         employee.setActive(false);
     }
 
+    public EmployeeResponse findEmployeeById(Long id) {
+        return employeeMapper.toResponse(findById(id));
+    }
 
     public Employee findById(Long id){
         return employeeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("A employee Id not found or not exist.")
         );
     }
-
 
 }

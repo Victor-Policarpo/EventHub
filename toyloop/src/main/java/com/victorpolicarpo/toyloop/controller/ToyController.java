@@ -40,6 +40,11 @@ public class ToyController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ToyResponse> findToyById(@PathVariable Long id){
+        return ResponseEntity.ok(toyService.findToyById(id));
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateToy(@Valid @RequestBody ToyUpdate dto, @PathVariable Long id){
         toyService.updateToy(dto, id);
