@@ -1,8 +1,6 @@
 # EventHub
 
-EventHub is a backend system for a company that rents inflatable toys for events.\
-It allows event creation, employee assignment, and schedule management, with business rules to prevent conflicts.\
-Built with Java and Spring Boot using RESTful API principles.
+EventHub is a commercial freelance project designed to automate stock control and scheduling for an inflatable toy rental business, prioritizing scalability and SaaS-ready architecture.
 
 ## Features
 
@@ -46,13 +44,6 @@ Built with Java and Spring Boot using RESTful API principles.
 
 * Retrieve financial reports by date
 
-## Business Rules
-
-- Employees cannot be assigned to multiple parties at the same time
-- Parties cannot be scheduled at the same address and time
-- Automatic validation of scheduling conflicts
-- Passwords are securely stored using hashing
-
 ## Technologies
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
@@ -62,119 +53,67 @@ Built with Java and Spring Boot using RESTful API principles.
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white) 
 ![Swagger](https://img.shields.io/badge/-Swagger-%23C1E81C?style=for-the-badge&logo=swagger&logoColor=black)
-## Endpoints
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-### Users
-| Method | Endpoint | Description |
-|-------|----------|------------|
-| POST | /users | Register User |
-| POST | /users/login | Authenticate User and return JWT |
-| POST | /auth/forgot-password | Send password reset email |
-| POST | /auth/reset-password | Reset password using email token|
+## API Documentation
+The API is organized into functional modules. For detailed request/response schemas, please refer to the [Swagger UI](http://localhost:8080/swagger-ui/index.html) after running the application.
 
-### Parties
-| Method | Endpoint | Description |
-|-------|----------|------------|
-| POST | /auth/parties | Create Party |
-| GET | /auth/parties | Filter and List Parties |
-| PATCH | /auth/parties/{id} | Update Party |
-| DELETE | /auth/parties/{id} | Soft Delete Party | 
+| Module | Base Path | Key Features |
+| :--- | :--- | :--- |
+| **Auth** | `/access` | Registration, Login, Refresh, Password Recovery |
+| **User Profile** | `/auth/profile` | Update profile, change password, account management |
+| **Parties** | `/auth/parties` | Full lifecycle management (Create, Start, End, Cancel) |
+| **Employees** | `/auth/employee` | CRUD operations for staff management |
+| **Toys** | `/auth/toys` | Inventory management |
+| **Dashboard** | `/auth/finance` | Financial reporting |
 
-### Employees
-| Method | Endpoint | Description |
-|-------|----------|------------|
-| POST | /auth/employee | Create Employee |
-| GET | /auth/employee | List all employees |
-| PATCH | /auth/employee/{id} | Update Employee |
-| DELETE | /auth/employee/{id} | Delete Employee |
+### Quick Reference (Key Operations)
+* **Auth:** All interactions (Login/Register/Logout) are handled under `/access`.
+* **Parties:** The lifecycle is managed via specific PATCH endpoints (e.g., `/parties/{id}/start-party`).
+* **Security:** All `/auth/*` endpoints require a valid JWT token.
 
-### Toys
-| Method | Endpoint | Description |
-|-------|----------|------------|
-| POST | /auth/toys | Create Toy |
-| GET | /auth/toys | List toys |
-| PATCH | /auth/toys/{id} | Update Toy |
-| DELETE | /auth/toys/{id} | Delete Toy |
+## API Usage & Business Logic
+While the full API specification is available in our [Swagger UI](http://localhost:8080/swagger-ui/index.html), here is an example of the most critical operation in the system: **Party Creation**.
 
-### Dashboard (only admin access)
-
-| Method | Endpoint | Description |
-|-------|----------|------------|
-| GET | /auth/finance | Filter financial data by date using query parameters |
-
-
-## API Usage Examples
-###  Create user 
-
-- **POST /users**
-
-```json
-{
-  "fullName": "NameOfUser",
-  "username": "Name Example",
-  "email": "yourEmail@gmail.com",
-  "password": "@andNumbers123"
-}
-```
-
-###  Login JWT
-- **POST /users/login**
-
-```json
-{
-  "username": "Name Example",
-  "password": "@Example123",
-}
-```
-
-### Create Party 
+### Create Party (Complex Flow)
+This endpoint handles not just data storage, but business rules like default timing and automatic financial calculation.
 
 - **POST /auth/parties**
+
 ```json
 {
-  "name": "Name of the Party or owner",
+  "name": "Event Name",
   "telephone": "12345678900",
   "address": "R. Example, n123",
   "startDateHours": "2026-10-20T14:30:00",
   "endDateHours": "2026-10-20T20:00:00", 
-  "value": 2000.00,
   "toys": [
-    {
-      "toyId":11,
-      "quantity":3
-    }
+    { "toyId": 11, "quantity": 3 }
   ],
-  "employeeId": [1, 2, 3, 4]
-}
-```
-> Optional fields. If not provided:
-> - endDateHours defaults to 4 hours after start time
-> - value is calculated based on selected toys
-### Create Employee
-
-- **POST /auth/employee**
-```json
-{
-  "name": "Name Example",
-  "telephone": "12345678900"
+  "employeeId": [1, 2]
 }
 ```
 
-### Create Toy
+### Business Rules:
 
-- **POST /auth/toys**
-```json
-{
-  "name": "Name Example",
-  "valueForFourHours": 400.00,
-  "availableQuantity": 5
-}
-```
+- endDateHours: Defaults to 4 hours after startDateHours if not provided.
 
-## Project Status
+- value: Automatically calculated by the system based on the selected toys and duration.
 
-Backend complete  
-Frontend in development (React + TypeScript)
+## Project Status: Fullstack Development
+The project is currently evolving into a comprehensive full-stack solution, connecting robust backend services to a modern frontend interface.
+
+- **Backend (Java/Spring Boot):** Stable and fully functional.
+- **Frontend (React + TypeScript + Tailwind):** In active development, focusing on core management features and UI/UX improvements.
+
+## Technical Challenges:
+- Conflict Resolution: Implemented business logic to prevent double-booking of employees and overlapping party schedules at the same address.
+
+- Database Integrity: optimized complex queries for financial reporting.
+
+- Scalability: Designed the architecture to allow future expansion into a multi-tenant SaaS model.
 
 ##  How to run the project
 
