@@ -11,3 +11,9 @@ export interface ToyFilters extends BaseFilters {
     startDateHours?: string;
     endDateHours?: string;
 }
+
+export interface UpdateToyData {
+    name: string;
+    valueForFourHours: number;
+    availableQuantity: number;
+}

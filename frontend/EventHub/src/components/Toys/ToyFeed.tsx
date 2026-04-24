@@ -16,7 +16,6 @@ export default function Toys(){
         endDateHours: undefined
     }); 
     const { data, isLoading, isError, refetch, isPlaceholderData } = useToyData(filters);
-    console.log(data?.content)
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState onRetry={refetch} message="Erro ao carregar os Brinquedos" />;
     const content = data?.content ?? [];

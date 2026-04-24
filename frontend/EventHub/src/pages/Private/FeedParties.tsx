@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import FeedParty from "../../components/Parties/FeedParty";
 import Header from "../../components/Ui/Header";
 
@@ -11,6 +12,11 @@ function Feed() {
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
             Próximos Eventos
           </h1>
+          <nav>
+            <Link to="/feed/toys" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+              Brinquedos
+            </Link>
+          </nav>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
