@@ -71,7 +71,7 @@ The API is organized into functional modules. For detailed request/response sche
 
 ### Quick Reference (Key Operations)
 * **Auth:** All interactions (Login/Register/Logout) are handled under `/access`.
-* **Parties:** The lifecycle is managed via specific PATCH endpoints (e.g., `/parties/{id}/start-party`).
+* **Parties:** The lifecycle is managed via specific PATCH endpoints (e.g., /auth/parties/{id}/start-party).
 * **Security:** All `/auth/*` endpoints require a valid JWT token.
 
 ## API Usage & Business Logic
