@@ -1,7 +1,6 @@
 package com.victorpolicarpo.toyloop.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NotFound;
@@ -35,15 +34,24 @@ public class PartyToy {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PartyToy partyToy = (PartyToy) o;
-        return Objects.equals(party.getPartyId(), partyToy.party.getPartyId()) &&
-                Objects.equals(toy.getToyId(), partyToy.toy.getToyId());
+
+        PartyToy that = (PartyToy) o;
+        Long thisPartyId = (this.party != null) ? this.party.getPartyId() : null;
+        Long thatPartyId = (that.party != null) ? that.party.getPartyId() : null;
+
+        Long thisToyId = (this.toy != null) ? this.toy.getToyId() : null;
+        Long thatToyId = (that.toy != null) ? that.toy.getToyId() : null;
+
+        return Objects.equals(thisPartyId, thatPartyId) &&
+                Objects.equals(thisToyId, thatToyId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(party != null ? party.getPartyId() : null,
-                toy != null ? toy.getToyId() : null);
+        return Objects.hash(
+                (party != null) ? party.getPartyId() : null,
+                (toy != null) ? toy.getToyId() : null
+        );
     }
 
 }
