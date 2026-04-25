@@ -13,3 +13,8 @@ export const formatToDateTimeLocal = (dateString: string | undefined) => {
     if (!dateString) return "";
     return dateString.replace(" ", "T").slice(0, 16);
 };
+
+export const formatForApi = (dateStr: string | undefined) => {
+    if (!dateStr) return undefined;
+    return `${dateStr}:00`; 
+};

@@ -12,8 +12,8 @@ export default function Toys(){
     const [filters, setFilters] = useState<ToyFilters>({
         page: 0,
         size: 10,
-        startDateHours: undefined,
-        endDateHours: undefined
+        start: undefined,
+        end: undefined
     }); 
     const { data, isLoading, isError, refetch, isPlaceholderData } = useToyData(filters);
     if (isLoading) return <Loading />;

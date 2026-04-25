@@ -9,8 +9,8 @@ interface Props {
 
 export default function DateFiltersComponent({ currentFilters, onApply }: Props) {
     const [temp, setTemp] = useState({
-        startDateHours: currentFilters.startDateHours,
-        endDateHours: currentFilters.endDateHours
+        start: currentFilters.start,
+        end: currentFilters.end
     });
 
     const formatDateTime = (dateStr: string) => {
@@ -28,21 +28,21 @@ export default function DateFiltersComponent({ currentFilters, onApply }: Props)
             onApply={() => onApply(temp)}
             activeFiltersDisplay={
                 <div className="flex flex-wrap items-center gap-2">
-                    {temp.startDateHours && (
+                    {temp.start && (
                         <span className="bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                             <Clock size={12} />
-                            Início: {formatDateTime(temp.startDateHours)}
+                            Início: {formatDateTime(temp.start)}
                         </span>
                     )}
                     
-                    {temp.startDateHours && temp.endDateHours && (
+                    {temp.start && temp.end && (
                         <ArrowRight size={14} className="text-gray-400" />
                     )}
 
-                    {temp.endDateHours && (
+                    {temp.end && (
                         <span className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                             <Clock size={12} />
-                            Fim: {formatDateTime(temp.endDateHours)}
+                            Fim: {formatDateTime(temp.end)}
                         </span>
                     )}
                 </div>
@@ -53,8 +53,8 @@ export default function DateFiltersComponent({ currentFilters, onApply }: Props)
                     <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Início do Aluguel</label>
                     <input
                         type="datetime-local"
-                        value={temp.startDateHours || ""}
-                        onChange={(e) => setTemp(p => ({ ...p, startDateHours: e.target.value }))}
+                        value={temp.start || ""}
+                        onChange={(e) => setTemp(p => ({ ...p, start: e.target.value }))}
                         className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
@@ -63,8 +63,8 @@ export default function DateFiltersComponent({ currentFilters, onApply }: Props)
                     <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Fim do Aluguel</label>
                     <input
                         type="datetime-local"
-                        value={temp.endDateHours || ""}
-                        onChange={(e) => setTemp(p => ({ ...p, endDateHours: e.target.value }))}
+                        value={temp.end || ""}
+                        onChange={(e) => setTemp(p => ({ ...p, end: e.target.value }))}
                         className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>

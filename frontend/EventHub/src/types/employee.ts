@@ -8,6 +8,6 @@ export interface EmployeeData {
 }
 
 export interface EmployeeFilters extends BaseFilters {
-    startDateHours?: string;
-    endDateHours?: string;
+    start?: string;
+    end?: string;
 }

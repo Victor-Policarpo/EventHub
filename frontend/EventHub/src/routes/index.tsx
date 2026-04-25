@@ -8,6 +8,8 @@ import Party from '../components/Parties/Party';
 import PartyEdit from '../pages/Private/PartyEdit';
 import FeedToys from '../pages/Private/FeedToys';
 import ToyEdit from '../pages/Private/ToyEdit';
+import FeedEmployees from '../pages/Private/FeedEmployees';
+import EmployeeEdit from '../pages/Private/EmployeeEdit';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();
@@ -31,6 +33,8 @@ export const AppRoutes = () => {
         <Route path="/parties/:partyId/edit" element={<PartyEdit />} />
         <Route path='/feed/toys' element={<FeedToys/>}/>
         <Route path='toys/:toyId' element={<ToyEdit/>}/>
+        <Route path='/feed/employees' element={<FeedEmployees/>}/>
+        <Route path='/employees/:employeeId' element={<EmployeeEdit/>}/>
       </Route>
 
       <Route path="*" element={<Navigate to="/login" />} />

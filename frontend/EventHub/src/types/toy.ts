@@ -8,8 +8,8 @@ export interface ToyData {
 }
 
 export interface ToyFilters extends BaseFilters {
-    startDateHours?: string;
-    endDateHours?: string;
+    start?: string;
+    end?: string;
 }
 
 export interface UpdateToyData {
