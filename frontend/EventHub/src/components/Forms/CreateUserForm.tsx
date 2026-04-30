@@ -1,24 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
-import { registerSchema, type RegisterFormData } from "../../schemas/registerSchema";
-import { usePasswordValidation } from "../../hooks/usePasswordValidation";
-import { createUser } from "../../services/authService";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { type SpringError } from "../../types";
+import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { usePasswordValidation } from "../../hooks/usePasswordValidation";
+import { type RegisterFormData, registerSchema } from "../../schemas/registerSchema";
+import { createUser } from "../../services/authService";
+import type { SpringError } from "../../types";
+import { Button, Input } from "../Ui";
 
-function CreateUser(){
+
+export function CreateUser(){
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const {register, handleSubmit, control, setError, formState: { errors }} = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         mode: "onBlur"
     });
     const onSubmit = async (data: RegisterFormData) => {
-        if (data.password === data.confirmPassword) {
-            try {
-                await createUser(data);
-                navigate("/login");
-            } catch (error: unknown) {
+        setIsSubmitting(true);
+
+        try {
+            await createUser(data);
+            navigate("/login");
+        } catch (error: unknown) {
             if (axios.isAxiosError<SpringError>(error)) {
                 const msg = (error.response?.data?.message || "").toLowerCase();
                 if (msg.includes("username")) {
@@ -32,10 +37,11 @@ function CreateUser(){
                         message: "Este e-mail já está cadastrado" 
                     });
                 }
-        } else {
-            console.error("Erro inesperado:", error);
-        }
-            } 
+            } else {
+                console.error("Erro inesperado:", error);
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -57,62 +63,43 @@ function CreateUser(){
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-200">Name</label>
-            <div className="mt-2">
-              <input
-                id="name"
-                type="text"
-                {...register("name")}
-                className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 ${
-                  errors.name ? "outline-red-500" : "outline-white/10 focus:outline-indigo-500"
-                }`}
-                placeholder="Your full name"
-              />
-              {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name.message}</p>}
-            </div>
+            <Input
+              label="Nome Completo"
+              type="text"
+              placeholder="Insira seu nome completo"
+              error={errors.name?.message}
+              {...register("name")}
+            />
           </div>
+
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-200">Username</label>
-            <div className="mt-2">
-              <input
-                id="username"
-                type="text"
-                {...register("username")}
-                className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 ${
-                  errors.username ? "outline-red-500 ring-1 ring-red-500" : "outline-white/10 focus:outline-indigo-500"
-                }`}
-                placeholder="username123"
-              />
-              {errors.username && <p className="mt-1 text-xs text-red-400">{errors.username.message}</p>}
-            </div>
+          <Input
+            label="Nome de Usuário"
+            type="text"
+            placeholder="Insira seu nome de usuário"
+            error={errors.username?.message}
+            {...register("username")}
+          />
           </div>
+
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-200">Email address</label>
-            <div className="mt-2">
-              <input
-                id="email"
-                type="email"
-                {...register("email")}
-                className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 ${
-                  errors.email ? "outline-red-500 ring-1 ring-red-500" : "outline-white/10 focus:outline-indigo-500"
-                }`}
-                placeholder="you@example.com"
-              />
-              {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>}
-            </div>
+            <Input
+              label="E-mail"
+              type="email"
+              placeholder="Insira seu E-mail"
+              error={errors.email?.message}
+              {...register("email")}
+            />
           </div>
+
           <div>
-            <label htmlFor="password" id="password-label" className="block text-sm font-medium text-gray-200">Password</label>
-            <div className="mt-2">
-              <input
-                id="password"
-                type="password"
-                {...register("password")}
-                className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 ${
-                  errors.password ? "outline-red-500 ring-1 ring-red-500" : "outline-white/10 focus:outline-indigo-500"
-                }`}
-              />
-            </div>
+            <Input
+              label="Senha"
+              type="password"
+              placeholder="Insira sua senha"
+              error={errors.password?.message}
+              {...register("password")}
+            />
             <div className="mt-3 space-y-1 text-xs">
               <p className={hasMinMax ? "text-green-400" : "text-gray-500"}>
                 {hasMinMax ? "✓" : "○"} Entre 6 e 16 caracteres
@@ -129,27 +116,24 @@ function CreateUser(){
             </div>
           </div>
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-200">Confirm Password</label>
-            <div className="mt-2">
-              <input
-                id="confirmPassword"
-                type="password"
-                {...register("confirmPassword")}
-                className={`block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 sm:text-sm/6 ${
-                  errors.confirmPassword ? "outline-red-500 ring-1 ring-red-500" : "outline-white/10 focus:outline-indigo-500"
-                }`}
-              />
-              {errors.confirmPassword && <p className="mt-1 text-xs text-red-400">{errors.confirmPassword.message}</p>}
-            </div>
+            <Input
+              label="Confirme Senha"
+              type="password"
+              placeholder="Confirme sua senha"
+              error={errors.confirmPassword?.message}
+              {...register("confirmPassword")}
+            />
           </div>
 
           <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-colors"
+            <Button
+            type="submit"
+            isLoading={isSubmitting}
+            disabled={isSubmitting}
+            variant="primary"
             >
-              Register
-            </button>
+              Criar Conta
+            </Button>
           </div>
         </form>
 
@@ -163,4 +147,3 @@ function CreateUser(){
     </div>
     )
 }
-export default CreateUser;

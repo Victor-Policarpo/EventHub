@@ -10,7 +10,10 @@ export const updatePartySchema = z.object({
   .max(255, "O endereço deve conter no máximo 255 caracteres"),
 
   telephone: z.string()
-  .min(14, "O telefone deve conter pelo menos 14 caracteres (formato: (XX) XXXXX-XXXX)"),
+  .transform((val) => val.replace(/\D/g, ""))
+  .refine((val) => val.length >= 10 && val.length <= 11, {
+    message: "O telefone deve ter entre 10 e 11 números",
+  }),
 
   value: z.string().min(1, "Valor da festa obrigatório"),
 

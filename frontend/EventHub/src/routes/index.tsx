@@ -1,15 +1,8 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Login from '../pages/Public/Index';
-import Register from '../pages/Public/Register';
-import Feed from '../pages/Private/FeedParties';
-import Profile from '../pages/Private/Profile';
-import Party from '../components/Parties/Party';
-import PartyEdit from '../pages/Private/PartyEdit';
-import FeedToys from '../pages/Private/FeedToys';
-import ToyEdit from '../pages/Private/ToyEdit';
-import FeedEmployees from '../pages/Private/FeedEmployees';
-import EmployeeEdit from '../pages/Private/EmployeeEdit';
+import { Login } from '../pages/Public/Login';
+import { Register } from '../pages/Public/Register';
+import { PartyDetails, PartyEdit, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile } from '../pages';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();
@@ -27,9 +20,9 @@ export const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
 
       <Route element={<PrivateRoute />}>
-        <Route path="/feed" element={<Feed />} />
+        <Route path="/feed" element={< Feed />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/parties/:partyId" element={<Party />} />
+        <Route path="/parties/:partyId" element={<PartyDetails />} />
         <Route path="/parties/:partyId/edit" element={<PartyEdit />} />
         <Route path='/feed/toys' element={<FeedToys/>}/>
         <Route path='toys/:toyId' element={<ToyEdit/>}/>

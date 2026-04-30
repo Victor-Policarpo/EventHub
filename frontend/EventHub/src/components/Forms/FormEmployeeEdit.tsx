@@ -1,14 +1,13 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type Resolver } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useGetEmployee } from "../../hooks/useGetEmployee";
-import Loading from "../Ui/Loading";
-import ErrorState from "../Ui/ErrorState";
 import { useUpdateEmployee } from "../../hooks/useUpdateEmployee";
-import { useForm, type Resolver } from "react-hook-form";
-import { updateEmployeeSchema, type UpdateEmployeeForm } from "../../schemas/updateEmployeeSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
+import { type UpdateEmployeeForm, updateEmployeeSchema } from "../../schemas/updateEmployeeSchema";
+import { Loading, ErrorState, Input, Button } from "../Ui";
 
-export default function FormEmployeeEdit() {
+export function FormEmployeeEdit() {
     const { employeeId } = useParams();
     const id = employeeId ? Number(employeeId) : NaN;
 
@@ -43,32 +42,30 @@ export default function FormEmployeeEdit() {
         <div className="p-6 space-y-4">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4 w-125">
                 <div>
-                    <label className="font-bold text-sm text-gray-600" htmlFor="name">Nome do Funcionario</label>
-                    <input
-                        type="text"
-                        id="name"
+                    <Input
+                        label="Nome do Funcionário"
+                        placeholder="Insira o nome do funcionário"
+                        error={errors.name?.message}
                         {...register("name")}
-                        className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     />
-                    {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
                 </div>
                 <div>
-                    <label className="font-bold text-sm text-gray-600" htmlFor="telephone">Telefone</label>
-                    <input
-                        type="text"
-                        id="telephone"
+                    <Input
+                        label="Telefone"
+                        placeholder="Insira o telefone do funcionário"
+                        error={errors.telephone?.message}
                         {...register("telephone")}
-                        className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     />
-                    {errors.telephone && <p className="text-red-500 text-xs">{errors.telephone.message}</p>}
                 </div>
-                <button 
-                    type="submit" 
+
+                <Button
+                    type="submit"
+                    isLoading={isPending}
                     disabled={isPending}
-                    className="w-full text-white bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm px-5 py-3 transition-all disabled:opacity-50"
+                    variant="primary"
                 >
-                    {isPending ? "Processando..." : "Atualizar Funcionário"}
-                </button>
+                    Atualizar Funcionário   
+                </Button>
             </form> 
         </div>
     );

@@ -1,14 +1,14 @@
-import { useForm } from "react-hook-form";
-import { loginSchema, type LoginFormData } from "../../schemas/loginSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginUser } from "../../services/authService";
 import axios from "axios";
-import type { SpringError } from "../../types";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Label from "../Ui/Label";
+import { type LoginFormData, loginSchema } from "../../schemas/loginSchemas";
+import { loginUser } from "../../services/authService";
+import type { SpringError } from "../../types";
+import { Button, Input } from "../Ui";
 
-function LoginUser(){
+export function LoginUser(){
     const navigate = useNavigate();
     const {register, handleSubmit , setError , formState: { errors }} = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
@@ -37,22 +37,37 @@ function LoginUser(){
         <main className="h-full w-full flex items-center mt-12 flex-col">
             <h1 className="text-3xl font-bold">Login</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm mt-6">
-                <Label htmlFor="username" required>Username</Label>
-                <input type="text" className="w-full mt-4 p-2 border border-gray-300 rounded" placeholder="Username.." id="username" {...register("username")} />
-                {errors.username && <span className="text-red-500">{errors.username.message}</span>}
+                <div>
+                    <Input
+                        label="Nome de usuario"
+                        type="text"
+                        placeholder="Insira seu nome de usuario"
+                        error={errors.username?.message}
+                        {...register("username")}
+                    />
+                </div>
 
+                <div>
+                    <Input
+                        label="Senha"
+                        type="password"
+                        placeholder="Insira sua senha"
+                        error={errors.password?.message}
+                        {...register("password")}
+                    />
+                </div>
 
+                <Button
+                type="submit"
+                isLoading={false}
+                variant="primary"
+                >
+                    Entrar
+                </Button>
 
-
-                <Label htmlFor="password" required>Password</Label>
-                <input type="password" className={`w-full mt-4 p-2 border rounded transition-all duration-300 outline-none ${ errors.password? "border-red-400  ring-1 ring-red-400" : "border-gray-300 focus:border-blue-500" }`} placeholder="Password.." id="password" {...register("password")} />
-                {errors.password && <span className="text-red-500">{errors.password.message}</span>}
-
-                <button type="submit" className="w-full mt-4 p-2 bg-blue-500 text-white rounded">Enviar</button>
             </form>
             <p className="mt-4">Não tem uma conta? <a href="/register" className="text-blue-500 hover:underline">Registre-se</a></p>
         </main>
 
     );
 }
-export default LoginUser;

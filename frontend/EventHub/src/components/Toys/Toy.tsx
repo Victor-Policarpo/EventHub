@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteToy } from "../../hooks/useDeleteToy";
-import FormToyEdit from "../Forms/FormToyEdit";
 import toast from "react-hot-toast";
+import { FormToyEdit } from "../Forms";
+import { Button } from "../Ui";
 
-export default function Toy() {
+
+export function Toy() {
     const { toyId } = useParams();
      const id = Number(toyId);
     const { mutate, isPending } = useDeleteToy();
@@ -26,16 +28,19 @@ export default function Toy() {
 
     return (
         <div className="border-t pt-4">
+
             <FormToyEdit />
             
             <div className="mt-8">
-                <button 
+                <Button
                     disabled={isPending}
-                    className="bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white py-2 px-4 rounded-lg font-bold shadow-md active:scale-95 transition-all" 
+                    isLoading={isPending}
+                    variant="ghostDanger"
                     onClick={handleDelete}
+                    className="w-fit px-4 py-2"
                 >
-                    {isPending ? "Excluindo..." : "Excluir Brinquedo"}
-                </button>
+                    Excluir Brinquedo
+                </Button>
             </div>
         </div>
     );

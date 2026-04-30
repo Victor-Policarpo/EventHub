@@ -1,7 +1,19 @@
-import Toy from "../../components/Toys/Toy";
+import { ArrowLeft } from "lucide-react";
+import { Button, Toy } from "../../components";
 
-export default function ToyEdit() {
+export function ToyEdit() {
     return (
-        <Toy />
+        <div>
+            <Button 
+                to={"/feed/toys"}
+                variant="ghost" 
+                className="w-8 h-8 rounded-full p-0 flex items-center justify-center"
+            >
+                <ArrowLeft size={18} />
+            </Button>
+
+            <Toy />
+        </div>
+
     );
 }

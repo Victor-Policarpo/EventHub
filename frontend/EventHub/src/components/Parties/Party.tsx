@@ -1,12 +1,12 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetParty } from "../../hooks/useGetParty";
-import type { EmployeeParty, ToyParty } from "../../types";
-import ErrorState from "../Ui/ErrorState";
-import Loading from "../Ui/Loading";
-import { formatDateHours } from "../../utils/formatDateHours";
 import { useDeleteParty } from "../../hooks/useDeleteParty";
+import { Button, ErrorState, Loading } from "../Ui";
+import { formatDateHours } from "../../utils/formatDateHours";
+import type { EmployeeParty, ToyParty } from "../../types";
 
-function Party() {
+
+export function Party() {
     const { partyId } = useParams();
     const id = partyId ? Number(partyId) : NaN;
     const { data, isLoading, error, refetch } = useGetParty(id);
@@ -32,6 +32,9 @@ function Party() {
     }
 
     function handleDelete() {
+        if (!confirm("Tem certeza que deseja excluir esta festa? Essa ação não pode ser desfeita.")) {
+            return;
+        }
         mutate(partyId!);
     }
 
@@ -92,15 +95,24 @@ function Party() {
             </div>
 
             <div className="border-t pt-4">
-                <Link to={`/parties/${id}/edit`} className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold shadow-md">
-                Editar Festa
-                </Link>
-                <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-bold shadow-md active:scale-95 transition-all" onClick={handleDelete}>
-                    {isPending ? "Excluindo..." : "Apagar Party"}
-                </button>
+                <Button
+                    to={`/parties/${id}/edit`} 
+                    variant="ghost" 
+                    className="w-fit px-5 py-4 rounded-2xl"
+                    >
+                    Editar Festa
+                </Button>
+
+                <Button
+                    variant="ghostDanger"
+                    onClick={handleDelete}
+                    isLoading={isPending}
+                    disabled={isPending} 
+                    className="w-fit px-5 py-4 rounded-2xl">
+                    Apagar Festa
+                </Button>
             </div>
             
         </div>
     );
 }
-export default Party;

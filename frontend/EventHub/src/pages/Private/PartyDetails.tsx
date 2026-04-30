@@ -1,11 +1,18 @@
-import Party from "../../components/Parties/Party";
+import { ArrowLeft } from "lucide-react";
+import { Button, Party } from "../../components";
 
-function PartyDetails(){
+export function PartyDetails(){
     return (
         <div>
-            <h1>Party Details</h1>
+           <Button 
+                to={"/feed"}
+                variant="ghost" 
+                className="w-8 h-8 rounded-full p-0 flex items-center justify-center"
+            >
+                <ArrowLeft size={18} />
+            </Button>
+
             <Party/>
         </div>
     );
 }
-export default PartyDetails;

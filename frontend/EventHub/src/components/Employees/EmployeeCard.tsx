@@ -1,7 +1,7 @@
 import type { EmployeeData } from "../../types";
-import { Card } from "../Common/Card";
+import { Card } from "../Common";
 
-export default function EmployeeCard({ employee }: { employee: EmployeeData }) {
+export function EmployeeCard({ employee }: { employee: EmployeeData }) {
     return (
         <Card>
             <h2 className="font-bold text-lg">{employee.name}</h2>

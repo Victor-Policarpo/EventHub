@@ -1,7 +1,7 @@
-import CreateUser from "../../components/Forms/CreateUserForm"
-function Register(){
+import { CreateUser } from "../../components";
+
+export function Register(){
     return (
         <CreateUser/>
 );
 }
-export default Register;

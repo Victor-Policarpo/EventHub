@@ -1,20 +1,25 @@
-import { useState } from "react";
-import { FilterBar } from "../Common/FilterBar";
-import { type ToyFilters } from "../../types";
 import { Clock, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import type { ToyFilters } from "../../types";
+import { FilterBar } from "../Common";
+import { Input } from "./Input";
+
 interface Props {
     currentFilters: ToyFilters;
     onApply: (filters: Partial<ToyFilters>) => void;
 }
 
-export default function DateFiltersComponent({ currentFilters, onApply }: Props) {
+export function DateFiltersComponent({ currentFilters, onApply }: Props) {
     const [temp, setTemp] = useState({
-        start: currentFilters.start,
-        end: currentFilters.end
+        start: currentFilters.start || "",
+        end: currentFilters.end || ""
     });
 
     const formatDateTime = (dateStr: string) => {
+        if (!dateStr) return "";
         const date = new Date(dateStr);
+        if (isNaN(date.getTime())) return "Data inválida";
+        
         return date.toLocaleString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
@@ -49,25 +54,19 @@ export default function DateFiltersComponent({ currentFilters, onApply }: Props)
             }
         >
             <div className="space-y-4">
-                <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Início do Aluguel</label>
-                    <input
-                        type="datetime-local"
-                        value={temp.start || ""}
-                        onChange={(e) => setTemp(p => ({ ...p, start: e.target.value }))}
-                        className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                <Input
+                    label="Data de Início"
+                    type="datetime-local"
+                    value={temp.start}
+                    onChange={(e) => setTemp(p => ({ ...p, start: e.target.value }))}
+                />
 
-                <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Fim do Aluguel</label>
-                    <input
-                        type="datetime-local"
-                        value={temp.end || ""}
-                        onChange={(e) => setTemp(p => ({ ...p, end: e.target.value }))}
-                        className="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                <Input
+                    label="Fim do Aluguel"
+                    type="datetime-local"
+                    value={temp.end}
+                    onChange={(e) => setTemp(p => ({ ...p, end: e.target.value }))}
+                />
             </div>
         </FilterBar>
     );

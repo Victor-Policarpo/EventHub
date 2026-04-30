@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
-import FeedParty from "../../components/Parties/FeedParty";
-import Header from "../../components/Ui/Header";
+import { Header, Button, FeedParty } from "../../components";
 
-function Feed() {
+export function Feed() {
   return (
     <div className="min-h-screen bg-slate-50">
       <Header />
@@ -13,12 +11,19 @@ function Feed() {
             Próximos Eventos
           </h1>
           <nav className="space-x-4">
-            <Link to="/feed/toys" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+            <Button 
+              to={"/feed/toys"}
+              variant="ghost"
+            >
               Brinquedos
-            </Link>
-            <Link to="/feed/employees" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+            </Button>
+
+            <Button
+              to={"/feed/employees"}
+              variant="ghost"
+            >
               Funcionarios
-            </Link>
+            </Button>
           </nav>
         </div>
 
@@ -30,5 +35,3 @@ function Feed() {
     </div>
   );
 }
-
-export default Feed;

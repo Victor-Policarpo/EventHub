@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
-import Toys from "../../components/Toys/ToyFeed";
-import Header from "../../components/Ui/Header";
-function FeedToys(){
+import { Header, Button, Toys } from "../../components";
+
+export function FeedToys(){
     return (
         <div className="min-h-screen bg-slate-50">
             <Header />
@@ -11,12 +10,12 @@ function FeedToys(){
                 Brinquedos
                     </h1>
                     <nav className="space-x-4">
-                        <Link to="/feed" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
-                        Festas
-                        </Link>
-                        <Link to="/feed/employees" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
-                          Funcionarios
-                        </Link>
+                        <Button to="/feed" variant="ghost">
+                            Festas
+                        </Button>
+                        <Button to="/feed/employees" variant="ghost">
+                            Funcionarios
+                        </Button>
                     </nav>
                 </div>
                 <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
@@ -27,4 +26,3 @@ function FeedToys(){
     );
 
 }
-export default FeedToys;

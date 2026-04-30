@@ -1,9 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom";
-import FormEmployeeEdit from "../Forms/FormEmployeeEdit";
 import toast from "react-hot-toast";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDeleteEmployee } from "../../hooks/useDeleteEmployee";
+import { FormEmployeeEdit } from "../Forms";
+import { Button } from "../Ui";
 
-export default function Employee() {
+export function Employee() {
     const { employeeId } = useParams();
     const id = Number(employeeId);
     const { mutate, isPending } = useDeleteEmployee();
@@ -27,15 +28,16 @@ export default function Employee() {
     return (
             <div className="border-t pt-4">
                 <FormEmployeeEdit />
-                
                 <div className="mt-8">
-                    <button 
-                        disabled={isPending}
-                        className="bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white py-2 px-4 rounded-lg font-bold shadow-md active:scale-95 transition-all" 
+                    <Button
+                        variant="ghostDanger"
                         onClick={handleDelete}
+                        isLoading={isPending}
+                        disabled={isPending}
+                        className="w-fit px-4 py-3 text-center"
                     >
-                        {isPending ? "Excluindo..." : "Excluir Funcionário"}
-                    </button>
+                        Excluir Funcionário
+                    </Button>
                 </div>
             </div>
         );

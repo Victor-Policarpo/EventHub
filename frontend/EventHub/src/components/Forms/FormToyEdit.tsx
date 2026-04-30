@@ -1,35 +1,34 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { NumericFormat } from "react-number-format";
 import { useParams } from "react-router-dom";
 import { useGetToy } from "../../hooks/useGetToy";
-import Loading from "../Ui/Loading";
-import ErrorState from "../Ui/ErrorState";
-import { useForm, type Resolver } from "react-hook-form";
-import { updateToySchema, type UpdateToyForm } from "../../schemas/updateToySchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateToy } from "../../hooks/useUpdateToy";
-import toast from "react-hot-toast";
+import { type UpdateToyInput, type UpdateToyOutput, updateToySchema } from "../../schemas/updateToySchema";
+import { Loading, ErrorState, Input, Button } from "../Ui";
 
-export default function FormToyEdit() {
+export function FormToyEdit() {
     const { toyId } = useParams();
     const id = toyId ? Number(toyId) : NaN;
     
     const { data, isLoading, isError, refetch } = useGetToy(id);
     const { mutate, isPending } = useUpdateToy();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<UpdateToyForm>({
-        resolver: zodResolver(updateToySchema) as Resolver<UpdateToyForm>,
-        values: {
-            name: data?.name || "",
-            availableQuantity: data?.availableQuantity || 0,
-            valueForFourHours: data?.valueForFourHours || 0,
-        },
-        mode: "onBlur"
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<UpdateToyInput, undefined, UpdateToyOutput>({
+        resolver: zodResolver(updateToySchema),
+        values: data ? {
+            name: data.name,
+            availableQuantity: String(data.availableQuantity),
+            valueForFourHours: String(data.valueForFourHours),
+        } : undefined
     });
 
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState message="Erro ao carregar brinquedo 😢" onRetry={() => refetch()} />;
     if (!data) return <ErrorState message="Brinquedo não encontrado" onRetry={() => refetch()} />;
 
-    const onSubmit = (values: UpdateToyForm) => {
+    const onSubmit = (values: UpdateToyOutput) => {
         mutate({ id, data: values }, {
             onSuccess: () => {
                 toast.success("Brinquedo atualizado com sucesso!");
@@ -44,45 +43,41 @@ export default function FormToyEdit() {
         <div className="p-6 space-y-4">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4 w-125">
                 <div>
-                    <label className="font-bold text-sm text-gray-600" htmlFor="name">Brinquedo</label>
-                    <input
-                        type="text"
-                        id="name"
+                    <Input
+                        label="Brinquedo"
+                        error={errors.name?.message}
                         {...register("name")}
-                        className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     />
-                    {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
                 </div>
-
+                
                 <div>
-                    <label className="font-bold text-sm text-gray-600" htmlFor="availableQuantity">Quantidade Disponível</label>
-                    <input
+                    <Input
+                        label="Quantidade Disponível"
                         type="number"
-                        id="availableQuantity"
+                        error={errors.availableQuantity?.message}
                         {...register("availableQuantity")}
-                        className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                     />
-                    {errors.availableQuantity && <p className="text-red-500 text-xs">{errors.availableQuantity.message}</p>}
                 </div>
-
                 <div>
-                    <label className="font-bold text-sm text-gray-600" htmlFor="valueForFourHours">Valor para 4 horas</label>
-                    <input
-                        type="number"
-                        id="valueForFourHours"
-                        {...register("valueForFourHours")}
-                        className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    <NumericFormat
+                        customInput={Input}
+                        label="Valor (4 horas)"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix="R$ "
+                        decimalScale={2}
+                        fixedDecimalScale={true}
+                        value={data?.valueForFourHours} 
+                        error={errors.valueForFourHours?.message}
+                        onValueChange={(values) => {
+                            setValue("valueForFourHours", values.value); 
+                        }}
                     />
-                    {errors.valueForFourHours && <p className="text-red-500 text-xs">{errors.valueForFourHours.message}</p>}
                 </div>
 
-                <button 
-                    type="submit" 
-                    disabled={isPending}
-                    className="w-full text-white bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm px-5 py-3 transition-all disabled:opacity-50"
-                >
-                    {isPending ? "Processando..." : "Atualizar Brinquedo"}
-                </button>
+               <Button type="submit" isLoading={isPending} variant="primary">
+                    Atualizar Brinquedo
+                </Button>
             </form>
         </div>
     );

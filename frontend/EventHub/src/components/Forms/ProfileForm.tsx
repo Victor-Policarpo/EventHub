@@ -1,14 +1,13 @@
-import { useForm } from "react-hook-form";
-import useCurrentUser from "../../hooks/useCurrentUser";
-import type { UserUpdateData } from "../../types";
-import ErrorState from "../Ui/ErrorState";
-import Loading from "../Ui/Loading";
-import { useUpdateUser } from "../../hooks/useUpdateUser";
-import { profileSchema, type ProfileFormData } from "../../schemas/profileSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { type ProfileFormData, profileSchema } from "../../schemas/profileSchemas";
+import type { UserUpdateData } from "../../types";
+import { Loading, ErrorState, Input, Button } from "../Ui";
 
-function ProfileForm() {
+export function ProfileForm() {
     const { data, isLoading, isError } = useCurrentUser();
     const {register, handleSubmit , formState: { errors }} = useForm<ProfileFormData>({
         values: {
@@ -38,64 +37,42 @@ function ProfileForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
       
       <div className="relative z-0 w-full mb-6 group">
-        <input 
-          type="text" 
-          id="fullName" 
+        <Input
+          label="Nome completo"
+          type="text"
+          placeholder="Insira seu nome completo"
+          error={errors.fullName?.message}
           {...register("fullName")}
-          className="block py-2.5 px-0 w-full text-sm text-slate-900 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
-          placeholder=" " 
         />
-        <label 
-          htmlFor="fullName" 
-          className="peer-focus:font-medium absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s-0 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Nome Completo
-        </label>
-        {errors.fullName && <span className="text-[11px] text-red-500 mt-1 block">{errors.fullName.message}</span>}
       </div>
 
       <div className="relative z-0 w-full mb-6 group">
-        <input 
-          type="text" 
-          id="username" 
+        <Input
+          label="Nome de usuário"
+          type="text"
+          placeholder="Insira seu nome de usuário"
+          error={errors.username?.message}
           {...register("username")}
-          className="block py-2.5 px-0 w-full text-sm text-slate-900 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
-          placeholder=" " 
         />
-        <label 
-          htmlFor="username" 
-          className="peer-focus:font-medium absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s-0 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Username
-        </label>
-        {errors.username && <span className="text-[11px] text-red-500 mt-1 block">{errors.username.message}</span>}
       </div>
       <div className="relative z-0 w-full mb-6 group">
-        <input 
-          type="email" 
-          id="email" 
+        <Input
+          label="Email"
+          type="email"
+          placeholder="Insira seu email"
+          error={errors.email?.message}
           {...register("email")}
-          className="block py-2.5 px-0 w-full text-sm text-slate-900 bg-transparent border-0 border-b-2 border-slate-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
-          placeholder=" " 
         />
-        <label 
-          htmlFor="email" 
-          className="peer-focus:font-medium absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s-0 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-        >
-          Email
-        </label>
-        {errors.email && <span className="text-[11px] text-red-500 mt-1 block">{errors.email.message}</span>}
       </div>
-
-      <button 
-        type="submit" 
-        disabled={isPending} 
-        className="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-bold rounded-xl text-sm w-full sm:w-auto px-8 py-2.5 text-center transition-all disabled:opacity-50 active:scale-95 shadow-lg shadow-indigo-100"
+      <Button
+        type="submit"
+        isLoading={isPending}
+        disabled={isPending}
+        variant="primary"
       >
-        {isPending ? "Salvando..." : "Salvar Alterações"}
-      </button>
+        Editar Dados da Conta
+      </Button>
     </form>
   </div>
 );
 }
-export default ProfileForm;

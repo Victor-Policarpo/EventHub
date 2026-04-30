@@ -1,7 +1,8 @@
 import type { ToyData } from "../../types";
-import { Card } from "../Common/Card";
+import { Card } from "../Common";
 
-export default function ToyCard({ toy }: { toy: ToyData }) {
+
+export function ToyCard({ toy }: { toy: ToyData }) {
     return (
     <Card>
         <h2 className="font-bold text-lg">{toy.name}</h2>

@@ -1,10 +1,12 @@
+import { Button } from "./Button";
+
 type PropsError = {
     message: string;
     detail?: string;
     onRetry?: () => void;
 };
 
-function ErrorState({ message, detail, onRetry }: PropsError) {
+export function ErrorState({ message, detail, onRetry }: PropsError) {
     return (
         <div className="text-center p-4">
             <p className="font-semibold">{message}</p>
@@ -14,11 +16,10 @@ function ErrorState({ message, detail, onRetry }: PropsError) {
             )}
 
             {onRetry && (
-                <button onClick={onRetry}>
+                <Button onClick={onRetry}>
                     Tentar novamente
-                </button>
+                </Button>
             )}
         </div>
     );
 }
-export default ErrorState;

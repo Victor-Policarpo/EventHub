@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { useToyData } from "../../hooks/useToyData";
-import Feed from "../Common/Feed";
-import type { ToyFilters } from "../../types";
-import Loading from "../Ui/Loading";
-import ErrorState from "../Ui/ErrorState";
-import DateFiltersComponent from "../Ui/DateFIlters";
 import { Link } from "react-router-dom";
-import ToyCard from "./ToyCard";
+import { useToyData } from "../../hooks/useToyData";
+import type { ToyFilters } from "../../types";
+import { Feed } from "../Common";
+import { Loading, ErrorState, DateFiltersComponent } from "../Ui";
+import { ToyCard } from "./ToyCard";
 
-export default function Toys(){
+export function Toys(){
     const [filters, setFilters] = useState<ToyFilters>({
         page: 0,
         size: 10,

@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
+import { Button } from "../Ui";
 
 interface FeedProps {
     title?: string;
@@ -16,7 +17,7 @@ interface FeedProps {
     emptyMessage?: string;
 }
 
-function Feed({ title, filterBar, children, pagination, isEmpty, emptyMessage }: FeedProps) {
+export function Feed({ title, filterBar, children, pagination, isEmpty, emptyMessage }: FeedProps) {
     const { currentPage, totalPages, totalElements, isPlaceholderData, onPageChange } = pagination;
 
     return (
@@ -45,23 +46,25 @@ function Feed({ title, filterBar, children, pagination, isEmpty, emptyMessage }:
                 </div>
                 
                 <div className="flex gap-2">
-                    <button
-                        disabled={currentPage === 0 || isPlaceholderData}
-                        onClick={() => onPageChange(currentPage - 1)}
-                        className="p-2 border border-gray-300 rounded-lg disabled:opacity-30 hover:bg-gray-50 transition-colors shadow-sm bg-white"
-                    >
-                        <ChevronLeft size={20} />
-                    </button>
-                    <button
-                        disabled={currentPage >= totalPages - 1 || isPlaceholderData}
-                        onClick={() => onPageChange(currentPage + 1)}
-                        className="p-2 border border-gray-300 rounded-lg disabled:opacity-30 hover:bg-gray-50 transition-colors shadow-sm bg-white"
-                    >
-                        <ChevronRight size={20} />
-                    </button>
+                <Button
+                    variant="ghost"
+                    disabled={currentPage === 0 || isPlaceholderData}
+                    onClick={() => onPageChange(currentPage - 1)}
+                    className="w-fit p-2"
+                >
+                    <ChevronLeft size={20} />
+                </Button>
+                
+                <Button
+                    variant="secondary"
+                    disabled={currentPage >= totalPages - 1 || isPlaceholderData}
+                    onClick={() => onPageChange(currentPage + 1)}
+                    className="w-fit p-2"
+                >
+                <ChevronRight size={20} />
+                </Button>
                 </div>
             </div>
         </div>
     );
 }
-export default Feed;

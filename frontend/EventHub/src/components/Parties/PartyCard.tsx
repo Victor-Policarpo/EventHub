@@ -1,7 +1,7 @@
 import type { PartyData } from "../../types";
-import { Card } from "../Common/Card";
+import { Card } from "../Common";
 
-export default function PartyCard({ party }: { party: PartyData }) {
+export function PartyCard({ party }: { party: PartyData }) {
     return (
         <Card>
             <h2 className="font-bold text-lg">{party.name}</h2>

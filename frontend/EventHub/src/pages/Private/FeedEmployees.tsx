@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
-import Header from "../../components/Ui/Header";
-import FeedEmployee from "../../components/Employees/FeedEmployee";
-export default function FeedEmployees() {
+import { Header, Button, FeedEmployee } from "../../components";
+
+export function FeedEmployees() {
     return (
     <div className="min-h-screen bg-slate-50">
       <Header />
@@ -12,12 +11,19 @@ export default function FeedEmployees() {
             Funcionarios
           </h1>
           <nav className="space-x-4">
-            <Link to="/feed/toys" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+            <Button
+              to={"/feed/toys"}
+              variant="ghost"
+            >
               Brinquedos
-            </Link>
-            <Link to="/feed" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+            </Button>
+
+            <Button 
+              to={"/feed"}
+              variant="ghost"
+              >
               Festas
-            </Link>
+            </Button>
           </nav>
         </div>
         

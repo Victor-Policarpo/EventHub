@@ -1,21 +1,20 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import toast from "react-hot-toast";
+import { PatternFormat, NumericFormat } from "react-number-format";
 import { useParams } from "react-router-dom";
 import { useGetParty } from "../../hooks/useGetParty";
-import Loading from "../Ui/Loading";
-import ErrorState from "../Ui/ErrorState";
-import { Controller, useForm } from "react-hook-form";
-import { formatToDateTimeLocal } from "../../utils/formatDateHours";
-import { updatePartySchema, type UpdatePartyForm } from "../../schemas/updatePartySchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateParty } from "../../hooks/useUpdateParty";
-import toast from "react-hot-toast";
-import { PatternFormat } from "react-number-format";
+import { type UpdatePartyForm, updatePartySchema } from "../../schemas/updatePartySchema";
+import { formatToDateTimeLocal } from "../../utils/formatDateHours";
+import { Loading, ErrorState, Input, Button } from "../Ui";
 
-function FormPartyEdit(){
+export function FormPartyEdit(){
     const { partyId } = useParams();
     const id = Number(partyId);
     const { data, isLoading, isError } = useGetParty(id);
     const { mutate, isPending } = useUpdateParty();
-    const { register, handleSubmit, control, formState: {errors} } = useForm<UpdatePartyForm>({
+    const { register, handleSubmit, control, formState: {errors}, setValue } = useForm<UpdatePartyForm>({
         values: {
             name: data?.name || "",
             address: data?.address || "",
@@ -62,79 +61,91 @@ function FormPartyEdit(){
            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4 w-125">
 
                 <div>
-                    <label htmlFor="name" className="font-bold text-sm text-gray-600">Nome da Festa</label>
-                    <input type="text" id="name" className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-                     {...register("name")} />
+                    <Input
+                        label="Nome do Responsável"
+                        type="text"
+                        placeholder="Insira o Nome do Responsável"
+                        error={errors.name?.message}
+                        {...register("name")}
+                    />
                 </div>
 
                 <div>
-                    <label htmlFor="address" className="font-bold text-sm text-gray-600">Endereço</label>
-                    <input type="text" id="address" className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-                     {...register("address")} />
+                    <Input
+                        label="Endereço"
+                        type="text"
+                        placeholder="Insira o Endereço"
+                        error={errors.address?.message}
+                        {...register("address")}
+                    />
                 </div>
                 <div>
-                <label htmlFor="telephone" className="font-bold text-sm text-gray-600">Telefone</label>
                 <Controller
-                control={control}
-                name="telephone"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
+                    control={control}
+                    name="telephone"
+                    render={({ field: { onChange, value, ref } }) => (
                     <PatternFormat
-                    format="(##) #####-####"
-                    mask="_"
-                    getInputRef={ref}
-                    value={value}
-                    onValueChange={(vals) => onChange(vals.formattedValue)}
-                    onBlur={onBlur}
-                    className={`w-full p-3 border rounded-xl ${errors.telephone ? 'border-red-500' : 'border-gray-200'}`}
+                        customInput={Input} 
+                        label="Telefone"
+                        format="(##) #####-####"
+                        mask="_"
+                        value={value}
+                        getInputRef={ref}
+                        onValueChange={(vals) => onChange(vals.formattedValue)}
+                        error={errors.telephone?.message}
+                        placeholder="(00) 00000-0000"
                     />
-            )}
+                    )}
+                />
+                </div>
+
+                <div>
+                    <NumericFormat
+                        customInput={Input}
+                        label="Valor da Festa"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix="R$ "
+                        decimalScale={2}
+                        fixedDecimalScale
+                        error={errors.value?.message}
+                        value={data?.value} 
+                        onValueChange={(values) => {
+                        setValue("value", values.value); 
+                        }}
                     />
                 </div>
 
-                <div className="flex flex-col">
-                    <label htmlFor="value" className="font-bold text-sm text-gray-600">Valor da Festa</label>
-                    <div className="relative flex items-center">
-                        <span className="absolute left-3 text-gray-400">R$</span>
-                        <input 
-                            type="number" 
-                            step="0.01" 
-                            id="value" 
-                            {...register("value")}
-                            className="w-full pl-10 p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-                        />
-                    </div>
-                </div>
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col">
-                        <label htmlFor="startDateHours" className="font-bold text-sm text-gray-600">Início</label>
-                        <input 
-                            type="datetime-local" 
-                            id="startDateHours" 
-                            {...register("startDateHours")} 
-                            className="p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    <div>
+                        <Input
+                        label="Data de Início"
+                        type="datetime-local"
+                        error={errors.startDateHours?.message}
+                        {...register("startDateHours")}
                         />
                     </div>
 
-                    <div className="flex flex-col">
-                        <label htmlFor="endDateHours" className="font-bold text-sm text-gray-600">Fim</label>
-                        <input 
-                            type="datetime-local" 
-                            id="endDateHours" 
-                            {...register("endDateHours")} 
-                            className="p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    <div>
+                        <Input
+                        label="Data de Término"
+                        type="datetime-local"
+                        error={errors.endDateHours?.message}
+                        {...register("endDateHours")}
                         />
                     </div>
                 </div>
 
-                <button 
-                      type="submit" 
-                      disabled={isPending}
-                      className="w-full text-white bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl text-sm px-5 py-3 transition-all active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-indigo-100"
+                    <Button
+                    type="submit"
+                    isLoading={isPending}
+                    disabled={isPending}
+                    variant="primary"
                     >
-                      {isPending ? "Processando..." : "Confirmar Alteração"}
-                    </button>
+                    Confirmar Alteração
+                    </Button>
+                    
             </form>
         </div>
     );
 }
-export default FormPartyEdit;

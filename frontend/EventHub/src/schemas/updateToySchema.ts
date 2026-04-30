@@ -10,9 +10,15 @@ export const updateToySchema = z.object({
         .min(0, "A quantidade disponível não pode ser negativa")
         .max(100000, "A quantidade disponível não pode ser maior que 100000"),
 
-    valueForFourHours: z.coerce.number()
-        .min(0, "O valor não pode ser negativo")
-        .max(100000, "O valor não pode ser maior que 100000"),
+    valueForFourHours: z.string()
+    .transform((val) => {
+        if (!val) return 0;
+        const normalized = val.replace(",", ".");
+        const parsed = parseFloat(normalized);
+        return isNaN(parsed) ? 0 : parsed;
+    })
 });
 
-export type UpdateToyForm = z.infer<typeof updateToySchema>;
+
+export type UpdateToyInput = z.input<typeof updateToySchema>;
+export type UpdateToyOutput = z.infer<typeof updateToySchema>;

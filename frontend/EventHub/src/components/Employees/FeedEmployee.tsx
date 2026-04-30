@@ -1,15 +1,13 @@
 import { useState } from "react";
-import type { EmployeeFilters } from "../../types";
-import Feed from "../Common/Feed";
-import DateFiltersComponent from "../Ui/DateFIlters";
 import { Link } from "react-router-dom";
-import Loading from "../Ui/Loading";
-import ErrorState from "../Ui/ErrorState";
 import { useEmployeeData } from "../../hooks/useEmployeeData";
-import EmployeeCard from "./EmployeeCard";
+import type { EmployeeFilters } from "../../types";
 import { formatForApi } from "../../utils/formatDateHours";
+import { Feed } from "../Common";
+import { Loading, ErrorState, DateFiltersComponent } from "../Ui";
+import { EmployeeCard } from "./EmployeeCard";
 
-export default function FeedEmployee() {
+export function FeedEmployee() {
     const [filters, setFilters] = useState<EmployeeFilters>({
         page: 0,
         size: 10,
@@ -23,12 +21,12 @@ export default function FeedEmployee() {
     const content = data?.content ?? [];
     return (
         <div>
-            <Feed 
+            <Feed
             title="Funcionários"
             isEmpty={content.length === 0}
             emptyMessage="Nenhum funcionário encontrado para estes filtros."
             filterBar={
-                <DateFiltersComponent 
+                <DateFiltersComponent
                 currentFilters={filters}
                 onApply={(newFilters) => setFilters({
             ...filters,
