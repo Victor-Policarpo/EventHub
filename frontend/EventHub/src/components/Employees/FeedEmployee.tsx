@@ -21,8 +21,6 @@ export default function FeedEmployee() {
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState onRetry={refetch} message="Erro ao carregar os funcionários" />;
     const content = data?.content ?? [];
-    console.log("filtros: ", filters);
-    console.log("dados: ", data);
     return (
         <div>
             <Feed 

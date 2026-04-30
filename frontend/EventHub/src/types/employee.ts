@@ -11,3 +11,8 @@ export interface EmployeeFilters extends BaseFilters {
     start?: string;
     end?: string;
 }
+
+export interface UpdateEmployeeData {
+    name: string;
+    telephone: string;
+}

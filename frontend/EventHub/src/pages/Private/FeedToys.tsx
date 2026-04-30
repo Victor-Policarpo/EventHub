@@ -10,9 +10,12 @@ function FeedToys(){
                     <h1 className="text-2xl font-black text-slate-900 tracking-tight">
                 Brinquedos
                     </h1>
-                    <nav>
+                    <nav className="space-x-4">
                         <Link to="/feed" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
                         Festas
+                        </Link>
+                        <Link to="/feed/employees" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md">
+                          Funcionarios
                         </Link>
                     </nav>
                 </div>
