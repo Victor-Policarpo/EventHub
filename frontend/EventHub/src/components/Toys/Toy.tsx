@@ -3,6 +3,7 @@ import { useDeleteToy } from "../../hooks/toy/useDeleteToy";
 import toast from "react-hot-toast";
 import { FormToyEdit } from "../Forms";
 import { Button } from "../Ui";
+import { Guard } from "../Common/Guard";
 
 
 export function Toy() {
@@ -32,15 +33,17 @@ export function Toy() {
             <FormToyEdit />
             
             <div className="mt-8">
-                <Button
-                    disabled={isPending}
-                    isLoading={isPending}
-                    variant="ghostDanger"
-                    onClick={handleDelete}
-                    className="w-fit px-4 py-2"
-                >
-                    Excluir Brinquedo
-                </Button>
+                <Guard role="ADMIN">
+                    <Button
+                        disabled={isPending}
+                        isLoading={isPending}
+                        variant="ghostDanger"
+                        onClick={handleDelete}
+                        className="w-fit px-4 py-2"
+                    >
+                        Excluir Brinquedo
+                    </Button>
+                </Guard>
             </div>
         </div>
     );

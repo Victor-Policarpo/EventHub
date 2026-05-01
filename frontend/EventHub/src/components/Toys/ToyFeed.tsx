@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useToyData } from "../../hooks/toy/useToyData";
+import { useToyData } from "../../hooks";
 import type { ToyFilters } from "../../types";
 import { Feed } from "../Common";
 import { Loading, ErrorState, DateFiltersComponent } from "../Ui";
 import { ToyCard } from "./ToyCard";
+import { useHasRole } from "../../hooks";
 
 export function Toys(){
     const [filters, setFilters] = useState<ToyFilters>({
@@ -14,6 +15,7 @@ export function Toys(){
         end: undefined
     }); 
     const { data, isLoading, isError, refetch, isPlaceholderData } = useToyData(filters);
+    const isAdmin = useHasRole('ADMIN');
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState onRetry={refetch} message="Erro ao carregar os Brinquedos" />;
     const content = data?.content ?? [];
@@ -36,11 +38,16 @@ export function Toys(){
             onPageChange: (page) => setFilters(prev => ({ ...prev, page }))
         }}
         >
-        {content.map((toy) => (
-            <Link to={`/toys/${toy.toyId}`} key={toy.toyId}>
-                <ToyCard toy={toy}/>
-            </Link>
-        ))}
+        {content.map((toy) => {
+            if (isAdmin) {
+                return (
+                    <Link to={`/toys/${toy.toyId}`} key={toy.toyId}>
+                        <ToyCard toy={toy} />
+                    </Link>
+                );
+            }
+            return <ToyCard toy={toy} key={toy.toyId} />;
+})}
     </Feed>
     );
 }

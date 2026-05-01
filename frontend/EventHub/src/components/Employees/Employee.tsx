@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDeleteEmployee } from "../../hooks";
 import { FormEmployeeEdit } from "../Forms";
 import { Button } from "../Ui";
+import { Guard } from "../Common/Guard";
 
 export function Employee() {
     const { employeeId } = useParams();
@@ -29,15 +30,18 @@ export function Employee() {
             <div className="border-t pt-4">
                 <FormEmployeeEdit />
                 <div className="mt-8">
-                    <Button
-                        variant="ghostDanger"
-                        onClick={handleDelete}
-                        isLoading={isPending}
-                        disabled={isPending}
-                        className="w-fit px-4 py-3 text-center"
-                    >
-                        Excluir Funcionário
-                    </Button>
+                    <Guard role="ADMIN">
+                        <Button
+                            variant="ghostDanger"
+                            onClick={handleDelete}
+                            isLoading={isPending}
+                            disabled={isPending}
+                            className="w-fit px-4 py-3 text-center"
+                            >
+                                Excluir Funcionário
+                        </Button>
+                    </Guard>
+                    
                 </div>
             </div>
         );

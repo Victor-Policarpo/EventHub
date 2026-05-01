@@ -4,6 +4,7 @@ import { useDeleteParty } from "../../hooks/party/useDeleteParty";
 import { Button, ErrorState, Loading } from "../Ui";
 import { formatDateHours } from "../../utils/formatDateHours";
 import type { EmployeeParty, ToyParty } from "../../types";
+import { Guard } from "../Common/Guard";
 
 
 export function Party() {
@@ -95,22 +96,25 @@ export function Party() {
             </div>
 
             <div className="border-t pt-4">
-                <Button
-                    to={`/parties/${id}/edit`} 
-                    variant="ghost" 
-                    className="w-fit px-5 py-4 rounded-2xl"
-                    >
-                    Editar Festa
-                </Button>
+                <Guard role="ADMIN">
+                    <Button
+                        to={`/parties/${id}/edit`} 
+                        variant="ghost" 
+                        className="w-fit px-5 py-4 rounded-2xl"
+                        >
+                        Editar Festa
+                    </Button>
 
-                <Button
-                    variant="ghostDanger"
-                    onClick={handleDelete}
-                    isLoading={isPending}
-                    disabled={isPending} 
-                    className="w-fit px-5 py-4 rounded-2xl">
-                    Apagar Festa
-                </Button>
+                
+                    <Button
+                        variant="ghostDanger"
+                        onClick={handleDelete}
+                        isLoading={isPending}
+                        disabled={isPending} 
+                        className="w-fit px-5 py-4 rounded-2xl">
+                        Apagar Festa
+                    </Button>
+                </Guard>
             </div>
             
         </div>

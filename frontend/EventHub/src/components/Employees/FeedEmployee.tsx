@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useEmployeeData } from "../../hooks";
+import { useEmployeeData, useHasRole } from "../../hooks";
 import type { EmployeeFilters } from "../../types";
 import { formatForApi } from "../../utils/formatDateHours";
 import { Feed } from "../Common";
@@ -16,6 +16,7 @@ export function FeedEmployee() {
     }); 
 
     const { data, isLoading, isError, refetch, isPlaceholderData } = useEmployeeData(filters);
+    const isAdmin = useHasRole('ADMIN');
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState onRetry={refetch} message="Erro ao carregar os funcionários" />;
     const content = data?.content ?? [];
@@ -44,11 +45,16 @@ export function FeedEmployee() {
             onPageChange: (page) => setFilters(prev => ({ ...prev, page }))
         }}
             >
-            {content.map((employee) => (
-                <Link to={`/employees/${employee.employeeId}`} key={employee.employeeId}>
-                    <EmployeeCard employee={employee}/>
-                </Link>
-            ))}
+            {content.map((employee) => {
+                if (isAdmin) {
+                    return (
+                        <Link to={`/employees/${employee.employeeId}`} key={employee.employeeId}>
+                            <EmployeeCard employee={employee}/>
+                        </Link>
+                    );
+                }
+                return <EmployeeCard employee={employee} key={employee.employeeId} />;
+            })}
         </Feed>
         </div>
     );
