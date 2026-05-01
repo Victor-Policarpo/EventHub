@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { type LoginFormData, loginSchema } from "../../schemas/loginSchemas";
-import { loginUser } from "../../services/authService";
+import { useAuth } from "../../hooks";
+import { type LoginFormData, loginSchema } from "../../schemas";
+import { loginUser } from "../../services";
 import type { SpringError } from "../../types";
 import { Button, Input } from "../Ui";
 

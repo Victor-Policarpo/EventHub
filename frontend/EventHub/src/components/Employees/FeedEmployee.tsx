@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useEmployeeData } from "../../hooks/useEmployeeData";
+import { useEmployeeData } from "../../hooks";
 import type { EmployeeFilters } from "../../types";
 import { formatForApi } from "../../utils/formatDateHours";
 import { Feed } from "../Common";

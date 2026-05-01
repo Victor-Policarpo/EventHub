@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getParty } from "../services/party/partyService";
-import type { PartyFilters } from "../types";
+import { getParty } from "../../services";
+import type { PartyFilters } from "../../types";
 
 export function usePartyData(filters: PartyFilters){
     const query = useQuery({

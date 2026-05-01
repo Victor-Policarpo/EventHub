@@ -3,9 +3,9 @@ import { Lock, X } from "lucide-react";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useNewPassword } from "../../hooks/useNewPassword";
-import { usePasswordValidation } from "../../hooks/usePasswordValidation";
-import { type NewPasswordFormData, newPasswordSchema } from "../../schemas/newPasswordSchema";
+import { useNewPassword } from "../../hooks/auth/useNewPassword";
+import { usePasswordValidation } from "../../hooks/auth/usePasswordValidation";
+import { type NewPasswordFormData, newPasswordSchema } from "../../schemas/auth/newPasswordSchema";
 import type { PasswordUpdateData, SpringError } from "../../types";
 import { Button, Input } from "../Ui";
 

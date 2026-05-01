@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { ToyFilters } from "../types";
-import { getToys } from "../services/toy/getToy";
+import type { ToyFilters } from "../../types";
+import { getToys } from "../../services";
 
 export function useToyData(filters: ToyFilters) {
   const query =  useQuery({

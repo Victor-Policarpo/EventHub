@@ -1,14 +1,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import getCurrentUser from "../services/user/getCurrentUser";
-
-function useCurrentUser() {
+import { getCurrentUser } from "../../services";
+export function useCurrentUser() {
     const query = useQuery({
         queryKey: ["current-user"],
         queryFn: getCurrentUser,
         placeholderData: keepPreviousData,
         refetchInterval: 300000
     });
-    return {...query, data: query?.data?.data};
+    return {...query, data: query?.data};
 }
-
-export default useCurrentUser;

@@ -3,9 +3,9 @@ import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { PatternFormat, NumericFormat } from "react-number-format";
 import { useParams } from "react-router-dom";
-import { useGetParty } from "../../hooks/useGetParty";
-import { useUpdateParty } from "../../hooks/useUpdateParty";
-import { type UpdatePartyForm, updatePartySchema } from "../../schemas/updatePartySchema";
+import { useGetParty } from "../../hooks";
+import { useUpdateParty } from "../../hooks";
+import { type UpdatePartyForm, updatePartySchema } from "../../schemas";
 import { formatToDateTimeLocal } from "../../utils/formatDateHours";
 import { Loading, ErrorState, Input, Button } from "../Ui";
 

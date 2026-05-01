@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useDeleteToy } from "../../hooks/useDeleteToy";
+import { useDeleteToy } from "../../hooks/toy/useDeleteToy";
 import toast from "react-hot-toast";
 import { FormToyEdit } from "../Forms";
 import { Button } from "../Ui";

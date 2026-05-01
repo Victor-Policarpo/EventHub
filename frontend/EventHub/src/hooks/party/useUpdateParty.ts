@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UpdatePartyData } from "../types";
-import updatePartyData from "../services/party/updatePartyData";
+import type { UpdatePartyData } from "../../types";
+import { updatePartyData } from "../../services";
 
 export function useUpdateParty() {
     const queryClient = useQueryClient();

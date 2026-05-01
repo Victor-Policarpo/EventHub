@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UpdateToyData } from "../types";
-import updateToyData from "../services/toy/updateToyData";
+import type { UpdateToyData } from "../../types";
+import { updateToyData } from "../../services";
 
 export function useUpdateToy() {
     const queryClient = useQueryClient();

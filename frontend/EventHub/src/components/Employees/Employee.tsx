@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDeleteEmployee } from "../../hooks/useDeleteEmployee";
+import { useDeleteEmployee } from "../../hooks";
 import { FormEmployeeEdit } from "../Forms";
 import { Button } from "../Ui";
 

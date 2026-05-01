@@ -1,7 +1,7 @@
-import { type RegisterFormData  } from "../schemas/registerSchema";
-import { api } from "../lib/axios";
-import type { LoginFormData } from "../schemas/loginSchemas";
-import type { LoginResponse } from "../types";
+import { type RegisterFormData  } from "../../schemas/auth/registerSchema";
+import { api } from "../../lib/axios";
+import type { LoginFormData } from "../../schemas";
+import type { LoginResponse } from "../../types";
 
 export const createUser = async (userData: RegisterFormData) => {
     const { name, username, email, password } = userData;

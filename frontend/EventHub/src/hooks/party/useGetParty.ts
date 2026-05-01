@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPartyById } from "../services/party/getPartyById";
+import { getPartyById } from "../../services";
 
 export function useGetParty(partyId: number) {
     const query = useQuery({

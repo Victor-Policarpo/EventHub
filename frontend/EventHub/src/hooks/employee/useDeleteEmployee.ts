@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import deleteEmployeeById from "../services/employee/deleteEmployeeById";
+import { deleteEmployeeById } from "../../services";
 
 export function useDeleteEmployee() {
     const queryClient = useQueryClient();

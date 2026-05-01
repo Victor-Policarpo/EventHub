@@ -1,7 +1,7 @@
 import api from "../../lib/axios";
 import type { PasswordUpdateData } from "../../types";
 
-export default function updatePassword(data: PasswordUpdateData){
-    const response = api.patch("auth/profile/change-password", data);
+export async function updatePassword(data: PasswordUpdateData){
+    const response = await api.patch("auth/profile/change-password", data);
     return response;
 }

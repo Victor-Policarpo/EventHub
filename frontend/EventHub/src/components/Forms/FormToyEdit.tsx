@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NumericFormat } from "react-number-format";
 import { useParams } from "react-router-dom";
-import { useGetToy } from "../../hooks/useGetToy";
-import { useUpdateToy } from "../../hooks/useUpdateToy";
-import { type UpdateToyInput, type UpdateToyOutput, updateToySchema } from "../../schemas/updateToySchema";
+import { useGetToy } from "../../hooks";
+import { useUpdateToy } from "../../hooks";
+import { type UpdateToyInput, type UpdateToyOutput, updateToySchema } from "../../schemas";
 import { Loading, ErrorState, Input, Button } from "../Ui";
 
 export function FormToyEdit() {

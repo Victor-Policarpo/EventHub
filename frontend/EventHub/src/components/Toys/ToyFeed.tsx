@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useToyData } from "../../hooks/useToyData";
+import { useToyData } from "../../hooks/toy/useToyData";
 import type { ToyFilters } from "../../types";
 import { Feed } from "../Common";
 import { Loading, ErrorState, DateFiltersComponent } from "../Ui";

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UserUpdateData } from "../types";
-import updateUser from "../services/user/updateUser";
+import type { UserUpdateData } from "../../types";
+import { updateUser } from "../../services";
 
 export function useUpdateUser() {
   const queryClient = useQueryClient();

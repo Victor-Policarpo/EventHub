@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import getToyById from "../services/toy/getToyById";
+import { getToyById } from "../../services";
 
 export function useGetToy(toyId: number){
     const query = useQuery({

@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type Resolver } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { useGetEmployee } from "../../hooks/useGetEmployee";
-import { useUpdateEmployee } from "../../hooks/useUpdateEmployee";
-import { type UpdateEmployeeForm, updateEmployeeSchema } from "../../schemas/updateEmployeeSchema";
+import { useGetEmployee } from "../../hooks";
+import { useUpdateEmployee } from "../../hooks";
+import { type UpdateEmployeeForm, updateEmployeeSchema } from "../../schemas";
 import { Loading, ErrorState, Input, Button } from "../Ui";
 
 export function FormEmployeeEdit() {

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deletePartyById } from "../services/party/deletePartyById";
+import { deletePartyById } from "../../services";
 import { useNavigate } from "react-router-dom";
 
 export function useDeleteParty() {

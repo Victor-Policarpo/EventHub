@@ -3,9 +3,9 @@ import axios from "axios";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { usePasswordValidation } from "../../hooks/usePasswordValidation";
-import { type RegisterFormData, registerSchema } from "../../schemas/registerSchema";
-import { createUser } from "../../services/authService";
+import { usePasswordValidation } from "../../hooks";
+import { type RegisterFormData, registerSchema } from "../../schemas";
+import { createUser } from "../../services";
 import type { SpringError } from "../../types";
 import { Button, Input } from "../Ui";
 

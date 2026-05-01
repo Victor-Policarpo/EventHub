@@ -1,8 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { Login } from '../pages/Public/Login';
-import { Register } from '../pages/Public/Register';
-import { PartyDetails, PartyEdit, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile } from '../pages';
+import { useAuth } from '../hooks';
+import { Login, Register, PartyDetails, PartyEdit, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile } from '../pages';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();

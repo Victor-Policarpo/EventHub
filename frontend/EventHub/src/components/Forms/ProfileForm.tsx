@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import useCurrentUser from "../../hooks/useCurrentUser";
-import { useUpdateUser } from "../../hooks/useUpdateUser";
-import { type ProfileFormData, profileSchema } from "../../schemas/profileSchemas";
+import { useCurrentUser } from "../../hooks";
+import { useUpdateUser } from "../../hooks";
+import { type ProfileFormData, profileSchema } from "../../schemas";
 import type { UserUpdateData } from "../../types";
 import { Loading, ErrorState, Input, Button } from "../Ui";
 
@@ -13,7 +13,7 @@ export function ProfileForm() {
         values: {
             fullName: data?.fullName || "",
             username: data?.username || "",
-            email: data?.email || ""
+            email: data?.email || "",
         },
         resolver: zodResolver(profileSchema),
         mode: "onBlur"

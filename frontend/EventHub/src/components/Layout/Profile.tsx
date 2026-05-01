@@ -1,5 +1,5 @@
 import { UserPen } from "lucide-react";
-import useCurrentUser from "../../hooks/useCurrentUser";
+import { useCurrentUser } from "../../hooks";
 import { Loading, ErrorState, Button } from "../Ui";
 
 export function Profile() {
