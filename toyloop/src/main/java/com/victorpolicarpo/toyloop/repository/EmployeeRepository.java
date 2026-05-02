@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Page<Employee> findByActiveTrue(Pageable pageable);
-    boolean existsByName(String name);
 
     @Query("""
             SELECT COUNT(e) FROM Party p
@@ -59,4 +58,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable
     );
+
+    boolean existsByNameAndActiveTrue(String name);
+
 }

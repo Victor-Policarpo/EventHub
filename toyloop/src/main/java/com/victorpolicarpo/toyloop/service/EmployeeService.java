@@ -25,7 +25,7 @@ public class EmployeeService {
 
     @Transactional
     public void createEmployee(@Valid EmployeeRequest dto) {
-        if (employeeRepository.existsByName(dto.name())){
+        if (employeeRepository.existsByNameAndActiveTrue(dto.name())){
             throw new ResourceAlreadyExistsException("An employee with this name already exists.");
         }
         Employee employee = employeeMapper.toEntity(dto);
