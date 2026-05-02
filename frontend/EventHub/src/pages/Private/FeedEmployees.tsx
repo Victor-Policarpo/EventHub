@@ -10,7 +10,7 @@ export function FeedEmployees() {
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
             Funcionarios
           </h1>
-          <nav className="space-x-4">
+          <nav className="space-x-4 flex flex-row">
             <Button
               to={"/feed/toys"}
               variant="ghost"
@@ -24,6 +24,14 @@ export function FeedEmployees() {
               >
               Festas
             </Button>
+
+            <Button 
+              to={"/employee"}
+              variant="ghost"
+            >
+              Adicionar Funcionario
+            </Button>
+
           </nav>
         </div>
         

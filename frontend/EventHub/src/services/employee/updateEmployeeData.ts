@@ -1,8 +1,8 @@
 import type { AxiosPromise } from "axios";
-import type { UpdateEmployeeData } from "../../types";
+import type { EmployeeData, EmployeeInput } from "../../types";
 import { api } from "../../lib/axios";
 
-export function updateEmployeeData(id: number, data: UpdateEmployeeData): AxiosPromise<UpdateEmployeeData> {
-    const response = api.patch<UpdateEmployeeData>(`auth/employee/${id}`, data);
+export function updateEmployeeData(id: number, data: EmployeeInput): AxiosPromise<EmployeeData> {
+    const response = api.patch<EmployeeData>(`auth/employee/${id}`, data);
     return response;
 }

@@ -4,3 +4,4 @@ export * from './FormPartyEdit';
 export * from './FormToyEdit';
 export * from './LoginUserForm';
 export * from './ProfileForm';
+export * from './CreateEmployeeForm';

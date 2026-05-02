@@ -1,17 +1,20 @@
 import { ArrowLeft } from "lucide-react";
-import { Button, Employee } from "../../components";
+import { Button, CreateEmployeeForm } from "../../components";
 
-export function EmployeeEdit() {
+export function CreateEmployee(){
+
     return (
         <div>
-            <Button 
+            <Button
                 to={"/feed/employees"} 
                 variant="ghost" 
                 className="w-8 h-8 rounded-full p-0 flex items-center justify-center"
             >
                 <ArrowLeft size={18} />
             </Button>
-            <Employee />
+            <CreateEmployeeForm />
         </div>
+
     );
+
 }

@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type Resolver } from "react-hook-form";
+import { Controller, useForm, type Resolver } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useGetEmployee } from "../../hooks";
 import { useUpdateEmployee } from "../../hooks";
 import { type UpdateEmployeeForm, updateEmployeeSchema } from "../../schemas";
 import { Loading, ErrorState, Input, Button } from "../Ui";
+import { PatternFormat } from "react-number-format";
 
 export function FormEmployeeEdit() {
     const { employeeId } = useParams();
@@ -14,7 +15,7 @@ export function FormEmployeeEdit() {
     const { data, isLoading, isError, refetch } = useGetEmployee(id);
     const { mutate, isPending } = useUpdateEmployee();
 
-    const { register, handleSubmit, formState: { errors }} = useForm<UpdateEmployeeForm>({
+    const { register, handleSubmit, control, formState: { errors }} = useForm<UpdateEmployeeForm>({
         resolver: zodResolver(updateEmployeeSchema) as Resolver<UpdateEmployeeForm>,
         values: {
             name: data?.name || "",
@@ -50,14 +51,24 @@ export function FormEmployeeEdit() {
                     />
                 </div>
                 <div>
-                    <Input
-                        label="Telefone"
-                        placeholder="Insira o telefone do funcionário"
-                        error={errors.telephone?.message}
-                        {...register("telephone")}
+                    <Controller
+                        control={control}
+                        name="telephone"
+                        render={({ field: { onChange, value, ref } }) => (
+                        <PatternFormat
+                            customInput={Input} 
+                            label="Telefone"
+                            format="(##) #####-####"
+                            mask="_"
+                            value={value}
+                            getInputRef={ref}
+                            onValueChange={(vals) => onChange(vals.formattedValue)}
+                            error={errors.telephone?.message}
+                            placeholder="(00) 00000-0000"
+                        />
+                    )}
                     />
                 </div>
-
                 <Button
                     type="submit"
                     isLoading={isPending}

@@ -6,3 +6,4 @@ export * from './PartyDetails';
 export * from './PartyEdit';
 export * from './Profile';
 export * from './ToyEdit';
+export * from './CreateEmployee';

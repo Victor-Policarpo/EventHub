@@ -12,7 +12,7 @@ export interface EmployeeFilters extends BaseFilters {
     end?: string;
 }
 
-export interface UpdateEmployeeData {
+export interface EmployeeInput {
     name: string;
     telephone: string;
 }
