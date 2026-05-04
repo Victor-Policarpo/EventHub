@@ -12,7 +12,7 @@ export interface ToyFilters extends BaseFilters {
     end?: string;
 }
 
-export interface UpdateToyData {
+export interface ToyInput {
     name: string;
     valueForFourHours: number;
     availableQuantity: number;

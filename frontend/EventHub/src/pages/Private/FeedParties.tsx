@@ -10,7 +10,7 @@ export function Feed() {
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
             Próximos Eventos
           </h1>
-          <nav className="space-x-4">
+          <nav className="space-x-4 flex flex-row">
             <Button 
               to={"/feed/toys"}
               variant="ghost"

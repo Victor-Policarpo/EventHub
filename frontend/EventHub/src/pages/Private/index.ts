@@ -7,3 +7,4 @@ export * from './PartyEdit';
 export * from './Profile';
 export * from './ToyEdit';
 export * from './CreateEmployee';
+export * from './CreateToy';
