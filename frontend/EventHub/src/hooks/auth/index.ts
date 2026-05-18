@@ -4,3 +4,5 @@ export * from './useNewPassword';
 export * from './usePasswordValidation';
 export * from './useUpdateUser';
 export * from './useHasRole';
+export * from './useForgotPassword';
+export * from './useResetPassword';

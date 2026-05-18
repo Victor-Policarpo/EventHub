@@ -6,3 +6,5 @@ export * from './LoginUserForm';
 export * from './ProfileForm';
 export * from './CreateEmployeeForm';
 export * from './CreateToyForm';
+export * from './ForgotPasswordForm';
+export * from './ResetPasswordForm';

@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks';
-import { Login, Register, PartyDetails, PartyEdit, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile, CreateEmployee, CreateToy } from '../pages';
+import { Login, Register, PartyDetails, PartyEdit, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile, CreateEmployee, CreateToy, ForgotPassword, ResetPassword } from '../pages';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();
@@ -30,6 +30,8 @@ export const AppRoutes = () => {
         <Route path='/toy' element={<CreateToy/>}/>
       </Route>
 
+      <Route path='/forgot-password' element={<ForgotPassword/>}/>
+      <Route path='/reset-password' element={<ResetPassword/>}/>
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );

@@ -67,8 +67,8 @@ export function CreateUser(){
               label="Nome Completo"
               type="text"
               placeholder="Insira seu nome completo"
-              error={errors.name?.message}
-              {...register("name")}
+              error={errors.fullname?.message}
+              {...register("fullname")}
             />
           </div>
 

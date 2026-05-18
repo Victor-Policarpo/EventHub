@@ -1,23 +1,20 @@
-import { type RegisterFormData  } from "../../schemas/auth/registerSchema";
 import { api } from "../../lib/axios";
-import type { LoginFormData } from "../../schemas";
-import type { LoginResponse } from "../../types";
+import type { ForgotPasswordData, LoginFormData, RegisterFormData } from "../../schemas";
+import type { LoginResponse, ResetPassword } from "../../types";
 
 export const createUser = async (userData: RegisterFormData) => {
-    const { name, username, email, password } = userData;
-    return await api.post("/access/register", {
-        fullName: name,
-        username: username,
-        email: email,
-        password: password
-    });
+    return await api.post("/access/register", userData);
 }
 
 export const loginUser = async (data: LoginFormData) => {
-    const { username, password } = data;
-    return await api.post<LoginResponse>("/access/login", {
-        username, password 
-    });
+    return await api.post<LoginResponse>("/access/login", data);
 }
 
 
+export const forgotPasswordRequest = async (data: ForgotPasswordData) => {
+    return await api.post("/access/forgot-password", data)
+}
+
+export const resetPasswordRequest = async (data: ResetPassword) => {
+    return await api.post("/access/reset-password", data)
+}

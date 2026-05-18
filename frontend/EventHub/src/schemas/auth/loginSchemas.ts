@@ -2,9 +2,10 @@ import z from "zod";
 
 export const loginSchema = z.object({
         username: z.string().trim()
-        .min(6, { message: "O nome deve conter pelo menos 6 caracteres" }),
+        .min(8, { message: "O nome deve conter pelo menos 8 caracteres" }),
+
         password: z.string().trim()
-        .min(6, { message: "A senha deve conter pelo menos 6 caracteres" }).max(16, { message: "A senha deve conter no máximo 16 caracteres" })
+        .min(8, { message: "A senha deve conter pelo menos 8 caracteres" })
     
 });
 

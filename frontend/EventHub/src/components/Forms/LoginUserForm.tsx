@@ -66,6 +66,7 @@ export function LoginUser(){
                 </Button>
 
             </form>
+            <p className="mt-4">Esqueceu a Senha? <a href="/forgot-password" className="text-blue-500 hover:underline">Esqueceu a Senha</a></p>
             <p className="mt-4">Não tem uma conta? <a href="/register" className="text-blue-500 hover:underline">Registre-se</a></p>
         </main>
 
