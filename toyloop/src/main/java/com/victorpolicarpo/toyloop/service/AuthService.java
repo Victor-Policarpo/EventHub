@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,23 +49,24 @@ public class AuthService {
         if (dto == null || dto.email() == null){
             throw new BusinessRuleException("Email for recover password is empty");
         }
-        var user = userRepository.findByEmail(dto.email()).orElseThrow(
-                () -> new ResourceNotFoundException("User with this Email not found or not exist")
-        );
+        Optional<User> userOptional = userRepository.findByEmail(dto.email());
 
-        Instant now = Instant.now();
-        long expiresIn = 900L;
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            Instant now = Instant.now();
+            long expiresIn = 900L;
 
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("http://my-backend-app")
-                .subject(user.getEmail())
-                .claim("scope", "PASSWORD_RECOVERY")
-                .issuedAt(now)
-                .expiresAt(now.plusSeconds(expiresIn))
-                .build();
-        var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-        String recoverUrl = String.format("%s?token=%s", urlRecoverPassword, jwtValue);
-        emailService.sendSimpleMail(user.getEmail(), user.getUsername(), recoverUrl);
+            JwtClaimsSet claims = JwtClaimsSet.builder()
+                    .issuer("http://my-backend-app")
+                    .subject(user.getEmail())
+                    .claim("scope", "PASSWORD_RECOVERY")
+                    .issuedAt(now)
+                    .expiresAt(now.plusSeconds(expiresIn))
+                    .build();
+            var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+            String recoverUrl = String.format("%s?token=%s", urlRecoverPassword, jwtValue);
+            emailService.sendSimpleMail(user.getEmail(), user.getUsername(), recoverUrl);
+        }
     }
 
     public void resetPassword(ResetPasswordRequest dto) {
