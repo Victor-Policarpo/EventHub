@@ -50,7 +50,7 @@ export function CreateUser(){
         name: "password",
         defaultValue: ""
     });
-    const { hasMinMax, hasLetter, hasNumber, hasSpecial } = usePasswordValidation(passwordValue);
+    const { hasMinMax, hasLetter, hasNumber, hasSpecial } = usePasswordValidation(passwordValue); 
 
     return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
@@ -67,8 +67,8 @@ export function CreateUser(){
               label="Nome Completo"
               type="text"
               placeholder="Insira seu nome completo"
-              error={errors.fullname?.message}
-              {...register("fullname")}
+              error={errors.fullName?.message}
+              {...register("fullName")}
             />
           </div>
 
@@ -102,7 +102,7 @@ export function CreateUser(){
             />
             <div className="mt-3 space-y-1 text-xs">
               <p className={hasMinMax ? "text-green-400" : "text-gray-500"}>
-                {hasMinMax ? "✓" : "○"} Entre 6 e 16 caracteres
+                {hasMinMax ? "✓" : "○"} Entre 8 e 16 caracteres
               </p>
               <p className={hasLetter ? "text-green-400" : "text-gray-500"}>
                 {hasLetter ? "✓" : "○"} Pelo menos uma letra
