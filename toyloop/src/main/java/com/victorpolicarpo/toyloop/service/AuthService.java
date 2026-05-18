@@ -49,7 +49,7 @@ public class AuthService {
         if (dto == null || dto.email() == null){
             throw new BusinessRuleException("Email for recover password is empty");
         }
-        Optional<User> userOptional = userRepository.findByEmail(dto.email());
+        Optional<User> userOptional = userRepository.findByEmailAndActiveTrue(dto.email());
 
         if (userOptional.isPresent()){
             User user = userOptional.get();
@@ -76,7 +76,7 @@ public class AuthService {
             if (!"PASSWORD_RECOVERY".equals(decodedJwt.getClaimAsString("scope"))){
                 throw new BusinessRuleException("This token is invalid for this operation.");
             }
-            var user = userRepository.findByEmail(decodedJwt.getSubject()).orElseThrow(
+            var user = userRepository.findByEmailAndActiveTrue(decodedJwt.getSubject()).orElseThrow(
                     () -> new ResourceNotFoundException("User with this E-mail not found or not exist.")
             );
             user.setPassword(passwordEncoder.encode(dto.newPassword()));
