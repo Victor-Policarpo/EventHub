@@ -1,3 +1,5 @@
+import type { SelectedToyPayload } from "./toy";
+
 export interface PartyFilters {
   partyStatus?: 'SCHEDULED' | 'IN_PROGRESS' | 'FINISHED' | 'CANCELED';
   assemblyStatus?: 'TO_ASSEMBLE' | 'ASSEMBLED' | 'TO_DISASSEMBLE' | 'DISASSEMBLED' | 'NOT_APPLICABLE';
@@ -47,4 +49,15 @@ export interface UpdatePartyData {
     startDateHours: string;
     endDateHours: string;
     value: number;
+}
+
+export interface CreatePartyPayload {
+  name: string;
+  telephone: string;
+  address: string;
+  startDateHours: string;
+  endDateHours?: string;
+  value?: number;
+  toys: SelectedToyPayload[];
+  employeeId: number[];
 }

@@ -7,6 +7,10 @@ export interface EmployeeData {
     isAvailable: boolean;
 }
 
+export interface EmployeeResponse {
+    content: EmployeeData[];
+}
+
 export interface EmployeeFilters extends BaseFilters {
     start?: string;
     end?: string;

@@ -1,4 +1,5 @@
 import { Header, Button, FeedParty } from "../../components";
+import { Guard } from "../../components/Common/Guard";
 
 export function Feed() {
   return (
@@ -24,6 +25,15 @@ export function Feed() {
             >
               Funcionarios
             </Button>
+
+            <Guard role="ADMIN">
+              <Button
+                to={"/party"}
+                variant="ghost"
+              >
+                Criar Festa
+              </Button>
+            </Guard>
           </nav>
         </div>
 

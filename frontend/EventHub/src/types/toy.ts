@@ -7,6 +7,10 @@ export interface ToyData {
     availableQuantity: number;
 }
 
+export interface ToyResponse {
+    content: ToyData[];
+}
+
 export interface ToyFilters extends BaseFilters {
     start?: string;
     end?: string;
@@ -16,4 +20,9 @@ export interface ToyInput {
     name: string;
     valueForFourHours: number;
     availableQuantity: number;
+}
+
+export interface SelectedToyPayload {
+  toyId: number;
+  quantity: number;
 }
