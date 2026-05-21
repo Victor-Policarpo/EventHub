@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useGetParty } from "../../hooks/party/useGetParty";
-import { useDeleteParty } from "../../hooks/party/useDeleteParty";
-import { Button, ErrorState, Loading } from "../Ui";
-import { formatDateHours } from "../../utils/formatDateHours";
-import type { EmployeeParty, ToyParty } from "../../types";
-import { Guard } from "../Common/Guard";
+import { useGetParty } from "../../../hooks/party/useGetParty";
+import { useDeleteParty } from "../../../hooks/party/useDeleteParty";
+import { Button, ErrorState, Loading } from "../../Ui";
+import { formatDateHours } from "../../../utils/formatDateHours";
+import type { EmployeeParty, ToyParty } from "../../../types";
+import { Guard } from "../../Common/Guard";
 
 
 export function Party() {

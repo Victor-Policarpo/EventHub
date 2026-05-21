@@ -14,6 +14,7 @@ export interface ToyResponse {
 export interface ToyFilters extends BaseFilters {
     start?: string;
     end?: string;
+    excludePartyId?: number;
 }
 
 export interface ToyInput {

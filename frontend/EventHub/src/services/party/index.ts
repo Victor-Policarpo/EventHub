@@ -1,5 +1,5 @@
 export * from './deletePartyById';
-export * from './updatePartyData';
+export * from './updateParty';
 export * from './getParty';
 export * from './getPartyById';
 export * from './createParty';

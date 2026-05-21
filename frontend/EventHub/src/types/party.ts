@@ -42,15 +42,6 @@ export interface PartyDetails {
     partyStatus: 'SCHEDULED' | 'IN_PROGRESS' | 'FINISHED' | 'CANCELED';
 }
 
-export interface UpdatePartyData {
-    name: string;
-    address: string;
-    telephone: string;
-    startDateHours: string;
-    endDateHours: string;
-    value: number;
-}
-
 export interface CreatePartyPayload {
   name: string;
   telephone: string;
@@ -60,4 +51,15 @@ export interface CreatePartyPayload {
   value?: number;
   toys: SelectedToyPayload[];
   employeeId: number[];
+}
+
+export interface UpdatePartyPayload {
+  name: string;
+  telephone: string;
+  address: string;
+  startDateHours: string;
+  endDateHours: string;
+  value?: number;
+  partyToys: { toyId: number; quantity: number }[]; 
+  employees: { employeeId: number }[];
 }

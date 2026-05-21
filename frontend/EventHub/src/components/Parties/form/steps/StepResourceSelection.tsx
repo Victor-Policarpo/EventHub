@@ -1,53 +1,57 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { useAvailableResources } from '../../../../hooks';
 import { type StepFormValues } from '../../../../schemas';
-import type { SelectedToyPayload } from '../../../../types';
-import { ToySelectorCard } from '../components/ToySelectorCard';
-import { EmployeeCheckbox } from '../components/EmployeeCheckbox';
-import { createParty } from '../../../../services';
+import { ToySelectorCard } from '../../components/ToySelectorCard';
+import { EmployeeCheckbox } from '../../components/EmployeeCheckbox';
 import { Button } from '../../..'; 
 import { formatForApi } from '../../../../utils/formatDateHours';
 
-interface Step2ResourceSelectionProps {
+interface StepResourceSelectionProps {
   basicInfo: StepFormValues;
+  initialToys?: Record<number, number>;
+  initialEmployees?: number[];
   onBack: () => void;
-  onSuccess: () => void;
+  onFinalize: (payload: any) => void;
+  isSubmitting?: boolean;
+  partyId?: number;
 }
 
 type TabState = 'toys' | 'employees';
 
-export function StepResourceSelection({ basicInfo, onBack, onSuccess }: Step2ResourceSelectionProps) {
+export function StepResourceSelection({ 
+  basicInfo, 
+  initialToys = {}, 
+  initialEmployees = [], 
+  onBack, 
+  onFinalize,
+  isSubmitting,
+  partyId
+}: StepResourceSelectionProps) {
+  
   const { toys, employees, isPending, isError } = useAvailableResources(
     basicInfo.startDateHours, 
-    basicInfo.endDateHours
+    basicInfo.endDateHours,
+    partyId
   );
 
-  const [selectedToysMap, setSelectedToysMap] = useState<Record<number, number>>({});
-  const [selectedEmployees, setSelectedEmployees] = useState<number[]>([]);
+  const [selectedToysMap, setSelectedToysMap] = useState<Record<number, number>>(initialToys);
+  const [selectedEmployees, setSelectedEmployees] = useState<number[]>(initialEmployees);
   const [activeTab, setActiveTab] = useState<TabState>('toys');
   const [searchTerm, setSearchTerm] = useState('');
-
-  const { mutate: submitParty, isPending: isSubmitting } = useMutation({
-    mutationFn: createParty,
-    onSuccess: () => onSuccess(),
-    onError: (err) => {
-      console.error('Erro ao criar festa', err);
-      alert('Falha ao criar a festa. Verifique o console e tente novamente.');
-    }
-  });
 
   const handleToyChange = (toyId: number, quantity: number) => {
     setSelectedToysMap(prev => ({ ...prev, [toyId]: quantity }));
   };
 
   const handleEmployeeToggle = (employeeId: number) => {
-    setSelectedEmployees(prev => 
-      prev.includes(employeeId)
-        ? prev.filter(id => id !== employeeId)
-        : [...prev, employeeId]                
-    );
-  };
+  const targetId = Number(employeeId);
+  
+  setSelectedEmployees(prev => 
+    prev.map(Number).includes(targetId)
+      ? prev.map(Number).filter(id => id !== targetId)
+      : [...prev.map(Number), targetId]                
+  );
+};
 
   const handleTabChange = (tab: TabState) => {
     setActiveTab(tab);
@@ -55,23 +59,27 @@ export function StepResourceSelection({ basicInfo, onBack, onSuccess }: Step2Res
   };
 
   const handleFinalize = () => {
-    const toysPayload: SelectedToyPayload[] = Object.entries(selectedToysMap)
-      .filter(([_, quantity]) => quantity > 0)
+    const toysPayload = Object.entries(selectedToysMap)
+      .filter(([toyId, quantity]) => quantity > 0 && !isNaN(Number(toyId)))
       .map(([toyId, quantity]) => ({ toyId: Number(toyId), quantity }));
+
+    const employeesPayload = selectedEmployees.map(id => ({
+        employeeId: id
+    }));
 
     const startForApi = formatForApi(basicInfo.startDateHours)!; 
     const endForApi = formatForApi(basicInfo.endDateHours); 
     const parsedValue = basicInfo.value ? Number(basicInfo.value) : undefined;
 
-    submitParty({
+    onFinalize({
       name: basicInfo.name,
       telephone: basicInfo.telephone,
       address: basicInfo.address,
       startDateHours: startForApi,
       endDateHours: endForApi,
       value: parsedValue,
-      toys: toysPayload,
-      employeeId: selectedEmployees
+      partyToys: toysPayload,
+      employees: employeesPayload
     });
   };
 
@@ -140,7 +148,7 @@ export function StepResourceSelection({ basicInfo, onBack, onSuccess }: Step2Res
                     <ToySelectorCard 
                       key={toy.toyId}
                       toy={toy}
-                      quantitySelected={selectedToysMap[toy.toyId] || 0}
+                      quantitySelected={selectedToysMap[Number(toy.toyId)] || 0}
                       onChangeQuantity={handleToyChange}
                     />
                   ))}
@@ -161,7 +169,7 @@ export function StepResourceSelection({ basicInfo, onBack, onSuccess }: Step2Res
                     <EmployeeCheckbox 
                       key={employee.employeeId}
                       employee={employee}
-                      isSelected={selectedEmployees.includes(employee.employeeId)}
+                      isSelected={selectedEmployees.map(Number).includes(Number(employee.employeeId))}
                       onToggle={handleEmployeeToggle}
                     />
                   ))}

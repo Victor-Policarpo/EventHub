@@ -2,35 +2,37 @@ import { useQuery } from '@tanstack/react-query';
 import { getToys, getEmployee } from '../../services';
 import type { ToyFilters, EmployeeFilters } from '../../types';
 
-export function useAvailableResources(startDateHours: string, endDateHours?: string) {
+export function useAvailableResources(start?: string, end?: string, partyId?: number) {
   const toysQuery = useQuery({
-    queryKey: ['toys', 'available', startDateHours, endDateHours],
+    queryKey: ['toys', 'available', start, end, partyId],
     queryFn: async () => {
       const params: ToyFilters = {
         page: 0,
         size: 100,
-        start: startDateHours,
-        end: endDateHours,
+        start,
+        end,
+        excludePartyId: partyId,
       };
       const response = await getToys(params);
       return response.data.content;
     },
-    enabled: !!startDateHours, 
+    enabled: !!start, 
   });
 
   const employeesQuery = useQuery({
-    queryKey: ['employees', 'available', startDateHours, endDateHours],
+    queryKey: ['employees', 'available', start, end, partyId],
     queryFn: async () => {
       const params: EmployeeFilters = {
         page: 0,
         size: 100,
-        start: startDateHours,
-        end: endDateHours,
+        start,
+        end,
+        excludePartyId: partyId,
       };
       const response = await getEmployee(params); 
       return response.data.content;
     },
-    enabled: !!startDateHours,
+    enabled: !!start,
   });
 
   return {

@@ -1,6 +1,5 @@
 export * from './CreateUserForm';
 export * from './FormEmployeeEdit';
-export * from './FormPartyEdit';
 export * from './FormToyEdit';
 export * from './LoginUserForm';
 export * from './ProfileForm';

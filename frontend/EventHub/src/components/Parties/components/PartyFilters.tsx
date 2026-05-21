@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { PartyFilters } from "../../types";
-import { FilterBar } from "../Common";
-import { Button } from "../Ui";
+import type { PartyFilters } from "../../../types";
+import { FilterBar } from "../../Common";
+import { Button } from "../../Ui";
 
 interface Props {
     currentFilters: PartyFilters;

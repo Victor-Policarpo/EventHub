@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { usePartyData } from "../../hooks/party/usePartyData";
-import type { PartyFilters } from "../../types";
-import { Feed } from "../Common";
-import { Loading, ErrorState } from "../Ui";
-import { PartyCard } from "./PartyCard";
-import { PartyFiltersComponent } from "./PartyFilters";
+import { usePartyData } from "../../../hooks/party/usePartyData";
+import type { PartyFilters } from "../../../types";
+import { Feed } from "../../Common";
+import { Loading, ErrorState } from "../../Ui";
+import { PartyCard } from "../components/PartyCard";
+import { PartyFiltersComponent } from "../components/PartyFilters";
 
 export function FeedParty() {
     const [filters, setFilters] = useState<PartyFilters>({ 

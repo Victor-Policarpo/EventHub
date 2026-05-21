@@ -1,5 +1,5 @@
-import type { PartyData } from "../../types";
-import { Card } from "../Common";
+import type { PartyData } from "../../../types";
+import { Card } from "../../Common";
 
 export function PartyCard({ party }: { party: PartyData }) {
     return (

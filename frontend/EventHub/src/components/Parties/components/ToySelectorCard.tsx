@@ -1,4 +1,4 @@
-import { type ToyData } from '../../../../types';
+import { type ToyData } from '../../../types';
 
 interface ToySelectorCardProps {
   toy: ToyData;
@@ -23,9 +23,16 @@ export function ToySelectorCard({ toy, quantitySelected, onChangeQuantity }: Toy
     style: 'currency',
     currency: 'BRL'
   }).format(toy.valueForFourHours);
+  
+  const isSelected = quantitySelected > 0;
 
   return (
-    <div className="flex items-center justify-between p-4 my-2 border border-gray-200 rounded-lg bg-white shadow-sm">
+    <div 
+      className={`
+        flex items-center justify-between p-4 my-2 border rounded-lg shadow-sm transition-all duration-200
+        ${isSelected ? 'border-green-500 bg-green-50 ring-1 ring-green-500' : 'border-gray-200 bg-white'}
+      `}
+    >
       
       <div className="flex flex-col">
         <strong className="text-gray-800 text-lg">{toy.name}</strong>
@@ -44,7 +51,7 @@ export function ToySelectorCard({ toy, quantitySelected, onChangeQuantity }: Toy
           -
         </button>
         
-        <span className="w-5 text-center font-medium text-gray-800">
+        <span className={`w-5 text-center font-medium ${isSelected ? 'text-green-700' : 'text-gray-800'}`}>
           {quantitySelected}
         </span>
         

@@ -1,1 +1,2 @@
-export * from './CreatePartyWizard';
+export * from '../views/EditParty';
+export * from '../views/CreateParty';

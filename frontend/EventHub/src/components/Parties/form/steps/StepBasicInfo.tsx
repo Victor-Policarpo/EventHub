@@ -8,9 +8,10 @@ import { formatToDateTimeLocal } from '../../../../utils/formatDateHours';
 interface StepBasicInfoProps {
   initialData: StepFormValues | null;
   onNext: (data: StepFormValues) => void;
+  isPastEvent?: boolean;
 }
 
-export function StepBasicInfo({ initialData, onNext }: StepBasicInfoProps) {
+export function StepBasicInfo({ initialData, onNext, isPastEvent }: StepBasicInfoProps) {
   const { register, handleSubmit, formState: { errors }, control } = useForm<StepFormValues>({
     resolver: zodResolver(stepBasicInfoSchema),
     defaultValues: initialData ? {
@@ -97,9 +98,7 @@ export function StepBasicInfo({ initialData, onNext }: StepBasicInfoProps) {
             allowNegative={false}
             value={value}
             getInputRef={ref}
-            onValueChange={(vals) => {
-              onChange(vals.value);
-            }}
+            onValueChange={(vals) => onChange(vals.value)}
             error={errors.value?.message}
           />
         )}
@@ -107,7 +106,7 @@ export function StepBasicInfo({ initialData, onNext }: StepBasicInfoProps) {
 
       <div className="flex justify-end mt-2">
         <Button type="submit" className="w-full md:w-auto">
-          Continuar
+          {isPastEvent ? 'Salvar Alterações' : 'Continuar'}
         </Button>
       </div>
     </form>

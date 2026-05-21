@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { UpdatePartyData } from "../../types";
-import { updatePartyData } from "../../services";
+import { updateParty } from "../../services";
+import type { UpdatePartyPayload } from "../../types";
 
 export function useUpdateParty() {
     const queryClient = useQueryClient();
+    
     return useMutation({
-        mutationFn: ({ id, data }: { id: number; data: UpdatePartyData }) => 
-            updatePartyData(id, data), 
-        
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['party'] });
+        mutationFn: ({ id, data }: { id: number; data: UpdatePartyPayload }) => 
+            updateParty(id, data), 
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ['party', variables.id] });
             queryClient.invalidateQueries({ queryKey: ['parties-data'] });
         }
     });
