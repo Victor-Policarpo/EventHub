@@ -55,7 +55,7 @@ public class PartyService {
 
         Set<Employee> employees = new HashSet<>();
         if (dto.employeeId() != null && !dto.employeeId().isEmpty()){
-            validateEmployeesActive(new HashSet<>(dto.employeeId()), employees);
+            validateEmployeesActive(new HashSet<>(dto.employeeId()), employees, new HashSet<>());
         }
         party.setEmployees(employees);
 
@@ -75,7 +75,54 @@ public class PartyService {
         if (party.getValue() == null || party.getValue().compareTo(BigDecimal.ZERO) == 0 ) {
             party.setValue(calculateTotalValue(party));
         }
-        System.out.println("Tamanho da lista de funcionários antes de salvar: " + party.getEmployees().size());
+        return partyMapper.toResponse(partyRepository.save(party));
+    }
+
+    @Transactional
+    public PartyResponse updateParty(@Valid PartyUpdate dto, Long id) {
+        Party party = findById(id);
+        validatePartyDates(party, dto);
+        partyMapper.updateEntityFromDto(dto, party);
+
+        if (party.getPartyStatus() != Party.PartyStatus.FINISHED && party.getEndDateHours().isAfter(LocalDateTime.now())) {
+            if (dto.employees() != null) {
+
+                if (dto.employees().isEmpty()) {
+                    party.getEmployees().clear();
+                } else {
+                    Set<Long> employeeIds = dto.employees().stream()
+                            .map(EmployeePartyResponse::employeeId)
+                            .collect(Collectors.toSet());
+
+                    Set<Long> existingEmployeeIds = party.getEmployees().stream()
+                            .map(Employee::getEmployeeId)
+                            .collect(Collectors.toSet());
+
+                    checkEmployeeAvailability(employeeIds, party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
+                    Set<Employee> newEmployees = new HashSet<>();
+                    validateEmployeesActive(employeeIds, newEmployees, existingEmployeeIds);
+                    party.getEmployees().clear();
+                    party.getEmployees().addAll(newEmployees);
+                }
+            }
+            else if (dto.startDateHours() != null || dto.endDateHours() != null) {
+                Set<Long> currentEmployeeIds = party.getEmployees().stream()
+                        .map(Employee::getEmployeeId)
+                        .collect(Collectors.toSet());
+
+                checkEmployeeAvailability(currentEmployeeIds, party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
+            }
+        }
+
+        if (dto.partyToys() != null && party.getEndDateHours().isAfter(LocalDateTime.now()) && party.getPartyStatus() != Party.PartyStatus.FINISHED) {
+            validateAllStocks(dto.partyToys(), party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
+            updatePartyToys(party, dto.partyToys());
+
+            if (dto.value() == null) {
+                party.setValue(calculateTotalValue(party));
+            }
+        }
+
         return partyMapper.toResponse(partyRepository.save(party));
     }
 
@@ -90,42 +137,6 @@ public class PartyService {
         return partyPage.map(partyMapper::toListPartyResponse);
     }
 
-    @Transactional
-    public PartyResponse updateParty(@Valid PartyUpdate dto, Long id) {
-        Party party = findById(id);
-        validatePartyDates(party, dto);
-        partyMapper.updateEntityFromDto(dto, party);
-        if (party.getPartyStatus() != Party.PartyStatus.FINISHED) {
-            if (dto.employees() != null && !dto.employees().isEmpty()) {
-                Set<Long> employeeIds = dto.employees().stream()
-                        .map(EmployeePartyResponse::employeeId)
-                        .collect(Collectors.toSet());
-                checkEmployeeAvailability(employeeIds, party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
-
-                Set<Employee> newEmployees = new HashSet<>();
-                validateEmployeesActive(employeeIds, newEmployees);
-                party.setEmployees(newEmployees);
-            }
-            else if (dto.startDateHours() != null || dto.endDateHours() != null) {
-                Set<Long> currentEmployeeIds = party.getEmployees().stream()
-                        .map(Employee::getEmployeeId)
-                        .collect(Collectors.toSet());
-
-                checkEmployeeAvailability(currentEmployeeIds, party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
-            }
-        }
-
-        if (dto.partyToys() != null) {
-            validateAllStocks(dto.partyToys(), party.getStartDateHours(), party.getEndDateHours(), party.getPartyId());
-            updatePartyToys(party, dto.partyToys());
-
-            if (dto.value() == null) {
-                party.setValue(calculateTotalValue(party));
-            }
-        }
-
-        return partyMapper.toResponse(partyRepository.save(party));
-    }
 
     @Transactional
     public void delete(Long id) {
@@ -259,14 +270,17 @@ public class PartyService {
 
     }
 
-    private void validateEmployeesActive(Set<Long> employeeIds, Set<Employee> targetList) {
+    private void validateEmployeesActive(Set<Long> employeeIds, Set<Employee> targetList, Set<Long> existingEmployeeIds) {
         List<ResourceConflict> conflicts = new ArrayList<>();
+        if (existingEmployeeIds == null) {
+            existingEmployeeIds = new HashSet<>();
+        }
 
         for (Long id : employeeIds) {
             Employee emp = employeeRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
-            if (!emp.isActive()) {
+            if (!emp.isActive() && !existingEmployeeIds.contains(id)) {
                 conflicts.add(new ResourceConflict(
                         "Inactive Employee",
                         "This employee cannot be assigned because they are inactive.",

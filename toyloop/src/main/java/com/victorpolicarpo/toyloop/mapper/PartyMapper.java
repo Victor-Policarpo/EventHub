@@ -36,6 +36,9 @@ public interface PartyMapper {
 
     EmployeePartyResponse toEmployeeResponse(Employee employee);
     ListPartyResponse toListPartyResponse(Party entity);
+
+    @Mapping(target = "employees", ignore = true)
+    @Mapping(target = "partyToys", ignore = true)
     void updateEntityFromDto(PartyUpdate dto, @MappingTarget Party entity);
 
     default User map(UUID value) {

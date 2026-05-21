@@ -30,6 +30,7 @@ public interface ToyRepository extends JpaRepository<Toy, Long> {
                          JOIN pt.party p
                          WHERE pt.toy.toyId = t.toyId
                          AND p.partyStatus != 'CANCELED'
+                         AND p.partyId != :excludePartyId
                          AND p.startDateHours < :endDate
                          AND p.endDateHours > :startDate
                         ), 0)
@@ -41,6 +42,7 @@ public interface ToyRepository extends JpaRepository<Toy, Long> {
     Page<ToyResponse> findAvailableToys(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
+            @Param("excludePartyId") Long excludePartyId,
             Pageable pageable
     );
 }

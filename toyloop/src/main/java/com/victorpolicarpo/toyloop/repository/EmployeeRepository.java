@@ -36,26 +36,28 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Page<Employee> findAll(@NonNull Pageable pageable);
 
     @Query("""
-    SELECT new com.victorpolicarpo.toyloop.dto.response.EmployeeResponse(
-        e.employeeId,
-        e.name,
-        e.telephone,
-        CASE WHEN (
-            SELECT COUNT(p)
-            FROM Party p
-            JOIN p.employees emp
-            WHERE emp.employeeId = e.employeeId
-            AND p.partyStatus != 'CANCELED'
-            AND p.startDateHours < :endDate
-            AND p.endDateHours > :startDate
-        ) > 0 THEN false ELSE true END
-    )
-    FROM Employee e
-    WHERE e.active = true
+            SELECT new com.victorpolicarpo.toyloop.dto.response.EmployeeResponse(
+                e.employeeId,
+                e.name,
+                e.telephone,
+                CASE WHEN (
+                    SELECT COUNT(p)
+                    FROM Party p
+                    JOIN p.employees emp
+                    WHERE emp.employeeId = e.employeeId
+                    AND p.partyStatus != 'CANCELED'
+                    AND p.partyId != :excludePartyId
+                    AND p.startDateHours < :endDate
+                    AND p.endDateHours > :startDate
+                ) > 0 THEN false ELSE true END
+            )
+            FROM Employee e
+            WHERE e.active = true
     """)
     Page<EmployeeResponse> findAvailableEmployees(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
+            @Param("excludePartyId") Long excludePartyId,
             Pageable pageable
     );
 

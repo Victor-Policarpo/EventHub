@@ -34,9 +34,10 @@ public class EmployeeController {
     public ResponseEntity<Page<EmployeeResponse>> listAllEmployee(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @RequestParam(required = false) Long excludePartyId,
             Pageable pageable
     ) {
-        return ResponseEntity.ok(employeeService.listAllEmployee(start, end, pageable));
+        return ResponseEntity.ok(employeeService.listAllEmployee(start, end, excludePartyId, pageable));
     }
 
     @GetMapping("/{id}")

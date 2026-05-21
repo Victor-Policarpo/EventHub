@@ -33,13 +33,13 @@ public class EmployeeService {
     }
 
 
-    public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, Pageable pageable) {
+    public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, Long excludePartyId, Pageable pageable) {
         if (start == null || end == null){
             return employeeRepository.findByActiveTrue(pageable)
                     .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
         }
-
-        return employeeRepository.findAvailableEmployees(start, end, pageable);
+        Long partyIdToExclude = (excludePartyId != null) ? excludePartyId : -1L;
+        return employeeRepository.findAvailableEmployees(start, end, partyIdToExclude, pageable);
     }
 
     @Transactional
