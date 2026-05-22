@@ -1,121 +1,135 @@
 import { useParams } from "react-router-dom";
-import { useGetParty } from "../../../hooks/party/useGetParty";
-import { useDeleteParty } from "../../../hooks/party/useDeleteParty";
+import { useGetParty } from "../../../hooks";
+import { useDeleteParty } from "../../../hooks";
 import { Button, ErrorState, Loading } from "../../Ui";
 import { formatDateHours } from "../../../utils/formatDateHours";
 import type { EmployeeParty, ToyParty } from "../../../types";
-import { Guard } from "../../Common/Guard";
-
+import { Guard } from "../../Common";
+import { PartyActionButtons } from "../components/PartyActionButtons";
+import { assemblyStatusMap, partyStatusMap } from "../../../utils/statusTranslations";
 
 export function Party() {
     const { partyId } = useParams();
     const id = partyId ? Number(partyId) : NaN;
     const { data, isLoading, error, refetch } = useGetParty(id);
     const { mutate, isPending } = useDeleteParty();
-    if (!partyId || isNaN(id)) {
-        return <ErrorState message="ID da festa inválido ou não fornecido" />;
-    }
 
+    if (!partyId || isNaN(id)) return <ErrorState message="ID da festa inválido" />;
     if (isLoading) return <Loading />;
-
-    if (error) {
-        return (
-            <ErrorState
-                message="Erro ao carregar a festa 😢"
-                detail={error instanceof Error ? error.message : undefined}
-                onRetry={() => refetch()}
-            />
-        );
-    }
-
-    if (!data) {
-        return <ErrorState message="Festa não encontrada" onRetry={() => refetch()} />;
-    }
+    if (error) return <ErrorState message="Erro ao carregar a festa" onRetry={() => refetch()} />;
+    if (!data) return <ErrorState message="Festa não encontrada" onRetry={() => refetch()} />;
 
     function handleDelete() {
-        if (!confirm("Tem certeza que deseja excluir esta festa? Essa ação não pode ser desfeita.")) {
-            return;
-        }
+        if (!confirm("Tem certeza que deseja excluir esta festa? Essa ação não pode ser desfeita.")) return;
         mutate(partyId!);
     }
 
     return (
-        <div className="p-6 space-y-4">
-            <h1 className="text-2xl font-bold">Nome: {data.name}</h1>
+        <div className="max-w-5xl mx-auto p-4 md:p-6 space-y-6 text-gray-800">
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <p><strong>Telefone:</strong> {data.telephone}</p>
-                <p><strong>Valor:</strong> R$ {data.value.toFixed(2)}</p>
-                
-                <p><strong>Início:</strong> {formatDateHours(data.startDateHours)}</p>
-                <p><strong>Fim:</strong> {formatDateHours(data.endDateHours)}</p>
-                
-                <p><strong>Status:</strong> {data.partyStatus}</p>
-                <p><strong>Montagem:</strong> {data.assemblyStatus}</p>
-            </div>
-
-            <div className="border-t pt-4">
-                <strong>Brinquedos:</strong>
-                <div className="flex flex-wrap gap-2 mt-2">
-                    {data.partyToys.map((toy: ToyParty) => (
-                        <span key={toy.toyId} className="bg-blue-50 border border-blue-200 px-2 py-1 rounded">
-                            {toy.name} ({toy.quantity})
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-900">{data.name}</h1>
+                    <div className="flex flex-wrap gap-2 mt-3">
+                        <span className="px-3 py-1 bg-blue-50 text-blue-700 border border-blue-100 rounded-full text-sm font-medium">
+                            {partyStatusMap[data.partyStatus] || data.partyStatus}
                         </span>
-                    ))}
+                        <span className="px-3 py-1 bg-purple-50 text-purple-700 border border-purple-100 rounded-full text-sm font-medium">
+                            {assemblyStatusMap[data.assemblyStatus] || data.assemblyStatus}
+                        </span>
+                    </div>
+                </div>
+                <div className="shrink-0">
+                    <PartyActionButtons party={data} />
                 </div>
             </div>
 
-            <div className="border-t pt-4">
-                <strong>Monitores:</strong>
-                <div className="flex flex-wrap gap-2 mt-2">
-                    {data.employees.length > 0 ? (
-                        data.employees.map((employee: EmployeeParty) => (
-                            <span key={employee.employeeId} className="bg-green-50 border border-green-200 px-2 py-1 rounded">
-                                {employee.name}
-                            </span>
-                        ))
-                    ) : (
-                        <span className="text-gray-400 italic text-sm">
-                            Nenhum monitor escalado para esta festa.
-                        </span>
-                    )}
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Detalhes do Evento</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div>
+                        <p className="text-sm text-gray-500">Telefone</p>
+                        <p className="font-medium mt-1">{data.telephone}</p>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500">Valor Acordado</p>
+                        <p className="font-medium mt-1 text-green-600">R$ {data.value.toFixed(2)}</p>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500">Início</p>
+                        <p className="font-medium mt-1">{formatDateHours(data.startDateHours)}</p>
+                    </div>
+                    <div>
+                        <p className="text-sm text-gray-500">Término</p>
+                        <p className="font-medium mt-1">{formatDateHours(data.endDateHours)}</p>
+                    </div>
                 </div>
             </div>
-            <div className="border-t pt-4">
-                <strong>Endereço:</strong>
-                <p>{data.address}</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Brinquedos Locados</h2>
+                    <div className="flex flex-wrap gap-2">
+                        {data.partyToys.length > 0 ? (
+                            data.partyToys.map((toy: ToyParty) => (
+                                <span key={toy.toyId} className="bg-gray-50 border border-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium">
+                                    {toy.name} <span className="text-gray-400 ml-1">x{toy.quantity}</span>
+                                </span>
+                            ))
+                        ) : (
+                            <span className="text-gray-400 text-sm italic">Nenhum brinquedo escalado.</span>
+                        )}
+                    </div>
+                </div>
+
+                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Monitores</h2>
+                    <div className="flex flex-wrap gap-2">
+                        {data.employees.length > 0 ? (
+                            data.employees.map((employee: EmployeeParty) => (
+                                <span key={employee.employeeId} className="bg-gray-50 border border-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium">
+                                    {employee.name}
+                                </span>
+                            ))
+                        ) : (
+                            <span className="text-gray-400 text-sm italic">Nenhum monitor escalado.</span>
+                        )}
+                    </div>
+                </div>
+            </div>
+            
+            <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-900 mb-2">Localização</h2>
+                <p className="text-gray-600 mb-4">{data.address}</p>
                 <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`}
-                target="_blank" 
-                rel="noreferrer"
-                className="flex items-center justify-center gap-3 w-100 bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-bold shadow-lg active:scale-95 transition-all"
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.address)}`}
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-5 py-3 rounded-xl font-medium transition-colors"
                 >
-                <span>📍</span>
-                <span>Abrir no Google Maps / Waze</span>
+                    <span>📍</span> Abrir no Google Maps
                 </a>
             </div>
-
-            <div className="border-t pt-4">
-                <Guard role="ADMIN">
+            <Guard role="ADMIN">
+                <div className="flex flex-wrap gap-3 pt-4">
                     <Button
                         to={`/parties/${id}/edit`} 
-                        variant="ghost" 
-                        className="w-fit px-5 py-4 rounded-2xl"
-                        >
+                        variant="ghost"
+                    >
                         Editar Festa
                     </Button>
 
-                
                     <Button
                         variant="ghostDanger"
                         onClick={handleDelete}
                         isLoading={isPending}
                         disabled={isPending} 
-                        className="w-fit px-5 py-4 rounded-2xl">
+                        className="px-6 py-3 rounded-xl"
+                    >
                         Apagar Festa
                     </Button>
-                </Guard>
-            </div>
+                </div>
+            </Guard>
             
         </div>
     );

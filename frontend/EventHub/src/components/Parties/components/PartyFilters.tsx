@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { PartyFilters } from "../../../types";
 import { FilterBar } from "../../Common";
 import { Button } from "../../Ui";
+import { partyStatusMap, assemblyStatusMap } from "../../../utils/statusTranslations";
 
 interface Props {
     currentFilters: PartyFilters;
@@ -24,26 +25,30 @@ export function PartyFiltersComponent({ currentFilters, onApply }: Props) {
             onApply={() => onApply(temp)}
             activeFiltersDisplay={
                 <>
-                    <span className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                        {currentFilters.partyStatus}
-                    </span>
-                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                        {currentFilters.assemblyStatus}
-                    </span>
+                    {currentFilters.partyStatus && (
+                        <span className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                            {partyStatusMap[currentFilters.partyStatus]}
+                        </span>
+                    )}
+                    {currentFilters.assemblyStatus && (
+                        <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">
+                            {assemblyStatusMap[currentFilters.assemblyStatus]}
+                        </span>
+                    )}
                 </>
             }
         >
             <div className="mb-6">
                 <label className="block text-[10px] font-bold text-slate-400 uppercase mb-3 tracking-wider">Status da Festa</label>
                 <div className="flex flex-wrap gap-2">
-                    {['SCHEDULED', 'IN_PROGRESS', 'FINISHED', 'CANCELED'].map((s) => (
+                    {Object.entries(partyStatusMap).map(([key, label]) => (
                         <Button
-                            key={s}
+                            key={key}
                             variant="secondary"
-                            onClick={() => setTemp(p => ({ ...p, partyStatus: s as PartyFilters['partyStatus'] }))}
-                            className={getStatusClass(temp.partyStatus === s, 'bg-indigo-600')}
+                            onClick={() => setTemp(p => ({ ...p, partyStatus: key as PartyFilters['partyStatus'] }))}
+                            className={getStatusClass(temp.partyStatus === key, 'bg-indigo-600')}
                         >
-                            {s.replace('_', ' ')}
+                            {label}
                         </Button>
                     ))}
                 </div>
@@ -52,14 +57,14 @@ export function PartyFiltersComponent({ currentFilters, onApply }: Props) {
             <div className="mb-2">
                 <label className="block text-[10px] font-bold text-slate-400 uppercase mb-3 tracking-wider">Status da Montagem</label>
                 <div className="flex flex-wrap gap-2">
-                    {['TO_ASSEMBLE', 'ASSEMBLED', 'TO_DISASSEMBLE', 'DISASSEMBLED', 'NOT_APPLICABLE'].map((s) => (
+                    {Object.entries(assemblyStatusMap).map(([key, label]) => (
                         <Button 
-                            key={s}
+                            key={key}
                             variant="secondary"
-                            onClick={() => setTemp(p => ({ ...p, assemblyStatus: s as PartyFilters['assemblyStatus'] }))}
-                            className={getStatusClass(temp.assemblyStatus === s, 'bg-emerald-600')}
+                            onClick={() => setTemp(p => ({ ...p, assemblyStatus: key as PartyFilters['assemblyStatus'] }))}
+                            className={getStatusClass(temp.assemblyStatus === key, 'bg-emerald-600')}
                         >
-                            {s.replace('_', ' ')}
+                            {label}
                         </Button>
                     ))}
                 </div>

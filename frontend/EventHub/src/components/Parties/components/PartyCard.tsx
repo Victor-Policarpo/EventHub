@@ -1,4 +1,5 @@
 import type { PartyData } from "../../../types";
+import { assemblyStatusMap, partyStatusMap } from "../../../utils/statusTranslations";
 import { Card } from "../../Common";
 
 export function PartyCard({ party }: { party: PartyData }) {
@@ -8,8 +9,8 @@ export function PartyCard({ party }: { party: PartyData }) {
             <p className="text-gray-600">{party.address}</p>
             <div className="mt-2 text-sm">
                 <p>{party.startDateHours}</p>
-                <p>{party.partyStatus}</p>
-                <p>{party.assemblyStatus}</p>
+                <p>{partyStatusMap[party.partyStatus] || party.partyStatus}</p>
+                <p>{assemblyStatusMap[party.assemblyStatus] || party.assemblyStatus}</p>
             </div>
         </Card>
     );
