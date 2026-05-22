@@ -3,3 +3,4 @@ export * from './useGetParty';
 export * from './usePartyData';
 export * from './useUpdateParty';
 export * from './useAvailableResources';
+export * from './useCreateParty';

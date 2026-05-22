@@ -63,24 +63,28 @@ export function StepResourceSelection({
       .filter(([toyId, quantity]) => quantity > 0 && !isNaN(Number(toyId)))
       .map(([toyId, quantity]) => ({ toyId: Number(toyId), quantity }));
 
-    const employeesPayload = selectedEmployees.map(id => ({
-        employeeId: id
-    }));
-
     const startForApi = formatForApi(basicInfo.startDateHours)!; 
-    const endForApi = formatForApi(basicInfo.endDateHours); 
+    const endForApi = basicInfo.endDateHours ? formatForApi(basicInfo.endDateHours) : undefined; 
     const parsedValue = basicInfo.value ? Number(basicInfo.value) : undefined;
 
-    onFinalize({
+    const isEditing = !!partyId;
+    const basePayload: any = {
       name: basicInfo.name,
       telephone: basicInfo.telephone,
       address: basicInfo.address,
       startDateHours: startForApi,
       endDateHours: endForApi,
       value: parsedValue,
-      partyToys: toysPayload,
-      employees: employeesPayload
-    });
+    };
+
+    if (isEditing) {
+      basePayload.partyToys = toysPayload;
+      basePayload.employees = selectedEmployees.map(id => ({ employeeId: id }));
+    } else {
+      basePayload.toys = toysPayload;
+      basePayload.employeeId = selectedEmployees.map(Number);
+    }
+    onFinalize(basePayload);
   };
 
   const selectedToysCount = Object.values(selectedToysMap).filter(qtd => qtd > 0).length;

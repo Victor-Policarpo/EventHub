@@ -1,26 +1,28 @@
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { PartyFormWizard } from '../form/PartyFormWizard';
-import { createParty } from '../../../services';
+import { useCreateParty } from '../../../hooks';
+import type { CreatePartyPayload } from '../../../types';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export function CreateParty() {
   const navigate = useNavigate();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: createParty,
-    onSuccess: () => {
-        navigate('/feed', { replace: true });
+  const { mutate, isPending } = useCreateParty();
+  const handleCreateParty = (payload: CreatePartyPayload) => {
+    mutate(payload, {
+      onSuccess: () => {
         toast.success('Festa criada com sucesso!');
-    },
-    onError: () => {
-      toast.error('Erro ao criar festa. Tente novamente.');
-    }
-  });
+        navigate('/feed', { replace: true });
+      },
+      onError: (err) => {
+        toast.error('Erro ao criar a festa.');
+        console.error('Erro detalhado da criação:', err);
+      }
+    });
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <PartyFormWizard onSubmit={mutate} isSubmitting={isPending} />
+      <PartyFormWizard onSubmit={handleCreateParty} isSubmitting={isPending} />
     </div>
   );
 }
