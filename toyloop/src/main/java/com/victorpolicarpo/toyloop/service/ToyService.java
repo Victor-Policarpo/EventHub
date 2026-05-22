@@ -32,7 +32,8 @@ public class ToyService {
     }
 
     public Page<ToyResponse> listAllToys(LocalDateTime start, LocalDateTime end, Long excludePartyId, Pageable pageable) {
-        if (start == null || end == null){
+        LocalDateTime targetEnd = (end == null && start != null) ? start.plusHours(4) : end;
+        if (start == null){
             return toyRepository.findAll(pageable).map(toy -> new ToyResponse(
                     toy.getToyId(),
                     toy.getName(),
@@ -41,8 +42,7 @@ public class ToyService {
             ));
         }
         Long partyIdToExclude = (excludePartyId != null) ? excludePartyId : -1L;
-
-        return toyRepository.findAvailableToys(start, end, partyIdToExclude, pageable);
+        return toyRepository.findAvailableToys(start, targetEnd, partyIdToExclude, pageable);
     }
 
     public void updateToy(@Valid ToyUpdate dto, Long id) {
