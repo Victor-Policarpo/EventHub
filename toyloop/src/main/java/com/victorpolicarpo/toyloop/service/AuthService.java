@@ -2,6 +2,7 @@ package com.victorpolicarpo.toyloop.service;
 
 import com.victorpolicarpo.toyloop.dto.request.ForgotPasswordRequest;
 import com.victorpolicarpo.toyloop.dto.request.ResetPasswordRequest;
+import com.victorpolicarpo.toyloop.dto.response.UserSimpleResponse;
 import com.victorpolicarpo.toyloop.entity.User;
 import com.victorpolicarpo.toyloop.exception.BadCredentialsException;
 import com.victorpolicarpo.toyloop.exception.BusinessRuleException;
@@ -32,16 +33,34 @@ public class AuthService {
     @Value("${app.frontend.url.resetpassword}")
     private String urlRecoverPassword;
 
-    public User getAuthenticatedUser() {
+    public UUID getAuthenticatedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new BadCredentialsException("User is not authenticated");
         }
-        String userIdStr = authentication.getName();
-        return userRepository.findById(UUID.fromString(userIdStr)).orElseThrow(
-                () -> new ResourceNotFoundException("Authenticated user not found in the database: " + userIdStr)
+
+        return UUID.fromString(authentication.getName());
+    }
+
+    public User getAuthenticatedUser() {
+        UUID userId = getAuthenticatedUserId();
+        return userRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("Authenticated user not found in the database")
         );
+    }
+
+    public UserSimpleResponse getAuthenticatedUserSimple(){
+        UUID userId = getAuthenticatedUserId();
+        String username = userRepository.findUsernameById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        return new UserSimpleResponse(userId, username);
+    }
+
+    public UserSimpleResponse getUserSimpleById(UUID userId) {
+        String username = userRepository.findUsernameById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        return new UserSimpleResponse(userId, username);
     }
 
     @Transactional

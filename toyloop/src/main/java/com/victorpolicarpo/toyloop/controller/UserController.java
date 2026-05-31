@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<UserResponse> findUserById(){
-        return ResponseEntity.ok(userService.findUser(authService.getAuthenticatedUser().getUserId()));
+        return ResponseEntity.ok(userService.findUser(authService.getAuthenticatedUserId()));
     }
 
     @GetMapping("/users")
@@ -35,12 +35,12 @@ public class UserController {
 
     @PatchMapping("/update")
     public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserUpdate dto){
-        return ResponseEntity.ok(userService.updateUser(dto, authService.getAuthenticatedUser().getUserId()));
+        return ResponseEntity.ok(userService.updateUser(dto, authService.getAuthenticatedUserId()));
     }
 
     @PatchMapping("/change-password")
     public ResponseEntity<Void> changePassword(@Valid @RequestBody PasswordUpdate dto){
-        userService.updatePassword(dto, authService.getAuthenticatedUser().getUserId());
+        userService.updatePassword(dto, authService.getAuthenticatedUserId());
         return ResponseEntity.noContent().build();
     }
 
@@ -52,7 +52,7 @@ public class UserController {
 
     @DeleteMapping("/delete/me")
     public ResponseEntity<Void> deleteMyUser(){
-        userService.deleteUser(authService.getAuthenticatedUser().getUserId());
+        userService.deleteUser(authService.getAuthenticatedUserId());
         return ResponseEntity.noContent().build();
     }
 

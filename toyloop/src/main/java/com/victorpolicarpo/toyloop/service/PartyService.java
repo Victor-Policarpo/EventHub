@@ -3,18 +3,12 @@ package com.victorpolicarpo.toyloop.service;
 import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
 import com.victorpolicarpo.toyloop.dto.request.PartyToyRequest;
 import com.victorpolicarpo.toyloop.dto.request.TransitionRequest;
-import com.victorpolicarpo.toyloop.dto.response.EmployeePartyResponse;
-import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
-import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
-import com.victorpolicarpo.toyloop.dto.response.PartyToyResponse;
+import com.victorpolicarpo.toyloop.dto.response.*;
 import com.victorpolicarpo.toyloop.dto.update.PartyUpdate;
 import com.victorpolicarpo.toyloop.entity.*;
 import com.victorpolicarpo.toyloop.exception.*;
 import com.victorpolicarpo.toyloop.mapper.PartyMapper;
-import com.victorpolicarpo.toyloop.repository.EmployeeRepository;
-import com.victorpolicarpo.toyloop.repository.PartyRepository;
-import com.victorpolicarpo.toyloop.repository.PartyToyRepository;
-import com.victorpolicarpo.toyloop.repository.ToyRepository;
+import com.victorpolicarpo.toyloop.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +30,9 @@ public class PartyService {
     private final ToyRepository toyRepository;
     private final PartyToyRepository partyToyRepository;
     private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
     private final AuthService authService;
+    private final PartyHistoryService partyHistoryService;
 
     @Transactional
     public PartyResponse createParty(PartyRequest dto) {
@@ -44,7 +40,7 @@ public class PartyService {
             throw new ResourceAlreadyExistsException("An exist party in this hours and in this month/day");
         }
 
-        User user = authService.getAuthenticatedUser();
+        UUID currentUser = authService.getAuthenticatedUserId();
         LocalDateTime endHours = dto.endDateHours() != null ? dto.endDateHours() : dto.startDateHours().plusHours(4);
 
         checkEmployeeAvailability(dto.employeeId() != null ? new HashSet<>(dto.employeeId()) : new HashSet<>(), dto.startDateHours(), endHours, -1L);
@@ -52,7 +48,7 @@ public class PartyService {
 
         Party party = partyMapper.toEntity(dto);
         party.setEndDateHours(endHours);
-        party.setCreateBy(user);
+        party.setCreateBy(currentUser);
 
         Set<Employee> employees = new HashSet<>();
         if (dto.employeeId() != null && !dto.employeeId().isEmpty()){
@@ -76,7 +72,9 @@ public class PartyService {
         if (party.getValue() == null || party.getValue().compareTo(BigDecimal.ZERO) == 0 ) {
             party.setValue(calculateTotalValue(party));
         }
-        return partyMapper.toResponse(partyRepository.save(party));
+
+        UserSimpleResponse userSimpleResponse = authService.getAuthenticatedUserSimple();
+        return partyMapper.toResponse(partyRepository.save(party), userSimpleResponse);
     }
 
     @Transactional
@@ -124,11 +122,12 @@ public class PartyService {
             }
         }
 
-        return partyMapper.toResponse(partyRepository.save(party));
+        return partyMapper.toResponse(partyRepository.save(party), authService.getUserSimpleById(party.getCreateBy()));
     }
 
     public PartyResponse findPartyById(Long id) {
-        return partyMapper.toResponse(findById(id));
+        Party party = findById(id);
+        return partyMapper.toResponse(party, authService.getUserSimpleById(party.getCreateBy()));
     }
 
     public Page<ListPartyResponse> getByFilter(Party.PartyStatus partyStatus,
@@ -290,6 +289,7 @@ public class PartyService {
 
             case COLLECT -> collect(party);
         }
+        partyHistoryService.register(party, dto.action(), authService.getAuthenticatedUserId());
 
     }
 

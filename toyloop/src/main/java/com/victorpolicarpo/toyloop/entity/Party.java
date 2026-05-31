@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "db_party")
@@ -51,11 +52,8 @@ public class Party {
     )
     private Set<Employee> employees = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "create_by", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
-    @JsonIdentityReference(alwaysAsId = true)
-    private User createBy;
+    @Column(name = "create_by", nullable = false)
+    private UUID createBy;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PartyToy> partyToys = new HashSet<>();
