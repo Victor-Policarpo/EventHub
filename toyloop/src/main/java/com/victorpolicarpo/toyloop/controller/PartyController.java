@@ -1,6 +1,7 @@
 package com.victorpolicarpo.toyloop.controller;
 
 import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
+import com.victorpolicarpo.toyloop.dto.request.TransitionRequest;
 import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
 import com.victorpolicarpo.toyloop.dto.update.PartyUpdate;
@@ -59,27 +60,9 @@ public class PartyController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping("/{id}/start-party")
-    public ResponseEntity<Void> startParty(@PathVariable Long id){
-        partyService.startParty(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PatchMapping("/{id}/end-party")
-    public ResponseEntity<Void> endParty(@PathVariable Long id){
-        partyService.endParty(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PatchMapping("/{id}/collect-party")
-    public ResponseEntity<Void> collectParty(@PathVariable Long id){
-        partyService.collectParty(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PatchMapping("/{id}/cancel-party")
-    public ResponseEntity<Void> cancelParty(@PathVariable Long id){
-        partyService.cancelParty(id);
+    @PatchMapping("/{id}/transition")
+    public ResponseEntity<Void> transition(@PathVariable Long id,@Valid @RequestBody TransitionRequest dto){
+        partyService.transition(id, dto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

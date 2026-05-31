@@ -2,6 +2,7 @@ package com.victorpolicarpo.toyloop.service;
 
 import com.victorpolicarpo.toyloop.dto.request.PartyRequest;
 import com.victorpolicarpo.toyloop.dto.request.PartyToyRequest;
+import com.victorpolicarpo.toyloop.dto.request.TransitionRequest;
 import com.victorpolicarpo.toyloop.dto.response.EmployeePartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.ListPartyResponse;
 import com.victorpolicarpo.toyloop.dto.response.PartyResponse;
@@ -144,51 +145,6 @@ public class PartyService {
         party.setActive(false);
     }
 
-    @Transactional
-    public void startParty(Long id) {
-        Party party = findById(id);
-        if (party.getPartyStatus() != Party.PartyStatus.SCHEDULED){
-            throw new BusinessRuleException("You can't start a party with status: " + party.getPartyStatus());
-        }
-        party.setPartyStatus(Party.PartyStatus.IN_PROGRESS);
-        party.setAssemblyStatus(Party.AssemblyStatus.ASSEMBLED);
-    }
-
-    @Transactional
-    public void endParty(Long id) {
-        Party party = findById(id);
-        if (party.getPartyStatus() == Party.PartyStatus.FINISHED || party.getPartyStatus() == Party.PartyStatus.CANCELED){
-            throw new BusinessRuleException("Party already ended or canceled.");
-        }
-        party.setPartyStatus(Party.PartyStatus.FINISHED);
-        party.setAssemblyStatus(Party.AssemblyStatus.TO_DISASSEMBLE);
-    }
-
-    @Transactional
-    public void collectParty(Long id) {
-        Party party = findById(id);
-        if (party.getPartyStatus() == Party.PartyStatus.SCHEDULED || party.getPartyStatus() == Party.PartyStatus.IN_PROGRESS) {
-            throw new BusinessRuleException("The toys can only be collected after the end or cancellation of the party.");
-        } else if (party.getAssemblyStatus() != Party.AssemblyStatus.TO_DISASSEMBLE) {
-            throw new BusinessRuleException("Toys can only be collected when the status is 'To Disassemble.");
-        }
-        party.setAssemblyStatus(Party.AssemblyStatus.DISASSEMBLED);
-    }
-
-    @Transactional
-    public void cancelParty(Long id) {
-        Party party = findById(id);
-        if (party.getPartyStatus() == Party.PartyStatus.FINISHED || party.getPartyStatus() == Party.PartyStatus.CANCELED){
-            throw new BusinessRuleException("Party already ended or canceled.");
-        }
-
-        if (party.getPartyStatus() == Party.PartyStatus.IN_PROGRESS){
-            party.setAssemblyStatus(Party.AssemblyStatus.TO_DISASSEMBLE);
-        } else {
-            party.setAssemblyStatus(Party.AssemblyStatus.NOT_APPLICABLE);
-        }
-        party.setPartyStatus(Party.PartyStatus.CANCELED);
-    }
 
     private BigDecimal calculateTotalValue(Party party){
         if (party.getPartyToys() == null || party.getPartyToys().isEmpty()){
@@ -317,6 +273,81 @@ public class PartyService {
 
             party.getPartyToys().add(pt);
         }
+    }
+
+    @Transactional
+    public void transition(Long id, TransitionRequest dto) {
+        Party party = findById(id);
+
+        switch (dto.action()) {
+            case ASSEMBLE -> assemble(party);
+
+            case START -> start(party);
+
+            case FINISH -> finish(party);
+
+            case CANCEL -> cancel(party);
+
+            case COLLECT -> collect(party);
+        }
+
+    }
+
+
+    private void assemble(Party party) {
+        if (party.getPartyStatus() != Party.PartyStatus.SCHEDULED || party.getAssemblyStatus() != Party.AssemblyStatus.TO_ASSEMBLE) {
+            throw new BusinessRuleException("The toys cannot be assembled at the party.");
+        }
+
+        party.setAssemblyStatus(Party.AssemblyStatus.ASSEMBLED);
+    }
+
+
+    private void start(Party party){
+
+        if (party.getPartyStatus() != Party.PartyStatus.SCHEDULED || party.getAssemblyStatus() != Party.AssemblyStatus.ASSEMBLED){
+            throw new BusinessRuleException("The party cannot begin.");
+        }
+        party.setPartyStatus(Party.PartyStatus.IN_PROGRESS);
+    }
+
+    private void finish(Party party){
+        if (party.getPartyStatus() != Party.PartyStatus.IN_PROGRESS){
+            throw new BusinessRuleException("The party cannot finish");
+        }
+        party.setPartyStatus(Party.PartyStatus.FINISHED);
+        party.setAssemblyStatus(Party.AssemblyStatus.TO_DISASSEMBLE);
+    }
+
+    private void cancel(Party party) {
+
+        if (party.getPartyStatus() != Party.PartyStatus.SCHEDULED
+                && party.getPartyStatus() != Party.PartyStatus.IN_PROGRESS) {
+
+            throw new BusinessRuleException("Party cannot be canceled because it is " + party.getPartyStatus());
+        }
+
+        Party.AssemblyStatus nextAssemblyStatus = switch (party.getAssemblyStatus()) {
+            case TO_ASSEMBLE ->
+                    Party.AssemblyStatus.NOT_APPLICABLE;
+            case ASSEMBLED ->
+                    Party.AssemblyStatus.TO_DISASSEMBLE;
+            default ->
+                    throw new BusinessRuleException(
+                            "Party cannot be canceled during assembly state: " + party.getAssemblyStatus()
+                    );
+        };
+
+        party.setPartyStatus(Party.PartyStatus.CANCELED);
+        party.setAssemblyStatus(nextAssemblyStatus);
+    }
+
+    private void collect(Party party) {
+
+        if (party.getAssemblyStatus() != Party.AssemblyStatus.TO_DISASSEMBLE) {
+            throw new BusinessRuleException("The toys cannot be collected");
+        }
+        party.setAssemblyStatus(Party.AssemblyStatus.DISASSEMBLED);
     }
 
 }
