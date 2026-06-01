@@ -33,6 +33,14 @@ export function Feed() {
               >
                 Criar Festa
               </Button>
+              
+              <Button 
+                to={"/dashboard"}
+                variant="ghost"
+              >
+                  Dashboard
+              </Button>
+
             </Guard>
           </nav>
         </div>

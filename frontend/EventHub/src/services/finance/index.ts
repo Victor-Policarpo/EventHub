@@ -1,1 +1,1 @@
-export * from './getFinance';
+export * from './dashboard';

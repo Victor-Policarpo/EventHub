@@ -7,3 +7,4 @@ export * from './useHasRole';
 export * from './useForgotPassword';
 export * from './useResetPassword';
 export * from './useDeleteCurrentUser';
+export * from './useDashboardData';

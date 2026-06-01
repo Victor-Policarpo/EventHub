@@ -35,6 +35,13 @@ export function FeedEmployees() {
               >
                 Adicionar Funcionario
               </Button>
+
+              <Button 
+                to={"/dashboard"}
+                variant="ghost"
+              >
+                  Dashboard
+              </Button>
             </Guard>
 
           </nav>

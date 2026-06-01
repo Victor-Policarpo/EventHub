@@ -22,7 +22,11 @@ export function FeedToys(){
                         <Guard role="ADMIN">
                             <Button to={"/toy"} variant="ghost">
                                 Adicionar Brinquedo
-                            </Button>                        
+                            </Button>   
+                            <Button to={"/dashboard"} variant="ghost">
+                                Dashboard
+                            </Button>
+
                         </Guard>
 
                     </nav>
