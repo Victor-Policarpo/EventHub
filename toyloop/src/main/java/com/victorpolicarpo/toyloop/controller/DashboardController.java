@@ -1,6 +1,8 @@
 package com.victorpolicarpo.toyloop.controller;
 
 import com.victorpolicarpo.toyloop.dto.response.DashboardResponse;
+import com.victorpolicarpo.toyloop.dto.response.RevenueBreakdownResponse;
+import com.victorpolicarpo.toyloop.dto.response.RevenueChartResponse;
 import com.victorpolicarpo.toyloop.service.DashboardService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("auth/finance")
@@ -24,12 +26,27 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping
-    public ResponseEntity<DashboardResponse> getData(
+    @GetMapping("/summary")
+    public ResponseEntity<DashboardResponse> getSummary(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
 
         return ResponseEntity.ok(dashboardService.getSummary(start, end));
     }
 
+    @GetMapping("/revenue")
+    public ResponseEntity<List<RevenueChartResponse>> getRevenue(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
+    ){
+        return ResponseEntity.ok(dashboardService.getRevenueChart(start, end));
+    }
+
+    @GetMapping("/revenue-breakdown")
+    public ResponseEntity<RevenueBreakdownResponse> getRevenueBreakdown(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
+    ){
+        return ResponseEntity.ok(dashboardService.getRevenueBreakdown(start, end));
+    }
 }

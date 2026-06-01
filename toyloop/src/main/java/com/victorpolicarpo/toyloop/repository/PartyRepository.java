@@ -1,5 +1,6 @@
 package com.victorpolicarpo.toyloop.repository;
 
+import com.victorpolicarpo.toyloop.dto.response.RevenueAggregationResponse;
 import com.victorpolicarpo.toyloop.entity.Party;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,18 +41,39 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
            AND p.active = true
 """)
     List<Party> findPartiesToAutoFinish(@Param("threshold") LocalDateTime threshold);
-    long countByPartyStatusAndStartDateHoursBetween(Party.PartyStatus status, LocalDateTime start, LocalDateTime end);
+
+    long countByPartyStatusAndActiveTrueAndStartDateHoursBetween(Party.PartyStatus status, LocalDateTime start, LocalDateTime end);
+
     @Query("""
-            SELECT SUM(p.value)
-            FROM Party p
-            WHERE p.partyStatus = :status
-            AND p.startDateHours BETWEEN :start AND :end
-    """)
+        SELECT SUM(p.value)
+        FROM Party p
+        WHERE p.active = true
+        AND p.partyStatus = :status
+        AND p.startDateHours BETWEEN :start AND :end
+""")
     BigDecimal sumRevenueByStatusAndRange(
             @Param("status") Party.PartyStatus status,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );
 
+    @Query("""
+            SELECT new com.victorpolicarpo.toyloop.dto.response.RevenueAggregationResponse(
+                YEAR(p.startDateHours),
+                MONTH(p.startDateHours),
+                SUM(p.value)
+            )
+            FROM Party p
+            WHERE p.active = true
+            AND p.partyStatus = :status
+            AND p.startDateHours BETWEEN :start AND :end
+            GROUP BY YEAR(p.startDateHours), MONTH(p.startDateHours)
+            ORDER BY YEAR(p.startDateHours), MONTH(p.startDateHours)
+""")
+    List<RevenueAggregationResponse> getRevenueGroupedByMonth(
+            @Param("status") Party.PartyStatus status,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
 
 }
