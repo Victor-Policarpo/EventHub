@@ -1,5 +1,5 @@
-import { ArrowLeft } from "lucide-react";
-import { Button, ProfileForm, SecurityModal, Logout } from "../../components";
+import { ArrowLeft, NotebookText } from "lucide-react";
+import { Button, ProfileForm, SecurityModal, Logout, Guard, DeleteAccount } from "../../components";
 
 export function Profile() {
     return (
@@ -26,7 +26,17 @@ export function Profile() {
                 
                 <div className="flex flex-col items-start gap-4">
                     <SecurityModal />
+                    <Guard role="ADMIN">
+                        <Button
+                        to={"/manage-users"}
+                        variant="ghost"
+                        className="w-fit px-4 py-3 text-center"
+                    >
+                        <NotebookText size={18}/> Gerenciar Usuários
+                    </Button>
+                    </Guard>
                     <Logout />
+                    <DeleteAccount />
                 </div>
             </section>
 

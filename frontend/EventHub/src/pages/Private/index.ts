@@ -9,3 +9,4 @@ export * from './ToyEdit';
 export * from './CreateEmployee';
 export * from './CreateToy';
 export * from './CreatePartyPage';
+export * from './ManageUsers';

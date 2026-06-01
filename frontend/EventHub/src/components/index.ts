@@ -5,3 +5,4 @@ export * from './Forms';
 export * from './Employees';
 export * from './Parties';
 export * from './Toys';
+export * from './Users';
