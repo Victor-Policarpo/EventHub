@@ -17,7 +17,6 @@ public class ToyLoopRentalSystemApplication {
 
 	@PostConstruct
 	public void init() {
-		// Força a aplicação inteira a usar o fuso horário de Brasília
 		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
 	}
 }
