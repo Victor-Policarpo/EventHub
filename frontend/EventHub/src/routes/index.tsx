@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks';
-import { Login, Register, PartyDetails, PartyEditPage, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile, CreateEmployee, CreateToy, ForgotPassword, ResetPassword, CreatePartyPage, ManageUsers, DashboardFinance, NotFoundPage } from '../pages';
+import { Login, Register, PartyDetails, PartyEditPage, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Parties, Profile, CreateEmployee, CreateToy, ForgotPassword, ResetPassword, CreatePartyPage, ManageUsers, DashboardFinance, NotFoundPage } from '../pages';
 import { AppLayout } from '../components';
 
 const PrivateRoute = () => {
@@ -26,7 +26,7 @@ export const AppRoutes = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/users" element={<ManageUsers />} />
 
-          <Route path="/feed" element={<Feed />} />
+          <Route path="/parties" element={<Parties />} />
           <Route path="/parties/new" element={<CreatePartyPage />} />
           <Route path="/parties/:id" element={<PartyDetails />} />
           <Route path="/parties/:id/edit" element={<PartyEditPage />} />

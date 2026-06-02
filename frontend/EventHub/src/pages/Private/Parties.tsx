@@ -1,6 +1,6 @@
 import { FeedParty } from "../../components";
 
-export function Feed() {
+export function Parties() {
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">

@@ -8,7 +8,7 @@ export const navigationLinks = [
   },
   {
     label: "Parties",
-    path: "/feed",
+    path: "/parties",
     icon: CalendarDays,
   },
   {

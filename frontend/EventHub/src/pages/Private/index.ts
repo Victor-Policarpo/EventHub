@@ -1,6 +1,6 @@
 export * from './EmployeeEdit';
 export * from './FeedEmployees';
-export * from './FeedParties';
+export * from './Parties';
 export * from './FeedToys';
 export * from './PartyDetails';
 export * from './PartyEditPage';
