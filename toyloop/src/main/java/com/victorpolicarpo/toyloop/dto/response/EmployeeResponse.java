@@ -4,6 +4,7 @@ public record EmployeeResponse(
         Long employeeId,
         String name,
         String telephone,
+        Boolean isActive,
         Boolean isAvailable
 ){
 }

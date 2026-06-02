@@ -12,11 +12,10 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface ToyRepository extends JpaRepository<Toy, Long> {
-    boolean existsByName(String name);
+    boolean existsByNameAndActiveTrue(String name);
 
-    @Override
     @NonNull
-    Page<Toy> findAll(@NonNull Pageable pageable);
+    Page<Toy> findByActiveTrue(@NonNull Pageable pageable);
 
     @Query("""
             SELECT new com.victorpolicarpo.toyloop.dto.response.ToyResponse(

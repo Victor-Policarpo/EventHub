@@ -4,6 +4,7 @@ import com.victorpolicarpo.toyloop.dto.request.EmployeeRequest;
 import com.victorpolicarpo.toyloop.dto.response.EmployeeResponse;
 import com.victorpolicarpo.toyloop.dto.update.EmployeeUpdate;
 import com.victorpolicarpo.toyloop.entity.Employee;
+import com.victorpolicarpo.toyloop.exception.BusinessRuleException;
 import com.victorpolicarpo.toyloop.exception.ResourceAlreadyExistsException;
 import com.victorpolicarpo.toyloop.exception.ResourceNotFoundException;
 import com.victorpolicarpo.toyloop.mapper.EmployeeMapper;
@@ -35,6 +36,7 @@ public class EmployeeService {
 
     public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, Long excludePartyId, Pageable pageable) {
         LocalDateTime targetEnd = (end == null && start != null) ? start.plusHours(4) : end;
+
         if (start == null) {
             return employeeRepository.findByActiveTrue(pageable)
                     .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
@@ -46,6 +48,9 @@ public class EmployeeService {
     @Transactional
     public void update(@Valid EmployeeUpdate dto, Long id) {
         Employee employee = findById(id);
+        if (!employee.isActive()){
+            throw new BusinessRuleException("Employee is inactive");
+        }
         employeeMapper.updateEntityFromDto(dto, employee);
         employeeRepository.save(employee);
     }
@@ -57,7 +62,11 @@ public class EmployeeService {
     }
 
     public EmployeeResponse findEmployeeById(Long id) {
-        return employeeMapper.toResponse(findById(id));
+        Employee employee = findById(id);
+        if (!employee.isActive()) {
+            throw new ResourceNotFoundException("Employee not found or is inactive.");
+        }
+        return employeeMapper.toResponse(employee);
     }
 
     public Employee findById(Long id){

@@ -40,6 +40,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                 e.employeeId,
                 e.name,
                 e.telephone,
+                e.active,
                 CASE WHEN (
                     SELECT COUNT(p)
                     FROM Party p

@@ -9,18 +9,18 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface EmployeeMapper {
+
     Employee toEntity(EmployeeRequest dto);
-    @Mapping(target = "isAvailable", source = "active")
+
+    @Mapping(target = "isActive", source = "active")
+    @Mapping(target = "isAvailable", constant = "true")
     EmployeeResponse toResponse(Employee entity);
+
+    @Mapping(target = "isActive", source = "entity.active")
     @Mapping(target = "isAvailable", source = "available")
     EmployeeResponse toResponseWithAvailability(Employee entity, Boolean available);
+
     void updateEntityFromDto(EmployeeUpdate dto, @MappingTarget Employee entity);
-    List<EmployeeResponse> toResponseList(List<Employee> listEntity);
-
-
-
 }
