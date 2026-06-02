@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks';
-import { Login, Register, PartyDetails, PartyEditPage, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile, CreateEmployee, CreateToy, ForgotPassword, ResetPassword, CreatePartyPage, ManageUsers, DashboardFinance } from '../pages';
+import { Login, Register, PartyDetails, PartyEditPage, FeedToys, ToyEdit, FeedEmployees, EmployeeEdit, Feed, Profile, CreateEmployee, CreateToy, ForgotPassword, ResetPassword, CreatePartyPage, ManageUsers, DashboardFinance, NotFoundPage } from '../pages';
+import { AppLayout } from '../components';
 
 const PrivateRoute = () => {
   const { authenticated, loading } = useAuth();
@@ -16,26 +17,29 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      
       <Route element={<PrivateRoute />}>
-        <Route path="/feed" element={< Feed />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/parties/:partyId" element={<PartyDetails />} />
-        <Route path="/parties/:id/edit" element={<PartyEditPage />} />
-        <Route path='/feed/toys' element={<FeedToys/>}/>
-        <Route path='toys/:toyId' element={<ToyEdit/>}/>
-        <Route path='/feed/employees' element={<FeedEmployees/>}/>
-        <Route path='/employees/:employeeId' element={<EmployeeEdit/>}/>
-        <Route path='/employee' element={<CreateEmployee/>}/>
-        <Route path='/toy' element={<CreateToy/>}/>
-        <Route path='/party' element={<CreatePartyPage/>}/>
-        <Route path='/manage-users' element={<ManageUsers/>}/>
-        <Route path='/dashboard' element={<DashboardFinance/>}/>
+        <Route element={<AppLayout />}>
+          <Route path="/dashboard" element={<DashboardFinance />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/users" element={<ManageUsers />} />
+
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/parties/new" element={<CreatePartyPage />} />
+          <Route path="/parties/:id" element={<PartyDetails />} />
+          <Route path="/parties/:id/edit" element={<PartyEditPage />} />
+          <Route path="/toys" element={<FeedToys />} />
+          <Route path="/toys/new" element={<CreateToy />} />
+          <Route path="/toys/:id/edit" element={<ToyEdit />} /> 
+          <Route path="/employees" element={<FeedEmployees />} />
+          <Route path="/employees/new" element={<CreateEmployee />} />
+          <Route path="/employees/:id/edit" element={<EmployeeEdit />} />
+        </Route>
       </Route>
 
-      <Route path='/forgot-password' element={<ForgotPassword/>}/>
-      <Route path='/reset-password' element={<ResetPassword/>}/>
-      <Route path="*" element={<Navigate to="/login" />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };

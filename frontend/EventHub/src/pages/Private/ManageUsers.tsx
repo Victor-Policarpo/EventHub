@@ -1,6 +1,5 @@
-import { ShieldCheck, ArrowLeft } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { UserList } from "../../components";
-import { Button } from "../../components";
 
 export function ManageUsers() {
     return (
@@ -10,14 +9,6 @@ export function ManageUsers() {
                 <div className="flex flex-col gap-4 border-b border-zinc-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <div className="flex items-center gap-3">
-                            <Button
-                                to="/feed" 
-                                variant="ghost" 
-                                className="w-8 h-8 rounded-full p-0 flex items-center justify-center hover:bg-zinc-100 text-zinc-500 hover:text-zinc-700 transition-colors"
-                            >
-                                <ArrowLeft size={18} />
-                            </Button>
-
                             <div className="rounded-lg bg-zinc-100 p-1.5 text-zinc-700">
                                 <ShieldCheck size={20} />
                             </div>

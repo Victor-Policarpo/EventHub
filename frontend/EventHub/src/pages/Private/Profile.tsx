@@ -1,17 +1,8 @@
-import { ArrowLeft, NotebookText } from "lucide-react";
+import { NotebookText } from "lucide-react";
 import { Button, ProfileForm, SecurityModal, Logout, Guard, DeleteAccount } from "../../components";
-
 export function Profile() {
     return (
         <div className="max-w-4xl px-8 py-12 flex flex-col gap-10">
-            <Button 
-                to={"/feed"}
-                variant="ghost"
-                className="w-8 h-8 rounded-full p-0 flex items-center justify-center"
-            >
-                <ArrowLeft size={18} />
-            </Button>
-
             <section>
                 <h2 className="text-xl font-bold text-slate-800 mb-6">Meu Perfil</h2>
                 <ProfileForm />
@@ -28,7 +19,7 @@ export function Profile() {
                     <SecurityModal />
                     <Guard role="ADMIN">
                         <Button
-                        to={"/manage-users"}
+                        to={"/users"}
                         variant="ghost"
                         className="w-fit px-4 py-3 text-center"
                     >
