@@ -3,9 +3,10 @@ import { useDashboardData } from '../../hooks';
 import { DashboardCards } from './DashboardCards';
 import { RevenueChart } from './RevenueChart';
 import { RevenueBreakdownChart } from './RevenueBreakdownChart';
+import { ErrorState, Loading } from '../Ui';
 
 export const FinanceDashboard: React.FC = () => {
-  const { summary, chartData, breakdown, isLoading, isError, filters, updateFilters } = useDashboardData();
+  const { summary, chartData, breakdown, isLoading, isError, filters, updateFilters, refetchAll } = useDashboardData();
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,7 +19,7 @@ export const FinanceDashboard: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-100 w-full">
-        <p className="text-lg font-medium text-gray-600 animate-pulse">Carregando dados do painel...</p>
+        <Loading/>
       </div>
     );
   }
@@ -26,7 +27,7 @@ export const FinanceDashboard: React.FC = () => {
   if (isError) {
     return (
       <div className="flex items-center justify-center min-h-100 w-full">
-        <p className="text-lg font-medium text-red-600">Erro ao carregar os dados do dashboard. Tente novamente.</p>
+        <ErrorState onRetry={refetchAll} message='Erro ao carregar os dados do dashboard. Tente novamente.'/>
       </div>
     );
   }

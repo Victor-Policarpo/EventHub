@@ -63,3 +63,19 @@ export interface UpdatePartyPayload {
   partyToys: { toyId: number; quantity: number }[]; 
   employees: { employeeId: number }[];
 }
+
+export type PartyTransitionAction = 'ASSEMBLE' | 'START' | 'FINISH' | 'CANCEL' | 'COLLECT';
+
+export interface TransitionRequest {
+  action: PartyTransitionAction;
+}
+
+export interface PartyHistoryItem {
+  id: number;
+  action: PartyTransitionAction;
+  performedAt: string;
+  performedBy: {
+    id: string;
+    username: string;
+  };
+}
