@@ -12,7 +12,7 @@ interface ActionButtonsProps {
 
 export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, partyStatus, assemblyStatus }) => {
   const { mutate: transition, isPending } = usePartyTransition(partyId);
-
+ 
   const handleAction = (action: PartyTransitionAction) => {
       transition(action, {
         onSuccess: () => {

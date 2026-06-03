@@ -6,12 +6,14 @@ export function PartyEditPage() {
     const id = Number(partyId);
 
     return (
-        <div className="p-4">
+        <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 flex justify-center">
             {id ? (
                 <EditParty partyId={id} />
             ) : (
-                <p className="text-center text-gray-500 mt-8">ID da festa inválido.</p>
+                <div className="w-full max-w-4xl mx-auto flex items-center justify-center p-12 bg-white rounded-2xl border border-red-100 shadow-sm">
+                    <p className="text-center text-red-600 font-medium">ID da festa inválido ou corrompido.</p>
+                </div>
             )}
         </div>
     );
-}1
+}

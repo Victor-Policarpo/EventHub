@@ -6,109 +6,113 @@ import { NumericFormat, PatternFormat } from 'react-number-format';
 import { formatToDateTimeLocal } from '../../../../utils/formatDateHours';
 
 interface StepBasicInfoProps {
-  initialData: StepFormValues | null;
-  onNext: (data: StepFormValues) => void;
-  isPastEvent?: boolean;
+    initialData: StepFormValues | null;
+    onNext: (data: StepFormValues) => void;
+    isPastEvent?: boolean;
 }
 
 export function StepBasicInfo({ initialData, onNext, isPastEvent }: StepBasicInfoProps) {
-  const { register, handleSubmit, formState: { errors }, control } = useForm<StepFormValues>({
-    resolver: zodResolver(stepBasicInfoSchema),
-    defaultValues: initialData ? {
-      ...initialData,
-      startDateHours: formatToDateTimeLocal(initialData.startDateHours),
-      endDateHours: formatToDateTimeLocal(initialData.endDateHours),
-    } : {
-      name: '',
-      telephone: '',
-      address: '',
-      startDateHours: '',
-      endDateHours: '',
-      value: '',
-    },
-  });
+    const { register, handleSubmit, formState: { errors }, control } = useForm<StepFormValues>({
+        resolver: zodResolver(stepBasicInfoSchema),
+        defaultValues: initialData ? {
+            ...initialData,
+            startDateHours: formatToDateTimeLocal(initialData.startDateHours),
+            endDateHours: formatToDateTimeLocal(initialData.endDateHours),
+        } : {
+            name: '',
+            telephone: '',
+            address: '',
+            startDateHours: '',
+            endDateHours: '',
+            value: '',
+        },
+    });
 
-  return (
-    <form 
-      onSubmit={handleSubmit(onNext)} 
-      className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-sm"
-    >
-      <Input
-        label="Nome do Responsável"
-        placeholder='Insira o nome do responsavel pela festa...'
-        type="text"
-        error={errors.name?.message}
-        {...register('name')}
-      />
+    return (
+        <form 
+            onSubmit={handleSubmit(onNext)}
+            className="flex flex-col gap-5 p-5 sm:p-8 bg-white rounded-2xl shadow-sm border border-slate-200"
+        >
+            <Input
+                label="Nome do Responsável"
+                placeholder='Insira o nome do responsável...'
+                type="text"
+                error={errors.name?.message}
+                {...register('name')}
+            />
 
-      <Controller
-        control={control}
-        name="telephone"
-        render={({ field: { onChange, value, ref } }) => (
-          <PatternFormat
-            customInput={Input} 
-            label="Telefone"
-            format="(##) #####-####"
-            mask="_"
-            value={value}
-            getInputRef={ref}
-            onValueChange={(vals) => onChange(vals.formattedValue)}
-            error={errors.telephone?.message}
-            placeholder="(00) 00000-0000"
-          />
-        )}
-      />
+            <Controller
+                control={control}
+                name="telephone"
+                render={({ field: { onChange, value, ref } }) => (
+                    <PatternFormat 
+                        customInput={Input} 
+                        label="Telefone / WhatsApp"
+                        format="(##) #####-####"
+                        mask="_"
+                        value={value}
+                        getInputRef={ref}
+                        onValueChange={(vals) => onChange(vals.formattedValue)}
+                        error={errors.telephone?.message}
+                        placeholder="(00) 00000-0000"
+                    />
+                )}
+            />
 
-      <Input
-        label="Endereço"
-        placeholder='Insira o endereço da festa...'
-        type="text"
-        error={errors.address?.message}
-        {...register('address')}
-      />
+            <Input
+                label="Endereço Completo"
+                placeholder='Insira o endereço da festa...'
+                type="text"
+                error={errors.address?.message}
+                {...register('address')}
+            />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input
-          label="Início"
-          type="datetime-local"
-          error={errors.startDateHours?.message}
-          {...register('startDateHours')}
-        />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <Input
+                    label="Início da Festa"
+                    type="datetime-local"
+                    error={errors.startDateHours?.message}
+                    {...register('startDateHours')}
+                />
 
-        <Input
-          label="Fim"
-          type="datetime-local"
-          error={errors.endDateHours?.message}
-          {...register('endDateHours')}
-        />
-      </div>
+                <Input
+                    label="Fim da Festa"
+                    type="datetime-local"
+                    error={errors.endDateHours?.message}
+                    {...register('endDateHours')}
+                />
+            </div>
 
-      <Controller
-        control={control}
-        name="value"
-        render={({ field: { onChange, value, ref } }) => (
-          <NumericFormat
-            customInput={Input}
-            label="Valor da Festa"
-            thousandSeparator="."
-            decimalSeparator=","
-            prefix="R$ "
-            decimalScale={2}
-            fixedDecimalScale
-            allowNegative={false}
-            value={value}
-            getInputRef={ref}
-            onValueChange={(vals) => onChange(vals.value)}
-            error={errors.value?.message}
-          />
-        )}
-      />
+            <Controller
+                control={control}
+                name="value"
+                render={({ field: { onChange, value, ref } }) => (
+                    <NumericFormat
+                        customInput={Input}
+                        label="Valor Total da Festa"
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        prefix="R$ "
+                        decimalScale={2}
+                        fixedDecimalScale
+                        allowNegative={false}
+                        value={value}
+                        getInputRef={ref}
+                        onValueChange={(vals) => onChange(vals.value)}
+                        error={errors.value?.message}
+                    />
+                )}
+            />
 
-      <div className="flex justify-end mt-2">
-        <Button type="submit" className="w-full md:w-auto">
-          {isPastEvent ? 'Salvar Alterações' : 'Continuar'}
-        </Button>
-      </div>
-    </form>
-  );
+            <div className="flex justify-end mt-4 pt-4 border-t border-slate-100">
+                <Button 
+                    type="submit" 
+                    variant="primary"
+                    className="w-full sm:w-auto px-8 min-h-12"
+                >
+                    {isPastEvent ? 'Salvar Alterações' : 'Continuar para Recursos'}
+                </Button>
+            </div>
+        </form>
+    );
 }
