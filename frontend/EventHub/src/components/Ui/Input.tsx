@@ -11,8 +11,8 @@ function InputComponent(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <div className="flex flex-col gap-1.5 mb-4 w-full">
-      <label htmlFor={name} className="text-sm font-medium text-slate-700">
+    <div className="flex flex-col gap-1.5 w-full">
+      <label htmlFor={name} className="text-base font-medium text-slate-800">
         {label}
       </label>
       
@@ -21,7 +21,7 @@ function InputComponent(
         name={name}
         id={name}
         className={twMerge(
-          "w-full min-h-11 px-4 py-2.5 bg-white border rounded-lg text-sm text-slate-900 placeholder:text-slate-400 transition-all outline-none",
+          "w-full min-h-12 px-4 py-3 bg-white border rounded-xl text-base text-slate-900 placeholder:text-slate-400 transition-all outline-none",
           "disabled:opacity-50 disabled:bg-slate-50 disabled:cursor-not-allowed",
           error 
             ? "border-red-600 focus:border-red-600 focus:ring-2 focus:ring-red-600/20" 
@@ -30,15 +30,18 @@ function InputComponent(
         )}
         {...props}
       />
-
-      <div className="h-5">
-        {error && (
-            <span className="text-xs text-red-600 font-medium">
-                {error}
-            </span>
+      <div className="mt-0.5 flex flex-col">
+        {error ? (
+          <span className="text-sm text-red-600 font-medium animate-in fade-in duration-200">
+            {error}
+          </span>
+        ) : (
+          <span className="text-sm text-transparent select-none pointer-events-none" aria-hidden="true">
+            &nbsp;
+          </span>
         )}
       </div>
-  </div>
+    </div>
   );
 }
 

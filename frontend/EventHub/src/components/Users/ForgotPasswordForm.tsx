@@ -24,25 +24,24 @@ export function ForgotPasswordForm() {
     }
 
     return (
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
-
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <Input 
-                    type="email"
-                    label="E-mail"
-                    placeholder="Insira seu E-mail"
-                    error={errors.email?.message}
-                    {...register("email")}
-                />
-                <Button 
-                    type="submit"
-                    variant="primary"
-                    disabled={isPending}
-                    isLoading={isPending}
-                >
-                    Enviar E-mail de Recuperação
-                </Button>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-2">
+            <Input 
+                type="email"
+                label="E-mail"
+                placeholder="Ex: joao@exemplo.com"
+                error={errors.email?.message}
+                {...register("email")}
+            />
+            
+            <Button 
+                type="submit"
+                variant="primary"
+                disabled={isPending}
+                isLoading={isPending}
+                className="w-full mt-2 min-h-12 text-base"
+            >
+                Enviar E-mail de Recuperação
+            </Button>
+        </form>
     );
 }
