@@ -1,10 +1,18 @@
 import { LayoutDashboard, Package, Users, CalendarDays, StickyNote, Blocks, UserPlus } from "lucide-react";
 
-export const navigationLinks = [
+export interface NavigationLink {
+  label: string;
+  path: string;
+  icon: React.ElementType;
+  requiredRole?: 'ADMIN' | 'BASIC';
+}
+
+export const navigationLinks: NavigationLink[] = [
   {
     label: "Dashboard",
     path: "/dashboard",
     icon: LayoutDashboard,
+    requiredRole: "ADMIN",
   },
   {
     label: "Parties",
@@ -23,7 +31,7 @@ export const navigationLinks = [
   },
 ];
 
-export const adminLinks = [
+export const adminLinks: NavigationLink[] = [
   {
     label: "Create Party",
     path: "/parties/new",
