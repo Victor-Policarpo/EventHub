@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { usePartyData } from "../../../hooks/party/usePartyData";
+import { usePartyData } from "../../../hooks";
 import type { PartyFilters } from "../../../types";
 import { Feed } from "../../Common";
 import { Loading, ErrorState } from "../../Ui";

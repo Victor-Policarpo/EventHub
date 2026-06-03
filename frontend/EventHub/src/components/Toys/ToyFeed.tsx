@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useToyData } from "../../hooks";
+import { useToyData, useHasRole } from "../../hooks";
 import type { ToyFilters } from "../../types";
 import { Feed } from "../Common";
 import { Loading, ErrorState, DateFiltersComponent } from "../Ui";
 import { ToyCard } from "./ToyCard";
-import { useHasRole } from "../../hooks";
 
 export function Toys(){
     const [filters, setFilters] = useState<ToyFilters>({

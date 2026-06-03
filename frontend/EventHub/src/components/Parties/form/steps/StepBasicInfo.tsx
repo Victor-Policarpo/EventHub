@@ -1,7 +1,7 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { stepBasicInfoSchema, type StepFormValues } from '../../../../schemas';
-import { Button, Input } from '../../..';
+import { Button, Input } from '../../../Ui';
 import { NumericFormat, PatternFormat } from 'react-number-format';
 import { formatToDateTimeLocal } from '../../../../utils/formatDateHours';
 

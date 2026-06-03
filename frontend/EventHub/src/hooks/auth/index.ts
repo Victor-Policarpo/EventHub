@@ -8,3 +8,6 @@ export * from './useForgotPassword';
 export * from './useResetPassword';
 export * from './useDeleteCurrentUser';
 export * from './useDashboardData';
+export * from './useGetUsersData';
+export * from './useToggleUserActive';
+export * from './useToggleUserDelete';

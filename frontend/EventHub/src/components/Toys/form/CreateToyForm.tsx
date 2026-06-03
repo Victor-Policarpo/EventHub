@@ -1,8 +1,8 @@
 import { NumericFormat } from "react-number-format";
-import { Button, Input } from "../Ui";
-import { useCreateToy } from "../../hooks";
+import { Button, Input } from "../../Ui";
+import { useCreateToy } from "../../../hooks";
 import { useForm, type Resolver } from "react-hook-form";
-import { createToySchema, type CreateToyData } from "../../schemas";
+import { createToySchema, type CreateToyData } from "../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
@@ -19,7 +19,7 @@ export function CreateToyForm() {
         mutate(data, {
             onSuccess: () => {
                 toast.success(`${data.name} criado com sucesso!`);
-                navigate("/toys/new", { replace: true });
+                navigate("/toys", { replace: true });
             },
             onError: (error) => {  
                 toast.error(`Erro ao criar brinquedo: ${error.message}`);

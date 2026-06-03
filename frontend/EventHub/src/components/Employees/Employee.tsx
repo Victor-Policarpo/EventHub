@@ -1,9 +1,9 @@
 import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDeleteEmployee } from "../../hooks";
-import { FormEmployeeEdit } from "../Forms";
+import { FormEmployeeEdit } from "./forms/FormEmployeeEdit";
 import { Button } from "../Ui";
-import { Guard } from "../Common/Guard";
+import { Guard } from "../Common";
 
 export function Employee() {
     const { employeeId } = useParams();

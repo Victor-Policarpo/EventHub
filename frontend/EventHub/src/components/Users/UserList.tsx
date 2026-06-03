@@ -1,11 +1,8 @@
 import { ShieldAlert, ShieldCheck, UserCheck, UserX } from "lucide-react";
-import { useGetUsersData } from "../../hooks/auth/useGetUsersData";
+import { useGetUsersData, useToggleUserActive, useToggleUserDelete, useCurrentUser } from "../../hooks";
 import { Button, ErrorState, Loading } from "../Ui";
-import { useToggleUserActive } from "../../hooks/auth/useToggleUserActive";
 import toast from "react-hot-toast";
-import { useToggleUserDelete } from "../../hooks/auth/useToggleUserDelete";
 import type { UserDataResponse } from "../../types";
-import { useCurrentUser } from "../../hooks";
 
 export function UserList() {
     const { data, isLoading, isError, refetch } = useGetUsersData();

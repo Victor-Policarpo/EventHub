@@ -2,7 +2,7 @@
 import { SidebarLink } from "./SidebarLink";
 import { navigationLinks, adminLinks } from "../../../utils/links";
 import { Guard } from "../../Common";
-import { ProfileCard } from "../ProfileCard";
+import { ProfileCard } from "../../Users";
 import logoUrl from "../../../assets/Logo/Logo-PlimPlim-teste.svg";
 
 export function Sidebar() {

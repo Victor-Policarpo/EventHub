@@ -3,7 +3,7 @@ import { useAvailableResources } from '../../../../hooks';
 import { type StepFormValues } from '../../../../schemas';
 import { ToySelectorCard } from '../../components/ToySelectorCard';
 import { EmployeeCheckbox } from '../../components/EmployeeCheckbox';
-import { Button } from '../../..'; 
+import { Button } from '../../../Ui'; 
 import { formatForApi } from '../../../../utils/formatDateHours';
 
 interface StepResourceSelectionProps {

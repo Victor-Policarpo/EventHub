@@ -1,10 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { createEmployeeSchema, type CreateEmployeeData } from "../../schemas";
+import { createEmployeeSchema, type CreateEmployeeData } from "../../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "../Ui";
+import { Button, Input } from "../../Ui";
 import { PatternFormat } from "react-number-format";
-import { useCreateEmployee } from "../../hooks";
+import { useCreateEmployee } from "../../../hooks";
 import toast from "react-hot-toast";
 
 export function CreateEmployeeForm() {

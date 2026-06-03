@@ -1,5 +1,5 @@
 import { LogOut } from "lucide-react";
-import { useAuth } from "../../hooks/auth/useAuth";
+import { useAuth } from "../../hooks";
 import { Button } from "../Ui";
 
 
