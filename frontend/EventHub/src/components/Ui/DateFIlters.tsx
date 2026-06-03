@@ -67,31 +67,33 @@ export function DateFiltersComponent({ currentFilters, onApply }: Props) {
         <FilterBar 
             onApply={handleApply}
             activeFiltersDisplay={
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
                     {displayStart && (
-                        <span className="bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                            <Clock size={12} />
+                        <span className="bg-white border border-slate-200 text-slate-700 shadow-sm px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5">
+                            <Clock size={14} className="text-slate-400" />
                             Início: {formatDateHours(displayStart)}
                         </span>
                     )}
                     
                     {displayStart && displayEnd && (
-                        <ArrowRight size={14} className="text-gray-400" />
+                        <ArrowRight size={14} className="text-slate-300" />
                     )}
 
                     {displayEnd && (
-                        <span className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                            <Clock size={12} />
+                        <span className="bg-white border border-slate-200 text-slate-700 shadow-sm px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5">
+                            <Clock size={14} className="text-slate-400" />
                             Fim: {formatDateHours(displayEnd)}
                         </span>
                     )}
                 </div>
             }
         >
-            <div className="space-y-4">
-                <div className="space-y-2">
-                    <span className="text-xs font-semibold text-gray-500 block">Período de Início</span>
-                    <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Período de Início
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <Input
                             label="Data"
                             type="date"
@@ -107,10 +109,12 @@ export function DateFiltersComponent({ currentFilters, onApply }: Props) {
                     </div>
                 </div>
 
-                <hr className="border-gray-100" />
-                <div className="space-y-2">
-                    <span className="text-xs font-semibold text-gray-500 block">Período de Fim (Opcional)</span>
-                    <div className="grid grid-cols-2 gap-2">
+                <hr className="border-slate-100" />
+                <div className="flex flex-col gap-3">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Período de Fim <span className="font-normal normal-case text-slate-400 ml-1">(Opcional)</span>
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <Input
                             label="Data"
                             type="date"
