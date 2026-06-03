@@ -9,14 +9,16 @@ export function ManageUsers() {
                 <div className="flex flex-col gap-4 border-b border-zinc-200 pb-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <div className="flex items-center gap-3">
-                            <div className="rounded-lg bg-zinc-100 p-1.5 text-zinc-700">
+                            {/* shrink-0 adicionado para o ícone não amassar no mobile */}
+                            <div className="shrink-0 rounded-lg bg-zinc-100 p-2 text-zinc-700">
                                 <ShieldCheck size={20} />
                             </div>
                             <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
                                 Gerenciar Usuários
                             </h1>
                         </div>
-                        <p className="mt-2 text-sm text-zinc-500 ml-11">
+                        {/* Margem ajustada para alinhar com o texto apenas no desktop */}
+                        <p className="mt-3 text-sm text-zinc-500 sm:ml-12 sm:mt-1">
                             Controle o acesso ao sistema, visualize perfis ativos e revogue ou permita permissões da equipe.
                         </p>
                     </div>
