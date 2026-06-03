@@ -1,25 +1,35 @@
+import { Button } from "../../components";
+
 export function NotFoundPage() {
   return (
-    <div>
-      <main className="grid min-h-full place-items-center bg-gray-900 px-6 py-24 sm:py-32 lg:px-8">
-        <div className="text-center">
-          <p className="text-base font-semibold text-indigo-400">404</p>
-          <h1 className="mt-4 text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
-            Pagina não encontrada
-          </h1>
-          <p className="mt-6 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-            Descule, nós nao encontramos a página que você está procurando.
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <a
-              href="/login"
-              className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            >
-              Go back home
-            </a>
-          </div>
-        </div>
-      </main>
-    </div>
+    // Canvas minimalista: fundo totalmente branco e conteúdo centralizado
+    <main className="min-h-screen w-full flex flex-col items-center justify-center bg-white px-6 py-16 text-center">
+      
+      {/* 404 atuando como âncora visual (substituindo ilustrações) */}
+      <p className="text-6xl md:text-8xl font-extrabold text-blue-600 tracking-tighter">
+        404
+      </p>
+      
+      {/* Hierarquia clara de título e subtítulo */}
+      <h1 className="mt-6 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        Página não encontrada
+      </h1>
+      
+      <p className="mt-4 text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+        Desculpe, não conseguimos encontrar a página que você está procurando. Verifique o link ou retorne para o início.
+      </p>
+      
+      {/* Botão espaçado para garantir o "respiro" do layout */}
+      <div className="mt-10 w-full sm:w-auto">
+        <Button 
+          to="/login" 
+          variant="primary" 
+          className="w-full sm:w-auto min-h-12 px-8 text-base"
+        >
+          Ir para o Login
+        </Button>
+      </div>
+      
+    </main>
   );
 }
