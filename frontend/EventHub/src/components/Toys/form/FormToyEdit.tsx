@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NumericFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetToy } from "../../../hooks";
-import { useUpdateToy } from "../../../hooks";
+import { Package } from "lucide-react"; // Adicionado ícone para o cabeçalho
+import { useGetToy, useUpdateToy } from "../../../hooks";
 import { type UpdateToyInput, type UpdateToyOutput, updateToySchema } from "../../../schemas";
 import { Loading, ErrorState, Input, Button } from "../../Ui";
 
@@ -25,9 +25,11 @@ export function FormToyEdit() {
         } : undefined
     });
 
-    if (isLoading) return <Loading />;
-    if (isError) return <ErrorState message="Erro ao carregar brinquedo 😢" onRetry={() => refetch()} />;
-    if (!data) return <ErrorState message="Brinquedo não encontrado" onRetry={() => refetch()} />;
+    if (isLoading) return (
+        <div className="py-12 flex justify-center"><Loading /></div>
+    );
+    if (isError) return <ErrorState message="Erro ao carregar dados do brinquedo." onRetry={() => refetch()} />;
+    if (!data) return <ErrorState message="Brinquedo não encontrado." onRetry={() => refetch()} />;
 
     const onSubmit = (values: UpdateToyOutput) => {
         mutate({ id, data: values }, {
@@ -42,28 +44,34 @@ export function FormToyEdit() {
     };
 
     return (
-        <div className="p-6 space-y-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4 w-125">
-                <div>
-                    <Input
-                        label="Brinquedo"
-                        error={errors.name?.message}
-                        {...register("name")}
-                    />
+        <div className="flex flex-col gap-6">
+            <div className="pb-4 border-b border-slate-100 flex items-center gap-3">
+                <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                    <Package size={20} />
                 </div>
+                <div>
+                    <h2 className="text-lg font-semibold text-slate-900 tracking-tight">
+                        Editar Brinquedo
+                    </h2>
+                    <p className="text-sm text-slate-500">
+                        Atualize as informações de estoque e valores.
+                    </p>
+                </div>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-5">
                 
-                <div>
-                    <Input
-                        label="Quantidade Disponível"
-                        type="number"
-                        error={errors.availableQuantity?.message}
-                        {...register("availableQuantity")}
-                    />
-                </div>
-                <div>
+                <Input
+                    label="Nome do Brinquedo"
+                    type="text"
+                    error={errors.name?.message}
+                    {...register("name")}
+                />
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <NumericFormat
                         customInput={Input}
-                        label="Valor (4 horas)"
+                        label="Valor (Período de 4h)"
                         thousandSeparator="."
                         decimalSeparator=","
                         prefix="R$ "
@@ -75,11 +83,27 @@ export function FormToyEdit() {
                             setValue("valueForFourHours", values.value); 
                         }}
                     />
+
+                    <Input
+                        label="Quantidade Disponível"
+                        type="number"
+                        error={errors.availableQuantity?.message}
+                        {...register("availableQuantity")}
+                    />
                 </div>
 
-               <Button type="submit" isLoading={isPending} variant="primary">
-                    Atualizar Brinquedo
-                </Button>
+                <div className="pt-4 flex justify-end">
+                    <Button 
+                        type="submit" 
+                        isLoading={isPending} 
+                        disabled={isPending}
+                        variant="primary"
+                        className="w-full sm:w-auto px-8 min-h-12"
+                    >
+                        Atualizar Brinquedo
+                    </Button>
+                </div>
+                
             </form>
         </div>
     );

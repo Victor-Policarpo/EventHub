@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 export function CreateToyForm() {
     const navigate = useNavigate();
     const { mutate, isPending } = useCreateToy();
-    const {  register, handleSubmit, setValue, formState: { errors } } = useForm<CreateToyData>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<CreateToyData>({
         resolver: zodResolver(createToySchema) as Resolver<CreateToyData>,
         mode: "onBlur"
     });
@@ -26,58 +26,57 @@ export function CreateToyForm() {
             }
         });
     };
+
     return (
-        <div>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 p-4 w-125">
-                <div>
-                    <Input
-                        label="Brinquedo"
-                        placeholder="Digite o nome do brinquedo"
-                        type="text"
-                        {...register("name")}
-                        error={errors.name?.message}
-                    />
-                </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-5">
+            
+            <Input
+                label="Nome do Brinquedo"
+                placeholder="Ex: Pula-Pula Castelo"
+                type="text"
+                {...register("name")}
+                error={errors.name?.message}
+            />
 
-                <div>
-                    <NumericFormat
-                        customInput={Input}
-                        label="Valor do brinquedo"
-                        placeholder="R$ 0,00"
-                        thousandSeparator="."
-                        decimalSeparator=","
-                        prefix="R$ "
-                        decimalScale={2}
-                        fixedDecimalScale
-                        error={errors.valueForFourHours?.message}
-                        {...register("valueForFourHours")}
-                        onValueChange={(values) => {
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <NumericFormat
+                    customInput={Input}
+                    label="Valor (Período de 4h)"
+                    placeholder="R$ 0,00"
+                    thousandSeparator="."
+                    decimalSeparator=","
+                    prefix="R$ "
+                    decimalScale={2}
+                    fixedDecimalScale
+                    error={errors.valueForFourHours?.message}
+                    {...register("valueForFourHours")}
+                    onValueChange={(values) => {
                         setValue("valueForFourHours", values.floatValue as number, {
-                        shouldValidate: true
-                    }); 
-                }}
-                    />
-                </div>
+                            shouldValidate: true
+                        }); 
+                    }}
+                />
 
-                <div>
-                    <Input
-                        label="Quantidade Disponível"
-                        placeholder="Digite a quantidade disponível do brinquedo"
-                        {...register("availableQuantity", { valueAsNumber: true })}
-                        error={errors.availableQuantity?.message}
-                    />
-                </div>
-                
+                <Input
+                    label="Quantidade em Estoque"
+                    placeholder="Ex: 2"
+                    type="number"
+                    {...register("availableQuantity", { valueAsNumber: true })}
+                    error={errors.availableQuantity?.message}
+                />
+            </div>
+            
+            <div className="pt-4 flex justify-end">
                 <Button
                     type="submit"
                     isLoading={isPending}
                     disabled={isPending}
                     variant="primary"
+                    className="w-full sm:w-auto px-8 min-h-12"
                 >
                     Criar Brinquedo
                 </Button>
-
-            </form>
-        </div>
+            </div>
+        </form>
     );
 }

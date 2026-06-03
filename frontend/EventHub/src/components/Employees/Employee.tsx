@@ -27,22 +27,33 @@ export function Employee() {
     }
 
     return (
-            <div className="border-t pt-4">
+        <div className="w-full flex flex-col gap-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
                 <FormEmployeeEdit employeeId={id} />
-                <div className="mt-8">
-                    <Guard role="ADMIN">
-                        <Button
-                            variant="ghostDanger"
-                            onClick={handleDelete}
-                            isLoading={isPending}
-                            disabled={isPending}
-                            className="w-fit px-4 py-3 text-center"
-                            >
-                                Excluir Funcionário
-                        </Button>
-                    </Guard>
-                    
-                </div>
             </div>
-        );
+            <Guard role="ADMIN">
+                <div className="bg-white rounded-2xl shadow-sm border border-red-100 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+                    <div>
+                        <h3 className="text-base font-semibold text-slate-900">
+                            Excluir Funcionário
+                        </h3>
+                        <p className="text-sm text-slate-500 mt-1">
+                            Essa ação é irreversível. O funcionário perderá acesso e será removido do sistema.
+                        </p>
+                    </div>
+                    
+                    <Button
+                        variant="ghostDanger"
+                        onClick={handleDelete}
+                        isLoading={isPending}
+                        disabled={isPending}
+                        className="w-full sm:w-auto px-6 py-2.5 shrink-0"
+                    >
+                        Excluir Funcionário
+                    </Button>
+                </div>
+            </Guard>
+            
+        </div>
+    );
 }
