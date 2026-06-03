@@ -41,11 +41,17 @@ export function FeedParty() {
                 onPageChange: (page) => setFilters(prev => ({ ...prev, page }))
             }}
         >
-            {content.map((party) => (
-                <Link to={`/parties/${party.partyId}`} key={party.partyId}>
-                    <PartyCard party={party} />
-                </Link>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 w-full">
+                {content.map((party) => (
+                    <Link 
+                        to={`/parties/${party.partyId}`} 
+                        key={party.partyId}
+                        className="block rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 transition-all"
+                    >
+                        <PartyCard party={party} />
+                    </Link>
+                ))}
+            </div>
         </Feed>
     );
 }

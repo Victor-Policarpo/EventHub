@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { PartyFilters } from "../../../types";
 import { FilterBar } from "../../Common";
-import { Button } from "../../Ui";
 import { partyStatusMap, assemblyStatusMap } from "../../../utils/statusTranslations";
 
 interface Props {
@@ -15,59 +14,76 @@ export function PartyFiltersComponent({ currentFilters, onApply }: Props) {
         assemblyStatus: currentFilters.assemblyStatus
     });
 
-    const getStatusClass = (active: boolean, activeColor: string) => 
-        `w-fit px-3 py-1.5 text-[10px] rounded-full border transition-all ${
-            active ? `${activeColor} text-white border-transparent shadow-sm` : 'bg-gray-50 text-gray-500 border-gray-200'
-        }`;
-
     return (
         <FilterBar
             onApply={() => onApply(temp)}
             activeFiltersDisplay={
-                <>
+                <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
                     {currentFilters.partyStatus && (
-                        <span className="bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                            {partyStatusMap[currentFilters.partyStatus]}
+                        <span className="bg-white border border-slate-200 text-slate-700 shadow-sm px-3 py-1.5 rounded-lg text-xs font-medium">
+                            Festa: {partyStatusMap[currentFilters.partyStatus]}
                         </span>
                     )}
                     {currentFilters.assemblyStatus && (
-                        <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-md text-[10px] font-bold">
-                            {assemblyStatusMap[currentFilters.assemblyStatus]}
+                        <span className="bg-white border border-slate-200 text-slate-700 shadow-sm px-3 py-1.5 rounded-lg text-xs font-medium">
+                            Montagem: {assemblyStatusMap[currentFilters.assemblyStatus]}
                         </span>
                     )}
-                </>
+                </div>
             }
         >
-            <div className="mb-6">
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-3 tracking-wider">Status da Festa</label>
-                <div className="flex flex-wrap gap-2">
-                    {Object.entries(partyStatusMap).map(([key, label]) => (
-                        <Button
-                            key={key}
-                            variant="secondary"
-                            onClick={() => setTemp(p => ({ ...p, partyStatus: key as PartyFilters['partyStatus'] }))}
-                            className={getStatusClass(temp.partyStatus === key, 'bg-indigo-600')}
-                        >
-                            {label}
-                        </Button>
-                    ))}
+            <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                        Status da Festa
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                        {Object.entries(partyStatusMap).map(([key, label]) => {
+                            const isActive = temp.partyStatus === key;
+                            return (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => setTemp(p => ({ ...p, partyStatus: key as PartyFilters['partyStatus'] }))}
+                                    className={`px-4 py-2.5 rounded-lg text-xs font-semibold transition-all border outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1 ${
+                                        isActive 
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm' 
+                                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    {label}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
 
-            <div className="mb-2">
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-3 tracking-wider">Status da Montagem</label>
-                <div className="flex flex-wrap gap-2">
-                    {Object.entries(assemblyStatusMap).map(([key, label]) => (
-                        <Button 
-                            key={key}
-                            variant="secondary"
-                            onClick={() => setTemp(p => ({ ...p, assemblyStatus: key as PartyFilters['assemblyStatus'] }))}
-                            className={getStatusClass(temp.assemblyStatus === key, 'bg-emerald-600')}
-                        >
-                            {label}
-                        </Button>
-                    ))}
+                <hr className="border-slate-100" />
+                <div className="flex flex-col gap-3">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                        Status da Montagem
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                        {Object.entries(assemblyStatusMap).map(([key, label]) => {
+                            const isActive = temp.assemblyStatus === key;
+                            return (
+                                <button 
+                                    key={key}
+                                    type="button"
+                                    onClick={() => setTemp(p => ({ ...p, assemblyStatus: key as PartyFilters['assemblyStatus'] }))}
+                                    className={`px-4 py-2.5 rounded-lg text-xs font-semibold transition-all border outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1 ${
+                                        isActive 
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-sm' 
+                                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    {label}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
+                
             </div>
         </FilterBar>
     );

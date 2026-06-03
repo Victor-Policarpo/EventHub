@@ -71,7 +71,7 @@ export function DateFiltersComponent({ currentFilters, onApply }: Props) {
                     {displayStart && (
                         <span className="bg-white border border-slate-200 text-slate-700 shadow-sm px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5">
                             <Clock size={14} className="text-slate-400" />
-                            Início: {formatDateHours(displayStart)}
+                            Início: {formatDateHours(displayStart).date} {formatDateHours(displayStart).time && `- ${formatDateHours(displayStart).time}`}
                         </span>
                     )}
                     
@@ -82,7 +82,7 @@ export function DateFiltersComponent({ currentFilters, onApply }: Props) {
                     {displayEnd && (
                         <span className="bg-white border border-slate-200 text-slate-700 shadow-sm px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5">
                             <Clock size={14} className="text-slate-400" />
-                            Fim: {formatDateHours(displayEnd)}
+                            Fim: {formatDateHours(displayEnd).date} {formatDateHours(displayEnd).time && `- ${formatDateHours(displayEnd).time}`}
                         </span>
                     )}
                 </div>

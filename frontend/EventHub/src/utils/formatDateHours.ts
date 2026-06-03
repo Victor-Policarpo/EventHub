@@ -1,12 +1,25 @@
-export const formatDateHours = (dataIso: string) => {
-    const data = new Date(dataIso);
-    const dia = data.toLocaleDateString('pt-BR');
-    const hora = data.toLocaleTimeString('pt-BR', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-    });
+export const formatDateHours = (rawStr?: string) => {
+    if (!rawStr) return { date: "Não informada", time: null };
 
-    return `${dia} ${hora}`;
+    // Formato ISO (ex: 2024-05-20T14:30:00)
+    if (rawStr.includes("T")) {
+        const [datePart, timePart] = rawStr.split("T");
+        // Converte YYYY-MM-DD para DD/MM/YYYY
+        const formattedDate = datePart.split("-").reverse().join("/");
+        return { date: formattedDate, time: timePart.substring(0, 5) };
+    }
+
+    // Formato com espaço (ex: "20/05/2024 14:30" ou "20/05/2024 14:30:00")
+    const parts = rawStr.split(" ");
+    if (parts.length >= 2) {
+        return {
+            date: parts[0],
+            time: parts[1].substring(0, 5) // Garante apenas HH:mm
+        };
+    }
+
+    // Fallback caso seja apenas uma data simples
+    return { date: rawStr, time: null };
 };
 
 export const formatToDateTimeLocal = (dateString: string | undefined) => {

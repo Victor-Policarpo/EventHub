@@ -92,14 +92,14 @@ export function Party() {
                     <div>
                         <p className="text-sm text-gray-500">Início</p>
                         <p className="font-medium mt-1">
-                            {formatDateHours(data.startDateHours)}
+                            {formatDateHours(data.startDateHours).date} - {formatDateHours(data.startDateHours).time}
                         </p>
                     </div>
 
                     <div>
                         <p className="text-sm text-gray-500">Término</p>
                         <p className="font-medium mt-1">
-                            {formatDateHours(data.endDateHours)}
+                            {formatDateHours(data.endDateHours).date} - {formatDateHours(data.endDateHours).time}
                         </p>
                     </div>
                 </div>
