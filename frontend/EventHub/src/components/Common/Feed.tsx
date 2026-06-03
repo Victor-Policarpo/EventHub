@@ -33,7 +33,9 @@ export function Feed({ title, filterBar, children, pagination, isEmpty, emptyMes
                         <p className="text-gray-500 italic">{emptyMessage || "Nenhum registro encontrado."}</p>
                     </div>
                 ) : (
-                    children
+                    <div className="space-y-4">
+                        {children}
+                    </div>
                 )}
             </div>
 
@@ -46,23 +48,23 @@ export function Feed({ title, filterBar, children, pagination, isEmpty, emptyMes
                 </div>
                 
                 <div className="flex gap-2">
-                <Button
-                    variant="ghost"
-                    disabled={currentPage === 0 || isPlaceholderData}
-                    onClick={() => onPageChange(currentPage - 1)}
-                    className="w-fit p-2"
-                >
-                    <ChevronLeft size={20} />
-                </Button>
-                
-                <Button
-                    variant="secondary"
-                    disabled={currentPage >= totalPages - 1 || isPlaceholderData}
-                    onClick={() => onPageChange(currentPage + 1)}
-                    className="w-fit p-2"
-                >
-                <ChevronRight size={20} />
-                </Button>
+                    <Button
+                        variant="ghost"
+                        disabled={currentPage === 0 || isPlaceholderData}
+                        onClick={() => onPageChange(currentPage - 1)}
+                        className="w-fit p-2"
+                    >
+                        <ChevronLeft size={20} />
+                    </Button>
+                    
+                    <Button
+                        variant="secondary"
+                        disabled={currentPage >= totalPages - 1 || isPlaceholderData}
+                        onClick={() => onPageChange(currentPage + 1)}
+                        className="w-fit p-2"
+                    >
+                        <ChevronRight size={20} />
+                    </Button>
                 </div>
             </div>
         </div>

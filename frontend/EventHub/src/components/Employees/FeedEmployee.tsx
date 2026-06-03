@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEmployeeData, useHasRole } from "../../hooks";
 import type { EmployeeFilters } from "../../types";
-import { formatForApi } from "../../utils/formatDateHours";
 import { Feed } from "../Common";
 import { Loading, ErrorState, DateFiltersComponent } from "../Ui";
 import { EmployeeCard } from "./EmployeeCard";
@@ -28,14 +27,13 @@ export function FeedEmployee() {
             emptyMessage="Nenhum funcionário encontrado para estes filtros."
             filterBar={
                 <DateFiltersComponent
-                currentFilters={filters}
-                onApply={(newFilters) => setFilters({
-            ...filters,
-            ...newFilters,
-            start: formatForApi(newFilters.start),
-            end: formatForApi(newFilters.end),
-            page: 0
-        })}/>    
+                    currentFilters={filters}
+                    onApply={(newFilters) => setFilters({
+                        ...filters,
+                        ...newFilters,
+                        page: 0
+                    })}
+                />    
             }
             pagination={{
             currentPage: data?.page?.number ?? 0,
