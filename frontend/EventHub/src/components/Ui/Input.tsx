@@ -31,10 +31,14 @@ function InputComponent(
         {...props}
       />
 
-      {error && (
-        <span className="text-xs text-red-600 font-medium">{error}</span>
-      )}
-    </div>
+      <div className="h-5">
+        {error && (
+            <span className="text-xs text-red-600 font-medium">
+                {error}
+            </span>
+        )}
+      </div>
+  </div>
   );
 }
 
