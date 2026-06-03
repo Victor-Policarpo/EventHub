@@ -28,14 +28,14 @@ export const AppRoutes = () => {
 
           <Route path="/parties" element={<Parties />} />
           <Route path="/parties/new" element={<CreatePartyPage />} />
-          <Route path="/parties/:id" element={<PartyDetails />} />
-          <Route path="/parties/:id/edit" element={<PartyEditPage />} />
+          <Route path="/parties/:partyId" element={<PartyDetails />} />
+          <Route path="/parties/:partyId/edit" element={<PartyEditPage />} />
           <Route path="/toys" element={<FeedToys />} />
           <Route path="/toys/new" element={<CreateToy />} />
-          <Route path="/toys/:id/edit" element={<ToyEdit />} /> 
+          <Route path="/toys/:toyId/edit" element={<ToyEdit />} /> 
           <Route path="/employees" element={<FeedEmployees />} />
           <Route path="/employees/new" element={<CreateEmployee />} />
-          <Route path="/employees/:id/edit" element={<EmployeeEdit />} />
+          <Route path="/employees/:employeeId/edit" element={<EmployeeEdit />} />
         </Route>
       </Route>
 

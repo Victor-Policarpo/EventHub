@@ -2,6 +2,9 @@ import { CreateUser } from "../../components";
 
 export function Register(){
     return (
-        <CreateUser/>
+        <div className="h-full">
+            <CreateUser/>
+        </div>
+        
 );
 }

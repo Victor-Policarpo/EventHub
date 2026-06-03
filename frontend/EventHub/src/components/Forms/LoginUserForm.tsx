@@ -21,7 +21,7 @@ export function LoginUser(){
         try {
             const response = await loginUser(data);
             login(response.data);
-            navigate("/feed");
+            navigate("/parties");
         } catch (error) {
     if (axios.isAxiosError<SpringError>(error)) {
         const status = error.response?.status;

@@ -6,7 +6,7 @@ export function useDeleteCurrentUser() {
     return useMutation({
         mutationFn: () => DeleteCurrentUser(),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+            queryClient.invalidateQueries({ queryKey: ["current-user"] });
         }
     })
 }

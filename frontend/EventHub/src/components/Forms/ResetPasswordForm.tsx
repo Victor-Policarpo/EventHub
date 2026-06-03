@@ -37,7 +37,7 @@ export function ResetPasswordForm(){
         mutate(payload, {
             onSuccess: () => {
                 toast.success("Senha resetada com sucesso!");
-                navigate("/login");
+                navigate("/login", { replace: true });
             }, 
             onError: () => {
                 toast.error("Ocorreu um erro ao resetar a senha.");

@@ -18,7 +18,7 @@ export function Employee() {
         mutate(id!, {
             onSuccess: () => {
                 toast.success("Funcionário excluído com sucesso!");
-                navigate("/feed/employees");
+                navigate("/employees", { replace: true });
             },
             onError: (error) => {
                 toast.error("Erro ao excluir: " + (error.message || "Tente novamente"));
@@ -28,7 +28,7 @@ export function Employee() {
 
     return (
             <div className="border-t pt-4">
-                <FormEmployeeEdit />
+                <FormEmployeeEdit employeeId={id} />
                 <div className="mt-8">
                     <Guard role="ADMIN">
                         <Button

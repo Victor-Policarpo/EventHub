@@ -4,6 +4,7 @@ export interface EmployeeData {
     employeeId: number;
     name: string;
     telephone: string;
+    isActive: boolean;
     isAvailable: boolean;
 }
 

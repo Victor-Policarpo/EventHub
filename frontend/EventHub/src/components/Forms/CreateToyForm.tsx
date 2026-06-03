@@ -19,7 +19,7 @@ export function CreateToyForm() {
         mutate(data, {
             onSuccess: () => {
                 toast.success(`${data.name} criado com sucesso!`);
-                navigate("/feed/toys");
+                navigate("/toys/new", { replace: true });
             },
             onError: (error) => {  
                 toast.error(`Erro ao criar brinquedo: ${error.message}`);

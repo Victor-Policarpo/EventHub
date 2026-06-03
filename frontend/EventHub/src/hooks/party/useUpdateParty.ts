@@ -8,9 +8,10 @@ export function useUpdateParty() {
     return useMutation({
         mutationFn: ({ id, data }: { id: number; data: UpdatePartyPayload }) => 
             updateParty(id, data), 
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: ['party', variables.id] });
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['party'] });
             queryClient.invalidateQueries({ queryKey: ['parties-data'] });
+            queryClient.invalidateQueries({ queryKey: ['partyHistory'] });
         }
     });
 }

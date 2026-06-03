@@ -48,7 +48,7 @@ export function FeedEmployee() {
             {content.map((employee) => {
                 if (isAdmin) {
                     return (
-                        <Link to={`/employees/${employee.employeeId}`} key={employee.employeeId}>
+                        <Link to={`/employees/${employee.employeeId}/edit`} key={employee.employeeId}>
                             <EmployeeCard employee={employee}/>
                         </Link>
                     );

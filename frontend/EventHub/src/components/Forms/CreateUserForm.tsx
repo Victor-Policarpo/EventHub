@@ -22,7 +22,7 @@ export function CreateUser(){
 
         try {
             await createUser(data);
-            navigate("/login");
+            navigate("/login", { replace: true });
         } catch (error: unknown) {
             if (axios.isAxiosError<SpringError>(error)) {
                 const msg = (error.response?.data?.message || "").toLowerCase();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { History } from "lucide-react";
 
 import { useGetParty, useDeleteParty } from "../../../hooks";
@@ -17,20 +17,20 @@ export function Party() {
 
     const { partyId } = useParams();
     const id = partyId ? Number(partyId) : NaN;
-
-    const { data, isLoading, error, refetch } = useGetParty(id);
+    const { data, isLoading, isError, refetch } = useGetParty(id);
     const { mutate, isPending } = useDeleteParty();
+    const navigate = useNavigate();
 
-    if (!partyId || isNaN(id)) return <ErrorState message="ID da festa inválido" />;
     if (isLoading) return <Loading />;
-    if (error) return <ErrorState message="Erro ao carregar a festa" onRetry={() => refetch()} />;
-    if (!data) return <ErrorState message="Festa não encontrada" onRetry={() => refetch()} />;
-
+    if (isError || !partyId || isNaN(id)) return <Navigate to="/parties" replace />;
+    if (!data) return <ErrorState message="Erro ao carregar a festa" onRetry={() => refetch()} />;
+    
     function handleDelete() {
         if (!confirm("Tem certeza que deseja excluir esta festa? Essa ação não pode ser desfeita.")) return;
         mutate(id, {
             onSuccess: () => {
                 toast.success("Festa excluída com sucesso!");
+                navigate("/parties", { replace: true });
             },
             onError: () => {
                 toast.error("Erro ao excluir a festa. Tente novamente.");

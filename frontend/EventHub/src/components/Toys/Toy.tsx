@@ -19,7 +19,7 @@ export function Toy() {
         mutate(id!, {
             onSuccess: () => {
                 toast.success("Brinquedo excluído com sucesso!");
-                navigate("/feed/toys");
+                navigate("/toys", { replace: true });
             },
             onError: (error) => {
                 toast.error("Erro ao excluir: " + (error.message || "Tente novamente"));

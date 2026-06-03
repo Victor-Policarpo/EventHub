@@ -11,11 +11,10 @@ export function CreateParty() {
     mutate(payload, {
       onSuccess: () => {
         toast.success('Festa criada com sucesso!');
-        navigate('/feed', { replace: true });
+        navigate('/parties', { replace: true });
       },
-      onError: (err) => {
+      onError: () => {
         toast.error('Erro ao criar a festa.');
-        console.error('Erro detalhado da criação:', err);
       }
     });
   };

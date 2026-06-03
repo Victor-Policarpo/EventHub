@@ -14,7 +14,7 @@ export function EditParty({ partyId }: EditPartyProps) {
   const { data: party, isLoading, isError } = useGetParty(partyId);
 
   if (isLoading) return <Loading />;
-  if (isError || !party) return <ErrorState message="Erro ao carregar festas" />;
+  if (isError || !party) return <ErrorState message="Erro ao carregar dados do evento" />;
 
   const initialEmployeesArray = party.employees?.map((e: any) => Number(e.employeeId || e.id)) || [];
   const initialToysMap = party.partyToys?.reduce((acc: Record<number, number>, current: any) => {
@@ -44,12 +44,11 @@ export function EditParty({ partyId }: EditPartyProps) {
         onSubmit={(payload) => mutate(
             { id: partyId, data: payload }, 
             { onSuccess: () => {
-                navigate('/feed', { replace: true })
                 toast.success('Festa atualizada com sucesso!')
+                navigate('/parties/new', { replace: true })
             }, 
-              onError: (err) => {
+              onError: () => {
                 toast.error('Erro ao atualizar a festa.')
-                console.log('Payload que causou erro:', err);
               }},
            
         )}

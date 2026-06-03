@@ -19,7 +19,7 @@ export function CreateEmployeeForm() {
         mutate(data, {
             onSuccess: () => {
                 toast.success(`${data.name} criado com sucesso!`);
-                navigate("/feed/employees");
+                navigate("employees/new", { replace: true });
             },
             onError: (error) => {  
                 toast.error(`Erro ao criar funcionário: ${error.message}`);

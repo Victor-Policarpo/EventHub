@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { NumericFormat } from "react-number-format";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetToy } from "../../hooks";
 import { useUpdateToy } from "../../hooks";
 import { type UpdateToyInput, type UpdateToyOutput, updateToySchema } from "../../schemas";
@@ -11,7 +11,8 @@ import { Loading, ErrorState, Input, Button } from "../Ui";
 export function FormToyEdit() {
     const { toyId } = useParams();
     const id = toyId ? Number(toyId) : NaN;
-    
+    const navigate = useNavigate();
+
     const { data, isLoading, isError, refetch } = useGetToy(id);
     const { mutate, isPending } = useUpdateToy();
 
@@ -32,6 +33,7 @@ export function FormToyEdit() {
         mutate({ id, data: values }, {
             onSuccess: () => {
                 toast.success("Brinquedo atualizado com sucesso!");
+                navigate("/toys", { replace: true });
             },
             onError: (error) => {
                 toast.error(`Erro ao atualizar: ${error.message}`);

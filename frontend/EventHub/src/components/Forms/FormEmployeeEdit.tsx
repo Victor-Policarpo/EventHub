@@ -1,18 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, type Resolver } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
-import { useGetEmployee } from "../../hooks";
-import { useUpdateEmployee } from "../../hooks";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useGetEmployee, useUpdateEmployee } from "../../hooks";
 import { type UpdateEmployeeForm, updateEmployeeSchema } from "../../schemas";
 import { Loading, ErrorState, Input, Button } from "../Ui";
 import { PatternFormat } from "react-number-format";
 
-export function FormEmployeeEdit() {
-    const { employeeId } = useParams();
-    const id = employeeId ? Number(employeeId) : NaN;
+type FormEmployeeEditProps = {
+    employeeId: number;
+}
 
-    const { data, isLoading, isError, refetch } = useGetEmployee(id);
+export function FormEmployeeEdit({ employeeId }: FormEmployeeEditProps) {
+    const navigate = useNavigate();
+    const { data, isLoading, isError, refetch } = useGetEmployee(employeeId);
     const { mutate, isPending } = useUpdateEmployee();
 
     const { register, handleSubmit, control, formState: { errors }} = useForm<UpdateEmployeeForm>({
@@ -25,13 +26,14 @@ export function FormEmployeeEdit() {
     });
 
     if (isLoading) return <Loading />;
-    if (isError) return <ErrorState message="Erro ao carregar Funcionário 😢" onRetry={() => refetch()} />;
+    if (isError || (data && !data.isActive)) return <Navigate to="/employees" replace />;
     if (!data) return <ErrorState message="Funcionário não encontrado" onRetry={() => refetch()} />;
 
     const onSubmit = (values: UpdateEmployeeForm) => {
-        mutate({ id, data: values }, {
+        mutate({ id: employeeId, data: values }, {
             onSuccess: () => {
                 toast.success("Funcionário atualizado com sucesso!");
+                navigate("/employees", { replace: true });
             },
             onError: (error) => {
                 toast.error(`Erro ao atualizar: ${error.message}`);

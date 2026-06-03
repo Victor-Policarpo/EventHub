@@ -41,7 +41,7 @@ export function Toys(){
         {content.map((toy) => {
             if (isAdmin) {
                 return (
-                    <Link to={`/toys/${toy.toyId}`} key={toy.toyId}>
+                    <Link to={`/toys/${toy.toyId}/edit`} key={toy.toyId}>
                         <ToyCard toy={toy} />
                     </Link>
                 );

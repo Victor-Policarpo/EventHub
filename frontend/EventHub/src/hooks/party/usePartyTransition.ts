@@ -9,6 +9,8 @@ export function usePartyTransition(partyId: number) {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['parties-data'] });
             queryClient.invalidateQueries({ queryKey: ['party'] });
+            queryClient.invalidateQueries({ queryKey: ['partyHistory'] });
+
         },
     });
 }
