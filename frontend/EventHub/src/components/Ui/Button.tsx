@@ -9,25 +9,19 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & Partial<LinkProps> 
   to?: string;
 };
 
-export const Button = ({ 
-  children, 
-  isLoading, 
-  variant = 'primary', 
-  className, 
-  to,
-  ...props 
-}: ButtonProps) => {
+export const Button = ({ children, isLoading, variant = 'primary', className, to, ...props }: ButtonProps) => {
   
-  const baseStyles = "w-full font-bold rounded-xl text-sm px-5 py-3 transition-all disabled:opacity-50 flex items-center justify-center gap-2";
+  const baseStyles = "inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors duration-200 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
-    primary: "text-white bg-indigo-600 hover:bg-indigo-700",
-    ghost: "text-slate-500 hover:bg-slate-100 hover:text-slate-700 group",
-    ghostDanger: "text-slate-500 hover:bg-red-50 hover:text-red-600 group",
-    secondary: "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm",
+    primary: "bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600",
+    ghost: "text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-200",
+    ghostDanger: "text-slate-500 hover:bg-red-50 hover:text-red-600 focus-visible:ring-red-200",
+    secondary: "bg-white border border-slate-200 text-slate-900 hover:bg-slate-50 shadow-sm focus-visible:ring-slate-200",
   };
 
   const combinedClassName = twMerge(baseStyles, variants[variant], className);
+  
   if (to) {
     return (
       <Link 
