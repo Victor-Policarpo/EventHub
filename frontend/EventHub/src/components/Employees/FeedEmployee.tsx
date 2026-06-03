@@ -16,12 +16,14 @@ export function FeedEmployee() {
 
     const { data, isLoading, isError, refetch, isPlaceholderData } = useEmployeeData(filters);
     const isAdmin = useHasRole('ADMIN');
+    
     if (isLoading) return <Loading />;
     if (isError) return <ErrorState onRetry={refetch} message="Erro ao carregar os funcionários" />;
+    
     const content = data?.content ?? [];
+    
     return (
-        <div>
-            <Feed
+        <Feed
             title="Funcionários"
             isEmpty={content.length === 0}
             emptyMessage="Nenhum funcionário encontrado para estes filtros."
@@ -36,24 +38,34 @@ export function FeedEmployee() {
                 />    
             }
             pagination={{
-            currentPage: data?.page?.number ?? 0,
-            totalPages: data?.page?.totalPages ?? 1,
-            totalElements: data?.page?.totalElements ?? 0,
-            isPlaceholderData,
-            onPageChange: (page) => setFilters(prev => ({ ...prev, page }))
-        }}
-            >
-            {content.map((employee) => {
-                if (isAdmin) {
+                currentPage: data?.page?.number ?? 0,
+                totalPages: data?.page?.totalPages ?? 1,
+                totalElements: data?.page?.totalElements ?? 0,
+                isPlaceholderData,
+                onPageChange: (page) => setFilters(prev => ({ ...prev, page }))
+            }}
+        >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 w-full">
+                {content.map((employee) => {
+                    if (isAdmin) {
+                        return (
+                            <Link 
+                                to={`/employees/${employee.employeeId}/edit`} 
+                                key={employee.employeeId}
+                                className="block rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600 transition-all"
+                            >
+                                <EmployeeCard employee={employee}/>
+                            </Link>
+                        );
+                    }
+                    
                     return (
-                        <Link to={`/employees/${employee.employeeId}/edit`} key={employee.employeeId}>
-                            <EmployeeCard employee={employee}/>
-                        </Link>
+                        <div key={employee.employeeId} className="w-full">
+                            <EmployeeCard employee={employee} />
+                        </div>
                     );
-                }
-                return <EmployeeCard employee={employee} key={employee.employeeId} />;
-            })}
+                })}
+            </div>
         </Feed>
-        </div>
     );
 }
