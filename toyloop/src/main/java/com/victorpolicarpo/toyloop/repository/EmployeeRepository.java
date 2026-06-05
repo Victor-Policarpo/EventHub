@@ -64,4 +64,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     boolean existsByNameAndActiveTrue(String name);
 
+    Page<Employee> findByActiveTrueAndNameContainingIgnoreCase(String name, Pageable pageable);
+
 }

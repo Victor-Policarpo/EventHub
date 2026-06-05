@@ -18,5 +18,4 @@ public interface ToyMapper {
     ToyResponse toResponseWithAvailability(Toy entity, Integer dynamicQuantity);
     ToyResponse toResponse(Toy entity);
     void updateEntityFromDto(ToyUpdate dto, @MappingTarget Toy entity);
-    List<ToyResponse> toResponseList(List<Toy> listEntity);
 }

@@ -35,9 +35,10 @@ public class EmployeeController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
             @RequestParam(required = false) Long excludePartyId,
+            @RequestParam(required = false) String search,
             Pageable pageable
     ) {
-        return ResponseEntity.ok(employeeService.listAllEmployee(start, end, excludePartyId, pageable));
+        return ResponseEntity.ok(employeeService.listAllEmployee(start, end, search, excludePartyId, pageable));
     }
 
     @GetMapping("/{id}")

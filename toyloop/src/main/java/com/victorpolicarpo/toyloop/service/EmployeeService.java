@@ -34,10 +34,14 @@ public class EmployeeService {
     }
 
 
-    public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, Long excludePartyId, Pageable pageable) {
+    public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, String search, Long excludePartyId, Pageable pageable) {
         LocalDateTime targetEnd = (end == null && start != null) ? start.plusHours(4) : end;
 
         if (start == null) {
+            if (search != null && !search.isBlank()) {
+                return employeeRepository.findByActiveTrueAndNameContainingIgnoreCase(search, pageable)
+                        .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
+            }
             return employeeRepository.findByActiveTrue(pageable)
                     .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
         }

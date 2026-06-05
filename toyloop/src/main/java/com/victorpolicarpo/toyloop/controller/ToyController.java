@@ -35,9 +35,10 @@ public class ToyController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
             @RequestParam(required = false) Long excludePartyId,
+            @RequestParam(required = false) String search,
             Pageable pageable
     ){
-        Page<ToyResponse> page = toyService.listAllToys(start, end, excludePartyId, pageable);
+        Page<ToyResponse> page = toyService.listAllToys(start, end, search, excludePartyId, pageable);
         return ResponseEntity.ok(page);
     }
 

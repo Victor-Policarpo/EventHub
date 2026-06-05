@@ -1,6 +1,7 @@
 package com.victorpolicarpo.toyloop.repository;
 
 import com.victorpolicarpo.toyloop.dto.response.ToyResponse;
+import com.victorpolicarpo.toyloop.entity.Employee;
 import com.victorpolicarpo.toyloop.entity.Toy;
 import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
@@ -44,4 +45,6 @@ public interface ToyRepository extends JpaRepository<Toy, Long> {
             @Param("excludePartyId") Long excludePartyId,
             Pageable pageable
     );
+
+    Page<Toy> findByActiveTrueAndNameContainingIgnoreCase(String name, Pageable pageable);
 }
