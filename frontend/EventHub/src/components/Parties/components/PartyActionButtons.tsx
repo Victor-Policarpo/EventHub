@@ -12,7 +12,7 @@ interface ActionButtonsProps {
 
 export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, partyStatus, assemblyStatus }) => {
   const { mutate: transition, isPending } = usePartyTransition(partyId);
- 
+
   const handleAction = (action: PartyTransitionAction) => {
       transition(action, {
         onSuccess: () => {
@@ -30,20 +30,20 @@ export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, part
     (partyStatus === 'CANCELED' && assemblyStatus !== 'TO_DISASSEMBLE')
   ) {
     return (
-      <div className="text-sm font-medium text-zinc-400 italic bg-zinc-50 p-3 rounded-lg text-center w-full">
+      <div className="text-sm font-medium text-slate-400 italic bg-slate-50 p-3 rounded-lg text-center w-full">
         Fluxo concluído. Nenhuma ação pendente para esta festa.
       </div>
     );
   }
 
   return (
-    <div className="flex flex-wrap gap-3 p-4 bg-zinc-50 rounded-xl border border-zinc-200 w-full">
+    <div className="flex flex-col gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 w-full sm:max-w-xs">
       
       {partyStatus === 'SCHEDULED' && assemblyStatus === 'TO_ASSEMBLE' && (
         <button
           onClick={() => handleAction('ASSEMBLE')}
           disabled={isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
         >
           <Wrench size={16} />
           Marcar como Montado
@@ -54,7 +54,7 @@ export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, part
         <button
           onClick={() => handleAction('START')}
           disabled={isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
         >
           <Play size={16} />
           Iniciar Festa
@@ -65,7 +65,7 @@ export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, part
         <button
           onClick={() => handleAction('FINISH')}
           disabled={isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
         >
           <CheckCircle size={16} />
           Finalizar Festa
@@ -76,7 +76,7 @@ export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, part
         <button
           onClick={() => handleAction('COLLECT')}
           disabled={isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
         >
           <Truck size={16} />
           Recolher Brinquedos
@@ -87,7 +87,7 @@ export const PartyActionButtons: React.FC<ActionButtonsProps> = ({ partyId, part
         <button
           onClick={() => handleAction('CANCEL')}
           disabled={isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-red-50 text-red-600 border border-red-200 font-medium text-sm rounded-lg shadow-sm transition-colors ml-auto disabled:opacity-50"
+          className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-white hover:bg-red-50 text-red-600 border border-red-200 font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
         >
           <XCircle size={16} />
           Cancelar Festa
