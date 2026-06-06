@@ -43,6 +43,11 @@ public class PartyController {
         return ResponseEntity.status(HttpStatus.OK).body(partyService.getByFilter(partyStatus, assemblyStatus, date, pageable));
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ListPartyResponse>> search(@RequestParam(required = false) String search, Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(partyService.search(search, pageable));
+    }
+
     @PostMapping
     public ResponseEntity<PartyResponse> createParty(@Valid @RequestBody PartyRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(partyService.createParty(dto));

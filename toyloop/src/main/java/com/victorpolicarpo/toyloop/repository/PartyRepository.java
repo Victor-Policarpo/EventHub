@@ -76,4 +76,6 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
             @Param("end") LocalDateTime end
     );
 
+    Page<Party> findByNameContainingIgnoreCaseAndActiveTrue(String name, Pageable pageable);
+
 }

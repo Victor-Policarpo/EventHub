@@ -30,7 +30,6 @@ public class PartyService {
     private final ToyRepository toyRepository;
     private final PartyToyRepository partyToyRepository;
     private final EmployeeRepository employeeRepository;
-    private final UserRepository userRepository;
     private final AuthService authService;
     private final PartyHistoryService partyHistoryService;
 
@@ -348,6 +347,14 @@ public class PartyService {
             throw new BusinessRuleException("The toys cannot be collected");
         }
         party.setAssemblyStatus(Party.AssemblyStatus.DISASSEMBLED);
+    }
+
+    public Page<ListPartyResponse> search(String search, Pageable pageable) {
+        if (search == null || search.isBlank()) {
+            return Page.empty(pageable);
+        }
+        Page<Party> partyPage = partyRepository.findByNameContainingIgnoreCaseAndActiveTrue(search, pageable);
+        return partyPage.map(partyMapper::toListPartyResponse);
     }
 
 }

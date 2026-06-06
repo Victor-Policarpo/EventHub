@@ -23,4 +23,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT u.username FROM User u WHERE u.userId = :userId")
     Optional<String> findUsernameById(@Param("userId") UUID userId);
+
+    @Query("SELECT u FROM User u WHERE NOT EXISTS (SELECT 1 FROM u.roles r WHERE r.name = 'SYSTEM')")
+    List<User> findAllManageableUsers();
+
 }

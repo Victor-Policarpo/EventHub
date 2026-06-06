@@ -44,6 +44,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @PatchMapping("/enable/{id}")
     public ResponseEntity<Void> enableUser(@PathVariable UUID id){
         userService.enableUser(id);
