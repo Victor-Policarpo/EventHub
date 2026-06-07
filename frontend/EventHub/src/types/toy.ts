@@ -15,6 +15,7 @@ export interface ToyFilters extends BaseFilters {
     start?: string;
     end?: string;
     excludePartyId?: number;
+    search?: string;
 }
 
 export interface ToyInput {

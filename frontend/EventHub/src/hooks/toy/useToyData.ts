@@ -4,8 +4,8 @@ import { getToys } from "../../services";
 
 export function useToyData(filters: ToyFilters) {
   const query =  useQuery({
-    queryKey: ["toys-data", filters], 
-    queryFn: () => getToys(filters).then((response) => response.data),
+    queryKey: ["toys", filters], 
+    queryFn: () => getToys(filters),
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 5,
   });

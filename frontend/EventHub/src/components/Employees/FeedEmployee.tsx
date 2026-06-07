@@ -56,7 +56,7 @@ export function FeedEmployee() {
                     />
                     <div className="w-full md:max-w-md">
                         <SearchInput 
-                            placeholder="Procurar funcionario por nome..."
+                            placeholder="Procurar funcionário por nome..."
                             value={searchTerm}
                             onSearch={setSearchTerm}
                         />
