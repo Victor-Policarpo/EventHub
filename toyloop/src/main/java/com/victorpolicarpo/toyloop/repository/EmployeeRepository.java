@@ -54,11 +54,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             )
             FROM Employee e
             WHERE e.active = true
-    """)
+            AND (:search IS NULL OR :search = '' OR LOWER(e.name) LIKE LOWER(CONCAT('%', :search, '%')))
+""")
     Page<EmployeeResponse> findAvailableEmployees(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("excludePartyId") Long excludePartyId,
+            @Param("search") String search,
             Pageable pageable
     );
 

@@ -10,7 +10,6 @@ import com.victorpolicarpo.toyloop.exception.ResourceNotFoundException;
 import com.victorpolicarpo.toyloop.mapper.ToyMapper;
 import com.victorpolicarpo.toyloop.repository.ToyRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,16 +34,15 @@ public class ToyService {
 
     public Page<ToyResponse> listAllToys(LocalDateTime start, LocalDateTime end, String search, Long excludePartyId, Pageable pageable) {
         LocalDateTime targetEnd = (end == null && start != null) ? start.plusHours(4) : end;
+        String searchParam = (search != null && !search.isBlank()) ? search.trim() : null;
         if (start == null) {
-            if (search != null && !search.isBlank()) {
-                return toyRepository.findByActiveTrueAndNameContainingIgnoreCase(search, pageable)
-                        .map(toyMapper::toResponse);
+            if (searchParam != null) {
+                return toyRepository.findByActiveTrueAndNameContainingIgnoreCase(searchParam, pageable).map(toyMapper::toResponse);
             }
-            return toyRepository.findByActiveTrue(pageable)
-                    .map(toyMapper::toResponse);
+            return toyRepository.findByActiveTrue(pageable).map(toyMapper::toResponse);
         }
         Long partyIdToExclude = (excludePartyId != null) ? excludePartyId : -1L;
-        return toyRepository.findAvailableToys(start, targetEnd, partyIdToExclude, pageable);
+        return toyRepository.findAvailableToys(start, targetEnd, partyIdToExclude, searchParam, pageable);
     }
 
     @Transactional

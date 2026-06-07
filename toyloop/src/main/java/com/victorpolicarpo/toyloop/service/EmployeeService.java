@@ -36,17 +36,19 @@ public class EmployeeService {
 
     public Page<EmployeeResponse> listAllEmployee(LocalDateTime start, LocalDateTime end, String search, Long excludePartyId, Pageable pageable) {
         LocalDateTime targetEnd = (end == null && start != null) ? start.plusHours(4) : end;
+        String searchParam = (search != null && !search.isBlank()) ? search.trim() : null;
 
         if (start == null) {
-            if (search != null && !search.isBlank()) {
-                return employeeRepository.findByActiveTrueAndNameContainingIgnoreCase(search, pageable)
+            if (searchParam != null) {
+                return employeeRepository.findByActiveTrueAndNameContainingIgnoreCase(searchParam, pageable)
                         .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
             }
             return employeeRepository.findByActiveTrue(pageable)
                     .map(emp -> employeeMapper.toResponseWithAvailability(emp, true));
         }
+
         Long partyIdToExclude = (excludePartyId != null) ? excludePartyId : -1L;
-        return employeeRepository.findAvailableEmployees(start, targetEnd, partyIdToExclude, pageable);
+        return employeeRepository.findAvailableEmployees(start, targetEnd, partyIdToExclude, searchParam, pageable);
     }
 
     @Transactional

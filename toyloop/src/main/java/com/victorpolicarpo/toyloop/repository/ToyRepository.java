@@ -38,11 +38,13 @@ public interface ToyRepository extends JpaRepository<Toy, Long> {
             )
             FROM Toy t
             WHERE t.active = true
+            AND (:search IS NULL OR :search = '' OR LOWER(t.name) LIKE LOWER(CONCAT('%', :search, '%')))
     """)
     Page<ToyResponse> findAvailableToys(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             @Param("excludePartyId") Long excludePartyId,
+            @Param("search") String search,
             Pageable pageable
     );
 
