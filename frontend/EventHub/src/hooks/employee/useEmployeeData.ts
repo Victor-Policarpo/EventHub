@@ -5,9 +5,9 @@ import { getEmployee } from "../../services";
 export function useEmployeeData(filters: EmployeeFilters){
     const query = useQuery({
         queryFn: () => getEmployee(filters),
-        queryKey: ['employees-data', filters],
+        queryKey: ['employees', filters],
         placeholderData: keepPreviousData,
         refetchInterval: 300000
     });
-    return {...query, data: query.data?.data};
+    return {...query, data: query.data};
 }

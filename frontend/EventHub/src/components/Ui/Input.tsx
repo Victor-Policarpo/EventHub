@@ -2,7 +2,7 @@ import { type InputHTMLAttributes, forwardRef, type ForwardedRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
   error?: string;
 }
 
@@ -12,10 +12,11 @@ function InputComponent(
 ) {
   return (
     <div className="flex flex-col gap-1.5 w-full">
-      <label htmlFor={name} className="text-base font-medium text-slate-800">
-        {label}
-      </label>
-      
+      {label && (
+        <label htmlFor={name} className="text-base font-medium text-slate-800">
+          {label}
+        </label>
+      )}
       <input
         ref={ref}
         name={name}

@@ -16,6 +16,7 @@ export interface EmployeeFilters extends BaseFilters {
     start?: string;
     end?: string;
     excludePartyId?: number;
+    search?: string;
 }
 
 export interface EmployeeInput {
