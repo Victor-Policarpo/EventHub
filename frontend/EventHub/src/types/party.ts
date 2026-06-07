@@ -3,6 +3,8 @@ import type { SelectedToyPayload } from "./toy";
 export interface PartyFilters {
   partyStatus?: 'SCHEDULED' | 'IN_PROGRESS' | 'FINISHED' | 'CANCELED';
   assemblyStatus?: 'TO_ASSEMBLE' | 'ASSEMBLED' | 'TO_DISASSEMBLE' | 'DISASSEMBLED' | 'NOT_APPLICABLE';
+  date?: string;
+  search?: string;
   page?: number;
   size?: number;
 }

@@ -5,9 +5,9 @@ import type { PartyFilters } from "../../types";
 export function usePartyData(filters: PartyFilters){
     const query = useQuery({
         queryFn: () => getParty(filters),
-        queryKey: ['parties-data', filters],
+        queryKey: ['parties', filters],
         placeholderData: keepPreviousData,
         refetchInterval: 300000
     });
-    return {...query, data: query.data?.data};
+    return {...query, data: query.data};
 }

@@ -6,4 +6,3 @@ export * from './useAvailableResources';
 export * from './useCreateParty';
 export * from './usePartyTransition';
 export * from './usePartyHistory';
-export * from './useGetPartyByName';
