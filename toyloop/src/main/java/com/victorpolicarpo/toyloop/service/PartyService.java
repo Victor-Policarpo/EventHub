@@ -129,10 +129,13 @@ public class PartyService {
         return partyMapper.toResponse(party, authService.getUserSimpleById(party.getCreateBy()));
     }
 
-    public Page<ListPartyResponse> getByFilter(Party.PartyStatus partyStatus,
-                                               Party.AssemblyStatus assemblyStatus,
-                                               LocalDate date, Pageable pageable) {
-        Page<Party> partyPage = partyRepository.findByFilters(partyStatus, assemblyStatus, date, pageable);
+    public Page<ListPartyResponse> getByFilter(
+            Party.PartyStatus partyStatus,
+            Party.AssemblyStatus assemblyStatus, LocalDate date,
+            String search, Pageable pageable) {
+
+        String searchParam = (search != null && !search.isBlank()) ? search.trim() : null;
+        Page<Party> partyPage = partyRepository.findByFilters(partyStatus, assemblyStatus, date, searchParam, pageable);
         return partyPage.map(partyMapper::toListPartyResponse);
     }
 

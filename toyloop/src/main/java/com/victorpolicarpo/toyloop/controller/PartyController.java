@@ -37,15 +37,11 @@ public class PartyController {
             @RequestParam(required = false) Party.PartyStatus partyStatus,
             @RequestParam(required = false) Party.AssemblyStatus assemblyStatus,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) String search,
             @org.springdoc.core.annotations.ParameterObject
             @PageableDefault(sort = "startDateHours", direction = Sort.Direction.ASC) Pageable pageable
     ){
-        return ResponseEntity.status(HttpStatus.OK).body(partyService.getByFilter(partyStatus, assemblyStatus, date, pageable));
-    }
-
-    @GetMapping("/filter")
-    public ResponseEntity<Page<ListPartyResponse>> search(@RequestParam(required = false) String search, Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(partyService.search(search, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(partyService.getByFilter(partyStatus, assemblyStatus, date, search, pageable));
     }
 
     @PostMapping

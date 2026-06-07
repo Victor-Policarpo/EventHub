@@ -24,15 +24,20 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
 """)
     boolean existsByStartDateHoursAndAddress(LocalDateTime date, String address);
 
-    @Query("SELECT p FROM Party p WHERE " +
-            "(:pStatus IS NULL OR p.partyStatus = :pStatus) AND " +
-            "(:aStatus IS NULL OR p.assemblyStatus = :aStatus) AND " +
-            "(CAST(:date AS localdate) IS NULL OR CAST(p.startDateHours AS date) = :date)")
+    @Query("""
+            SELECT p FROM Party p
+            WHERE (:pStatus IS NULL OR p.partyStatus = :pStatus)
+            AND (:aStatus IS NULL OR p.assemblyStatus = :aStatus)
+            AND (CAST(:date AS localdate) IS NULL OR CAST(p.startDateHours AS date) = :date)
+            AND (:search IS NULL OR :search = '' OR LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')))
+""")
     Page<Party> findByFilters(
             @Param("pStatus") Party.PartyStatus pStatus,
             @Param("aStatus") Party.AssemblyStatus aStatus,
             @Param("date") LocalDate date,
-            Pageable pageable);
+            @Param("search") String search,
+            Pageable pageable
+    );
 
     @Query("""
            SELECT p FROM Party p
