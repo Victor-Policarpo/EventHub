@@ -41,7 +41,7 @@ export function FeedEmployee() {
 
     return (
         <Feed
-            title="Funcionários"
+            title="Gerenciar Funcionários"
             isEmpty={content.length === 0}
             emptyMessage="Nenhum funcionário encontrado para os filtros selecionados."
             filterBar={

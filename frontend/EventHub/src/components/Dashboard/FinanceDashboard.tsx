@@ -3,7 +3,7 @@ import { useDashboardData } from '../../hooks';
 import { DashboardCards } from './DashboardCards';
 import { RevenueChart } from './RevenueChart';
 import { RevenueBreakdownChart } from './RevenueBreakdownChart';
-import { ErrorState, Loading } from '../Ui';
+import { ErrorState, Input, Loading } from '../Ui';
 
 export const FinanceDashboard: React.FC = () => {
     const { summary, chartData, breakdown, isLoading, isError, filters, updateFilters, refetchAll } = useDashboardData();
@@ -40,28 +40,40 @@ export const FinanceDashboard: React.FC = () => {
                     <p className="text-sm text-slate-500 mt-1">Acompanhe o faturamento e agendamentos da locadora</p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                    <div className="flex items-center gap-2 flex-1">
-                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider w-8 sm:w-auto">De</label>
-                        <input
+                <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                    <div className="flex flex-col gap-1 flex-1">
+                        <label
+                            htmlFor="start"
+                            className="text-xs font-semibold text-slate-500 uppercase tracking-wide"
+                        >
+                            Data Inicial
+                        </label>
+
+                        <Input
+                            id="start"
                             type="date"
                             name="start"
                             value={filters.start ?? ''}
                             onChange={handleFilterChange}
-                            className="w-full sm:w-auto text-sm text-slate-700 border border-slate-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-shadow"
+                            className="w-full"
                         />
                     </div>
-                    
-                    <div className="hidden sm:block w-px h-6 bg-slate-200"></div>
 
-                    <div className="flex items-center gap-2 flex-1">
-                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider w-8 sm:w-auto">Até</label>
-                        <input
+                    <div className="flex flex-col gap-1 flex-1">
+                        <label
+                            htmlFor="end"
+                            className="text-xs font-semibold text-slate-500 uppercase tracking-wide"
+                        >
+                            Data Final
+                        </label>
+
+                        <Input
+                            id="end"
                             type="date"
                             name="end"
                             value={filters.end ?? ''}
                             onChange={handleFilterChange}
-                            className="w-full sm:w-auto text-sm text-slate-700 border border-slate-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-shadow"
+                            className="w-full"
                         />
                     </div>
                 </div>

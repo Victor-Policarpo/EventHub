@@ -15,17 +15,17 @@ export const navigationLinks: NavigationLink[] = [
     requiredRole: "ADMIN",
   },
   {
-    label: "Parties",
+    label: "Eventos",
     path: "/parties",
     icon: CalendarDays,
   },
   {
-    label: "Toys",
+    label: "Brinquedos",
     path: "/toys",
     icon: Package,
   },
   {
-    label: "Employees",
+    label: "Funcionários",
     path: "/employees",
     icon: Users,
   },
@@ -33,17 +33,17 @@ export const navigationLinks: NavigationLink[] = [
 
 export const adminLinks: NavigationLink[] = [
   {
-    label: "Create Party",
+    label: "Criar Evento",
     path: "/parties/new",
     icon: StickyNote,
   },
   {
-    label: "Create Toy",
+    label: "Criar Brinquedo",
     path: "/toys/new",
     icon: Blocks,
   },
   {
-    label: "Create Employee",
+    label: "Criar Funcionário",
     path: "/employees/new",
     icon: UserPlus,
   },

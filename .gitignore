@@ -21,6 +21,7 @@ frontend/EventHub/.env*.local
 frontend/EventHub/npm-debug.log*
 frontend/EventHub/.eslintcache
 frontend/EventHub/src/assets/
+frontend/EventHub/src/.env
 
 ### STS ###
 .apt_generated
@@ -49,3 +50,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/.env

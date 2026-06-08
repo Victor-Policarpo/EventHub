@@ -41,7 +41,7 @@ export function FeedParty() {
 
     return (
         <Feed
-            title="Gestão de Festas"
+            title="Gerenciar Festas"
             isEmpty={content.length === 0}
             emptyMessage="Nenhuma festa encontrada para estes filtros."
             filterBar={

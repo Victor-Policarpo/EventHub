@@ -40,7 +40,7 @@ export function Toys() {
 
     return (
         <Feed
-            title="Brinquedos"
+            title="Gerenciar Brinquedos"
             isEmpty={content.length === 0}
             emptyMessage="Nenhum brinquedo encontrado para estes filtros."
             filterBar={
