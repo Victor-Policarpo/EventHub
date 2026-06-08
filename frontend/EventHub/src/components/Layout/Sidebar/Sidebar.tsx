@@ -3,7 +3,7 @@ import { SidebarLink } from "./SidebarLink";
 import { navigationLinks, adminLinks } from "../../../utils/links";
 import { Guard } from "../../Common";
 import { ProfileCard } from "../../Users";
-import logoUrl from "../../../assets/Logo/Logo-PlimPlim-teste.svg";
+import logoUrl from "../../../assets/Logo/Logo-PlimPlim.png";
 
 interface SidebarProps {
     isOpen: boolean;

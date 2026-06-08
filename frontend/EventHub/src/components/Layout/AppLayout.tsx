@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Sidebar } from "../Layout";
-import logoUrl from "../../assets/Logo/Logo-PlimPlim-teste.svg";
+import logoUrl from "../../assets/Logo/Logo-PlimPlim.png";
 
 export function AppLayout() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

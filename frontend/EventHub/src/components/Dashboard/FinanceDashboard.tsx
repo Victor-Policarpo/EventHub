@@ -1,9 +1,20 @@
 import React from 'react';
 import { useDashboardData } from '../../hooks';
 import { DashboardCards } from './DashboardCards';
-import { RevenueChart } from './RevenueChart';
-import { RevenueBreakdownChart } from './RevenueBreakdownChart';
 import { ErrorState, Input, Loading } from '../Ui';
+import { lazy, Suspense } from "react";
+
+const RevenueChart = lazy(() =>
+    import("./RevenueChart").then((m) => ({
+        default: m.RevenueChart,
+    }))
+);
+
+const RevenueBreakdownChart = lazy(() =>
+    import("./RevenueBreakdownChart").then((m) => ({
+        default: m.RevenueBreakdownChart,
+    }))
+);
 
 export const FinanceDashboard: React.FC = () => {
     const { summary, chartData, breakdown, isLoading, isError, filters, updateFilters, refetchAll } = useDashboardData();
@@ -83,13 +94,17 @@ export const FinanceDashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                    <RevenueChart data={chartData} />
+                    <Suspense fallback={<Loading />}>
+                        <RevenueChart data={chartData} />
+                    </Suspense>
                 </div>
+
                 <div className="lg:col-span-1">
-                    <RevenueBreakdownChart data={breakdown} />
+                    <Suspense fallback={<Loading />}>
+                        <RevenueBreakdownChart data={breakdown} />
+                    </Suspense>
                 </div>
             </div>
-            
         </div>
     );
 };

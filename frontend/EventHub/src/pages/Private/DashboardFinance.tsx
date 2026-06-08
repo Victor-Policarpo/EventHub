@@ -1,4 +1,4 @@
-import { FinanceDashboard } from "../../components";
+import { FinanceDashboard } from "../../components/Dashboard/FinanceDashboard";
 
 export function DashboardFinance() {
     return (
