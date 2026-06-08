@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUsersData } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useGetUsersData() {
-    const query = useQuery({
-        queryFn: () => getUsersData(),
-        queryKey: ['users-data'],
+    return useQuery({
+        queryKey: queryKeys.users.lists(),
+        queryFn: getUsersData,
     });
-    return {...query, data: query.data};
 }

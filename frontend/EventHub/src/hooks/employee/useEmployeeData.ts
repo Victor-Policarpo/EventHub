@@ -1,13 +1,12 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { EmployeeFilters } from "../../types";
 import { getEmployee } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useEmployeeData(filters: EmployeeFilters){
-    const query = useQuery({
+    return useQuery({
+        queryKey: queryKeys.employees.list(filters),
         queryFn: () => getEmployee(filters),
-        queryKey: ['employees', filters],
-        placeholderData: keepPreviousData,
-        refetchInterval: 300000
+        placeholderData: keepPreviousData
     });
-    return {...query, data: query.data};
 }

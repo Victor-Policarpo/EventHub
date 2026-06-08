@@ -1,13 +1,12 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { ToyFilters } from "../../types";
 import { getToys } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useToyData(filters: ToyFilters) {
-  const query =  useQuery({
-    queryKey: ["toys", filters], 
+  return useQuery({
+    queryKey: queryKeys.toys.list(filters), 
     queryFn: () => getToys(filters),
     placeholderData: keepPreviousData,
-    staleTime: 1000 * 60 * 5,
   });
-  return {...query, data: query.data}
 }

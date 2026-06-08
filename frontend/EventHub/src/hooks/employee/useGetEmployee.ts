@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getEmployeeById } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useGetEmployee(employeeId: number) {
-    const query = useQuery({
-       queryFn: () => getEmployeeById(employeeId),
-       queryKey: ['employee', employeeId],
-       enabled: !!employeeId
+    return useQuery({
+        queryKey: queryKeys.employees.detail(employeeId),
+        queryFn: () => getEmployeeById(employeeId),
+        enabled: !!employeeId
     });
-    return {...query, data: query.data };
 }

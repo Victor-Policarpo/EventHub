@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPartyById } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useGetParty(partyId: number) {
-    const query = useQuery({
+    return useQuery({
+        queryKey: queryKeys.parties.detail(partyId),
         queryFn: () => getPartyById(partyId),
-        queryKey: ['party', partyId],
         enabled: !!partyId
     });
-    return {...query, data: query.data};
 }

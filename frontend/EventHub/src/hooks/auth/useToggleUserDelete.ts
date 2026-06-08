@@ -1,12 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleUserDelete } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useToggleUserDelete() {
     const queryClient = useQueryClient();
+
     return useMutation({
-        mutationFn: (userId: string) => toggleUserDelete(userId),
+        mutationFn: toggleUserDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["users-data"] });
+            queryClient.invalidateQueries({ 
+                queryKey: queryKeys.users.lists() 
+            });
         }
-    })
+    });
 }

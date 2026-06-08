@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getSummary, getRevenueChart, getRevenueBreakdown } from '../../services';
 import type { DashboardFilters } from '../../types';
+import { queryKeys } from '../../constants/queryKeys';
+
 export function useDashboardData() {
   const [filters, setFilters] = useState<DashboardFilters>({
     start: undefined,
@@ -9,18 +11,21 @@ export function useDashboardData() {
   });
 
   const summaryQuery = useQuery({
-    queryKey: ['dashboardSummary', filters],
+    queryKey: queryKeys.dashboard.summary(filters),
     queryFn: () => getSummary(filters),
+    placeholderData: keepPreviousData,
   });
 
   const chartQuery = useQuery({
-    queryKey: ['dashboardChart', filters],
+    queryKey: queryKeys.dashboard.chart(filters),
     queryFn: () => getRevenueChart(filters),
+    placeholderData: keepPreviousData,
   });
 
   const breakdownQuery = useQuery({
-    queryKey: ['dashboardBreakdown', filters],
+    queryKey: queryKeys.dashboard.breakdown(filters),
     queryFn: () => getRevenueBreakdown(filters),
+    placeholderData: keepPreviousData,
   });
 
   const updateFilters = (newFilters: DashboardFilters) => {

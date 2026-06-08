@@ -1,12 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toggleUserActive } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
 export function useToggleUserActive(){
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (userId: string) => toggleUserActive(userId),
+        mutationFn: toggleUserActive,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users-data'] });
+            queryClient.invalidateQueries({ 
+                queryKey: queryKeys.users.lists() 
+            });
         }
-    })
+    });
 }

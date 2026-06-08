@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getToyById } from "../../services";
+import { queryKeys } from "../../constants/queryKeys";
 
-export function useGetToy(toyId: number){
-    const query = useQuery({
-        queryKey: ['toy', toyId],
+export function useGetToy(toyId: number) {
+    return useQuery({
+        queryKey: queryKeys.toys.detail(toyId),
         queryFn: () => getToyById(toyId),
         enabled: !!toyId
     });
-    return {...query, data: query.data};
 }
