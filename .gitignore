@@ -2,6 +2,7 @@
 
 HELP.md
 toyloop/target/
+toyloop/deploy.zip
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
