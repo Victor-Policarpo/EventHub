@@ -6,7 +6,7 @@ EventHub is a commercial freelance project designed to automate stock control an
 
 ### Party Management
 
-![Party Management](docs/parties.png)
+![Party Management](docs/Parties.png)
 
 ### Party Creation Workflow
 
