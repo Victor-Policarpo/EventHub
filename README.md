@@ -2,47 +2,52 @@
 
 EventHub is a commercial freelance project designed to automate stock control and scheduling for an inflatable toy rental business, prioritizing scalability and SaaS-ready architecture.
 
+## Screenshots
+
+### Party Management
+
+![Party Management](docs/parties.png)
+
+### Party Creation Workflow
+
+![Party Creation Workflow](docs/CreateParty.gif)
+
+### Dashboard
+
+![Dashboard](docs/dashboard.png)
+
 ## Features
 
-### Users
+#### Authentication & Security
+- User registration and authentication using JWT
+- Secure access to protected endpoints
+- Password recovery via email token
+- Refresh token support
+- Logout with token invalidation
 
-* Create new users
-* User registration and authentication using JWT
-* Secure access to protected endpoints
-* Password reset via email token
-* Logout functionality with token invalidation
+#### Party Management
+- Create and manage party events
+- Assign employees and inflatable toys to parties
+- Track party lifecycle and status changes
+- Retrieve party history and event timeline
+- Filter parties by status and assembly requirements
+- Soft delete support
+- Automatic business rule validation
 
-### Parties
+#### Employee Management
+- Employee registration and management
+- Employee allocation to events
+- Conflict prevention for overlapping schedules
 
-* Create new Party linked to users
-* Retrieve all Parties stored in the database
-* Fetch a specific Party by ID
-* Filter parties by status 'SCHEDULED', 'IN_PROGRESS', 'FINISHED', 'CANCELED' and 'TO_ASSEMBLE', 'ASSEMBLED', 'TO_DISASSEMBLE', 'DISASSEMBLED', 'NOT_APPLICABLE'
-* Update existing Party details
-* Update Party status
-* Soft delete parties
-* Assign employees to Parties
-* Assign toys to Parties
+#### Toy Management
+- Toy registration and inventory control
+- Toy allocation to events
+- Availability tracking
 
-### Employees
-
-* Create new Employee
-* Fetch a specific Employee by ID
-* Retrieve all Employees stored in the database
-* Update existing Employee details
-* Delete Employee
-
-### Toys
-
-* Create new Toy
-* Fetch a specific Toy by ID
-* Retrieve all Toys stored in the database
-* Update existing Toy details
-* Delete Toy
-
-### Dashboard 
-
-* Retrieve financial reports by date
+#### Financial Dashboard
+- Revenue reporting by date range
+- Financial analytics and summaries
+- Event-based income tracking
 
 ## Technologies
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
@@ -58,7 +63,7 @@ EventHub is a commercial freelance project designed to automate stock control an
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ## API Documentation
-The API is organized into functional modules. For detailed request/response schemas, please refer to the [Swagger UI](http://localhost:8080/swagger-ui/index.html) after running the application.
+The API is organized into functional modules. Detailed request and response schemas are available through [Swagger UI](http://localhost:8080/swagger-ui/index.html) documentation.
 
 | Module | Base Path | Key Features |
 | :--- | :--- | :--- |
@@ -69,18 +74,13 @@ The API is organized into functional modules. For detailed request/response sche
 | **Toys** | `/auth/toys` | Inventory management |
 | **Dashboard** | `/auth/finance` | Financial reporting |
 
-### Quick Reference (Key Operations)
-* **Auth:** All interactions (Login/Register/Logout) are handled under `/access`.
-* **Parties:** The lifecycle is managed via specific PATCH endpoints (e.g., /auth/parties/{id}/start-party).
-* **Security:** All `/auth/*` endpoints require a valid JWT token.
-
 ## API Usage & Business Logic
-While the full API specification is available in our [Swagger UI](http://localhost:8080/swagger-ui/index.html), here is an example of the most critical operation in the system: **Party Creation**.
+Beyond standard CRUD operations, the API implements business rules designed for event scheduling and inventory management.
 
 ### Create Party (Complex Flow)
-This endpoint handles not just data storage, but business rules like default timing and automatic financial calculation.
+This operation automatically validates scheduling conflicts, associates employees and toys with the event, and calculates the final event value.
 
-- **POST /auth/parties**
+- **POST `/auth/parties`**
 
 ```json
 {
@@ -97,30 +97,50 @@ This endpoint handles not just data storage, but business rules like default tim
 ```
 
 ### Business Rules:
+- Automatically calculates the event value based on selected toys and rental duration.
+- Assigns employees and inventory resources to the event.
+- Prevents employee double-booking.
+- Prevents scheduling conflicts for events at the same address and time period.
+- Applies default values when optional fields are not provided.
 
-- endDateHours: Defaults to 4 hours after startDateHours if not provided.
+## Project Status
+The project has been successfully completed and deployed.
+Current status:
 
-- value: Automatically calculated by the system based on the selected toys and duration.
+- **Backend (Java + Spring Boot):** Completed
+- **Frontend (React + TypeScript + Tailwind):** Completed
+- **Database (PostgreSQL):** Completed
+- **Deployment:** Completed
+- **API Documentation (Swagger):** Available
 
-## Project Status: Fullstack Development
-The project is currently evolving into a comprehensive full-stack solution, connecting robust backend services to a modern frontend interface.
+The system is fully functional and ready for production use.
 
-- **Backend (Java/Spring Boot):** Stable and fully functional.
-- **Frontend (React + TypeScript + Tailwind):** In active development, focusing on core management features and UI/UX improvements.
+## Technical Challenges
 
-## Technical Challenges:
-- Conflict Resolution: Implemented business logic to prevent double-booking of employees and overlapping party schedules at the same address.
+#### Scheduling Conflict Resolution
+Implemented validation mechanisms to prevent:
+- Employee double-booking
+- Resource allocation conflicts
+- Overlapping events at the same location
 
-- Database Integrity: optimized complex queries for financial reporting.
+#### Financial Reporting
+- Developed optimized database queries to generate financial reports and revenue summaries efficiently.
 
-- Scalability: Designed the architecture to allow future expansion into a multi-tenant SaaS model.
+#### Security
+- JWT Authentication
+- Refresh Tokens
+- Password Recovery via Email
+- Spring Security authorization
+
+#### Scalability
+- Designed the architecture with future SaaS expansion in mind, allowing support for multi-tenant environments and additional business modules.
 
 ##  How to run the project
 
 ###  Prerequisites
 - Java 21
 - Maven
-- Docker & Docker Compose (Recommended for Database)
+- Docker & Docker Compose
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/Victor-Policarpo/EventHub.git
@@ -135,14 +155,6 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=admin
 DB_URL=jdbc:postgresql://localhost:5432/eventhub
 ```
-
-
-#### pgAdmin Config
-```
-PGADMIN_EMAIL=admin@admin.com
-PGADMIN_PASSWORD=admin
-```
-
 
 #### Mail Config
 ```
