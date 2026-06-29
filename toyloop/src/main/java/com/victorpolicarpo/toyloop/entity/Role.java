@@ -19,8 +19,7 @@ public class Role {
     @Getter
     public enum Values{
         ADMIN(1L),
-        BASIC(2L),
-        SYSTEM(3L);
+        BASIC(2L);
 
         final long value;
 

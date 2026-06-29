@@ -77,7 +77,6 @@ public class UserService {
     @Transactional
     public void deleteUser(UUID id) {
         User user = findById(id);
-        protectSystemUser(user);
         user.setActive(false);
         userRepository.save(user);
     }
@@ -85,16 +84,7 @@ public class UserService {
     @Transactional
     public void enableUser(UUID id) {
         User user = findById(id);
-        protectSystemUser(user);
         user.setActive(true);
         userRepository.save(user);
-    }
-
-    private void protectSystemUser(User user) {
-        boolean isSystemUser = user.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(Role.Values.SYSTEM.name()));
-        if (isSystemUser) {
-            throw new BusinessRuleException("Operation not allowed!");
-        }
     }
 }
